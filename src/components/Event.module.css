@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+}
+
+img {
+  width: 80px;
+  height: 80px;
+  margin: 5px;
+  object-fit: cover;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 5px;
+}
+
+.date {
+  font-family: "TT Commons";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+}
+.title {
+  text-align: left;
+  font-family: "TT Commons";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.place {
+  font-family: "TT Commons";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+}

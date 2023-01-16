@@ -37,7 +37,7 @@ function App() {
       });
       setEvents(transformedEvents);
       setTotalCount(data.meta.totalCount);
-      console.log("totalCount:" + totalCount);
+      //console.log("totalCount:" + totalCount);
     } catch {
       setError(true);
     }

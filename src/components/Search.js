@@ -1,9 +1,8 @@
-import React, { useRef } from 'react';
-import classes from './Search.module.css';
+import React, { useRef } from "react";
+import classes from "./Search.module.css";
 
 const Search = (props) => {
-
-  const queryRef = useRef('');
+  const queryRef = useRef("");
 
   function submitHandler(event) {
     event.preventDefault();
@@ -17,12 +16,12 @@ const Search = (props) => {
 
   return (
     <form onSubmit={submitHandler}>
-       <div className={classes.control}>
-        <label htmlFor='query'>Search</label>
-        <input type='text' id='query' ref={queryRef} />
+      <div className={classes.control}>
+        <label htmlFor="query">Search</label>
+        <input type="text" id="query" ref={queryRef} />
       </div>
-       </form>
-  )
-}
+    </form>
+  );
+};
 
 export default Search;

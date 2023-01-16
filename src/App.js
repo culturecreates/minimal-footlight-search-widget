@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-
-import EventsList from "./components/EventsList";
+import SearchPanel from "./components/SearchPanel";
 import Search from "./components/Search";
-import SearchFooter from "./components/SearchFooter";
 import "./App.css";
 
 function App() {
@@ -10,6 +8,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
+  const [showResults, setShowResults] = useState(false);
 
   const fetchMoviesHandler = useCallback(async (q) => {
     setIsLoading(true);
@@ -37,7 +36,6 @@ function App() {
       });
       setEvents(transformedEvents);
       setTotalCount(data.meta.totalCount);
-      //console.log("totalCount:" + totalCount);
     } catch {
       setError(true);
     }
@@ -47,38 +45,29 @@ function App() {
 
   useEffect(() => {
     fetchMoviesHandler();
-  }, [fetchMoviesHandler, setTotalCount]);
+  }, [fetchMoviesHandler]);
 
   function searchHandler(q) {
     fetchMoviesHandler(q);
     console.log(q);
   }
 
-  let content = <p>No results.</p>;
-  if (events.length > 0) {
-    content = (
-      <>
-        <EventsList events={events} />
-        {events.length > 5 && <SearchFooter count={totalCount} />}
-      </>
-    );
-  }
-
-  if (error) {
-    content = <p>An error occured</p>;
-  }
-
-  if (isLoading) {
-    content = <p>Loading...</p>;
+  function activateHandler(show) {
+    setShowResults(show);
   }
 
   return (
-    <>
-      <section>
-        <Search onSearch={searchHandler} />
-      </section>
-      <section>{content}</section>
-    </>
+    <section>
+      <Search onSearch={searchHandler} onActivate={activateHandler} />
+      {showResults && (
+        <SearchPanel
+          error={error}
+          events={events}
+          isLoading={isLoading}
+          totalCount={totalCount}
+        />
+      )}
+    </section>
   );
 }
 

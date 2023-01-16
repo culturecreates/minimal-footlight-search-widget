@@ -14,11 +14,14 @@ const Search = (props) => {
     props.onSearch(q);
   }
 
+  const onFocus = () =>  props.onActivate(true);
+  const onBlur = () =>  props.onActivate(false);
+
   return (
     <form onSubmit={submitHandler}>
       <div className={classes.control}>
         <label htmlFor="query">Search</label>
-        <input type="text" id="query" ref={queryRef} />
+        <input type="text" id="query" ref={queryRef} onFocus={onFocus} onBlur={onBlur}/>
       </div>
     </form>
   );

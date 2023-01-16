@@ -3,7 +3,7 @@ import SearchPanel from "./components/SearchPanel";
 import Search from "./components/Search";
 import "./App.css";
 
-function App() {
+function App(props) {
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -14,9 +14,9 @@ function App() {
     setIsLoading(true);
     setError(false);
     let url =
-      "https://api.footlight.io/calendars/tout-culture/events?page=1&limit=1000";
+      `https://${props.api}/calendars/tout-culture/events?page=1&limit=1000`;
     if (q) {
-      url += "&query=" + q;
+      url += `&query=${q}`;
     }
     try {
       const response = await fetch(url);
@@ -41,7 +41,7 @@ function App() {
     }
 
     setIsLoading(false);
-  }, []);
+  }, [props.api]);
 
   useEffect(() => {
     fetchMoviesHandler();

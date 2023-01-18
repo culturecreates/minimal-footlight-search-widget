@@ -9,7 +9,9 @@ const Event = (props) => {
       <div className={classes.details}>
         <div className={classes.title}>{props.title}</div>
         <div className={classes.date}>{props.startDate}</div>
-        <div className={classes.place}>{props.place}, {props.city}</div>
+        <div className={classes.place}>{props.place}
+        {props.city && ', ' + props.city}
+        </div>
       </div>
     </div>
   );

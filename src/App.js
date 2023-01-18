@@ -14,24 +14,28 @@ function App(props) {
     async (q) => {
       setIsLoading(true);
       setError(false);
-      let url = `https://${props.api}/calendars/tout-culture/events?page=1&limit=1000`;
+      let url = `https://${props.api}/calendars/tout-culture/events?page=1&limit=5`;
       if (q) {
         url += `&query=${q}`;
       }
       try {
         const response = await fetch(url);
-
         const data = await response.json();
         console.log(data);
 
-        const transformedEvents = data.data.map((eventData) => {
+        const transformedEvents = await data.data.map((eventData) => {
+          const place =
+            eventData.location.filter((loc) => loc.type === "Place")[0] || "";
           return {
             id: eventData.id,
-            title: eventData.name.fr,
-            image: eventData.image.thumbnail,
-            place: eventData.location[0].name.fr,
+            title: eventData.name.fr || eventData.name.en,
             startDate: eventData.startDate || eventData.startDateTime,
-            city: eventData.location[0].address.addressLocality.fr,
+            image: eventData.image.thumbnail || "",
+            place: place.name?.fr || place.name?.en || "",
+            city:
+              place.address?.addressLocality?.fr ||
+              place.address?.addressLocality?.en ||
+              "",
           };
         });
         setEvents(transformedEvents);
@@ -44,18 +48,12 @@ function App(props) {
     [props.api]
   );
 
-  useEffect(() => {
-    fetchEventsHandler();
-  }, [fetchEventsHandler]);
-
-  function submitHandler(event) {
+  const submitHandler = (event) => {
     event.preventDefault();
     fetchEventsHandler(searchString);
   }
-
   const focusHandler = () => setShowResults(true);
   const blurHandler = () => setShowResults(false);
-
   const changeHandler = (event) => {
     setSearchString(event.target.value);
   };

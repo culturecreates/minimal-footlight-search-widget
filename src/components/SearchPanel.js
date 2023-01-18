@@ -8,7 +8,7 @@ const SearchPanel = (props) => {
     content = (
       <>
         <EventsList events={props.events} />
-        {props.events.length > 5 && <SearchFooter count={props.totalCount} />}
+        {props.totalCount > 5 && <SearchFooter count={props.totalCount} />}
       </>
     );
   }

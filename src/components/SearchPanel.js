@@ -3,7 +3,7 @@ import SearchFooter from "./SearchFooter";
 import classes from "./SearchPanel.module.css";
 
 const SearchPanel = (props) => {
-  let content = <p>No results.</p>;
+  let content = <p>Pas de resultats</p>;
   if (props.events.length > 0) {
     content = (
       <>
@@ -18,7 +18,7 @@ const SearchPanel = (props) => {
   }
 
   if (props.isLoading) {
-    content = <p>Loading...</p>;
+    content += <p>Loading...</p>;
   }
 
   return (

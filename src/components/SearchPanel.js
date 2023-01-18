@@ -18,7 +18,7 @@ const SearchPanel = (props) => {
   }
 
   if (props.isLoading) {
-    content += <p>Loading...</p>;
+    content = <p>Loading...</p>;
   }
 
   return (

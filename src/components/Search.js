@@ -1,27 +1,43 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./Search.module.css";
 
 const Search = (props) => {
-  const queryRef = useRef("");
-
+  const [searchString, setSearchString] = useState("");
+  const searchHandlerFromProp = props.onSearch
   function submitHandler(event) {
     event.preventDefault();
-
-    // could add validation here...
-
-    const q = queryRef.current.value;
-
-    props.onSearch(q);
+    searchHandlerFromProp(searchString);
   }
 
-  const onFocus = () =>  props.onActivate(true);
-  const onBlur = () =>  props.onActivate(false);
+  const focusHandler = () => props.onActivate(true);
+  const blurHandler = () => props.onActivate(false);
+  const changeHandler = (event) => {
+    setSearchString(event.target.value);
+    console.log(event.target.value);
+  };
+
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log("QUERY");
+      searchHandlerFromProp(searchString);
+    }, 500);
+    return () => {
+      console.log("CLEANUP");
+      clearTimeout(identifier);
+    };
+  }, [searchString]);
 
   return (
     <form onSubmit={submitHandler}>
       <div className={classes.control}>
         <label htmlFor="query">Search</label>
-        <input type="text" id="query" ref={queryRef} onFocus={onFocus} onBlur={onBlur}/>
+        <input
+          type="text"
+          id="query"
+          onChange={changeHandler}
+          onFocus={focusHandler}
+          onBlur={blurHandler}
+        />
       </div>
     </form>
   );

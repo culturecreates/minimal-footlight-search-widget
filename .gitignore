@@ -1,5 +1,8 @@
 node_modules
 build
 widget
-dist
+.DS_Store
 .cache
+
+# parcel 
+.parcel-cache

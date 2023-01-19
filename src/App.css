@@ -1,0 +1,40 @@
+.searchDiv {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.searchDiv form {
+  display: inline-block;
+  width: 100%;
+}
+
+.searchDiv .searchFormInner {
+  position: relative;
+}
+
+.searchDiv .searchFormInner input[type="text"] {
+  width: 100%;
+  float: left;
+  padding: 4px 50px;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  box-shadow: none;
+  text-transform: uppercase;
+  font-size: 24px;
+}
+
+.searchDiv .searchFormInner input[type="submit"] {
+  position: absolute;
+  left: 0;
+  cursor: pointer;
+  background: url("https://toutculture.stagingminimalmtl.com/wp-content/uploads/2023/01/search-icon.svg")
+    no-repeat left 5px center;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  text-indent: 100px;
+  width: 45px;
+  height: 40px;
+}

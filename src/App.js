@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import SearchPanel from "./components/SearchPanel";
-import classes from "./App.module.css";
+import  "./App.css";
 
 function App(props) {
   const [events, setEvents] = useState([]);
@@ -51,9 +51,16 @@ function App(props) {
   const submitHandler = (event) => {
     event.preventDefault();
     fetchEventsHandler(searchString);
-  }
+  };
   const focusHandler = () => setShowResults(true);
-  const blurHandler = () => setShowResults(false);
+  const blurHandler = (event) => {
+    setTimeout(() => {
+      console.log("Blurr timeout");
+      setShowResults(false);
+      
+
+    }, 500);
+  };
   const changeHandler = (event) => {
     setSearchString(event.target.value);
   };
@@ -70,13 +77,14 @@ function App(props) {
   }, [searchString, fetchEventsHandler]);
 
   return (
-    <section>
+    <div className="searchDiv">
       <form onSubmit={submitHandler}>
-        <div className={classes.control}>
-          <label htmlFor="query">Search</label>
+        <div className="searchFormInner">
+          <input type="submit" id="searchSubmit"></input>
           <input
             type="text"
             id="query"
+            placeholder="Recherche"
             onChange={changeHandler}
             onFocus={focusHandler}
             onBlur={blurHandler}
@@ -89,9 +97,10 @@ function App(props) {
           events={events}
           isLoading={isLoading}
           totalCount={totalCount}
+          eventUrl={props.eventUrl}
         />
       )}
-    </section>
+    </div>
   );
 }
 

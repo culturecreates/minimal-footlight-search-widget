@@ -1,16 +1,25 @@
 import React from "react";
 
-import classes from "./Event.module.css";
+import "./Event.css";
 
 const Event = (props) => {
+  const clickEventHandler = (event) => {
+    console.log(props.eventUrl + event.currentTarget.id);
+    window.location.href = props.eventUrl + event.currentTarget.id;
+  };
   return (
-    <div className={classes.container}>
-      <img alt="event" src={props.image}></img>
-      <div className={classes.details}>
-        <div className={classes.title}>{props.title}</div>
-        <div className={classes.date}>{props.startDate}</div>
-        <div className={classes.place}>{props.place}
-        {props.city && ', ' + props.city}
+    <div
+      id={props.id}
+      className='container'
+      onClick={(e) => clickEventHandler(e)}
+    >
+      <img alt='event' src={props.image}></img>
+      <div className='details'>
+        <div className='title'>{props.title}</div>
+        <div className='date'>{props.startDate}</div>
+        <div className='place'>
+          {props.place}
+          {props.city && ', ' + props.city}
         </div>
       </div>
     </div>

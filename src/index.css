@@ -3,10 +3,10 @@ input {
 }
 
 html {
-  font-family: sans-serif;
+  font-family: 'tt_regular';
+  background-color: rgb(255, 248, 240);
 }
 
 body {
   margin: 0;
-  background-color: #272727;
 }

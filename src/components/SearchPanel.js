@@ -1,13 +1,13 @@
 import EventsList from "./EventsList";
 import SearchFooter from "./SearchFooter";
-import classes from "./SearchPanel.module.css";
+import  "./SearchPanel.css";
 
 const SearchPanel = (props) => {
   let content = <p>Pas de resultats</p>;
   if (props.events.length > 0) {
     content = (
       <>
-        <EventsList events={props.events} />
+        <EventsList eventUrl={props.eventUrl} events={props.events} />
         {props.totalCount > 5 && <SearchFooter count={props.totalCount} />}
       </>
     );
@@ -22,8 +22,8 @@ const SearchPanel = (props) => {
   }
 
   return (
-    <div className={classes.holder}>
-      <div className={classes.panel}>{content}</div>
+    <div className='holder'>
+      <div className='panel'>{content}</div>
     </div>
   );
 };

@@ -29,7 +29,7 @@
   position: absolute;
   left: 0;
   cursor: pointer;
-  background: url("https://toutculture.stagingminimalmtl.com/wp-content/uploads/2023/01/search-icon.svg")
+  background: url("/public/search-icon.svg")
     no-repeat left 5px center;
   border: none;
   box-shadow: none;

@@ -1,12 +1,12 @@
-.holder {
+.panel-anchor {
   position: relative;
   margin: 0rem auto;
   width: 100%;
   max-width: 40rem;
 }
 
-.panel {
-
+.panel-float {
+  position: absolute;
   z-index: 10;
   text-align: center;
   display: flex;

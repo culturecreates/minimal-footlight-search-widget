@@ -22,8 +22,8 @@ const SearchPanel = (props) => {
   }
 
   return (
-    <div className='holder'>
-      <div className='panel'>{content}</div>
+    <div className='panel-anchor'>
+      <div className='panel-float'>{content}</div>
     </div>
   );
 };

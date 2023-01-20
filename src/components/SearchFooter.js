@@ -1,8 +1,8 @@
 const SearchFooter = (props) => {
   return (
-    <span>
-      <h2>VOIR TOUT - {props.count} ÉVÉNEMENTS</h2>
-    </span>
+    <h5>
+      VOIR TOUT - {props.count} ÉVÉNEMENTS
+    </h5>
   );
 };
 

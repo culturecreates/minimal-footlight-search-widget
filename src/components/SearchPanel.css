@@ -15,5 +15,6 @@
   border: thin solid black;
   background: white;
   width: 100%;
-  max-width: 30rem;
+  max-width: 40rem;
+  min-width: 30rem;
 }

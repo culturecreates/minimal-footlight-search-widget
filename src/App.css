@@ -1,41 +1,31 @@
-.footlightSearchWidget .searchDiv {
+.footlightSearchWidget {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
 }
 
-.footlightSearchWidget .searchDiv form {
-  display: inline-block;
-  width: 100%;
+form {
+  display: flex;
 }
 
-.footlightSearchWidget  .searchDiv .searchFormInner {
-  position: relative;
-}
-
-.footlightSearchWidget .searchDiv .searchFormInner input[type="text"] {
-  width: 100%;
-  float: left;
-  padding: 4px 50px;
-  border: none;
-  border-bottom: 1px solid black;
-  outline: none;
-  box-shadow: none;
-  text-transform: uppercase;
-  font-size: 24px;
-  box-sizing: border-box; 
-}
-
-.footlightSearchWidget .searchDiv .searchFormInner input[type="submit"] {
-  position: absolute;
-  left: 0;
+.footlightSearchWidget input[type="submit"] {
   cursor: pointer;
-  background: url("/public/search-icon.svg")
-    no-repeat left 5px center;
+  background: url("/public/search-icon.svg") no-repeat left 10px center;
+  background-color: white;
   border: none;
   box-shadow: none;
   outline: none;
   text-indent: 100px;
   width: 45px;
   height: 40px;
+  box-sizing: border-box;
+}
+
+.footlightSearchWidget input[type="text"] {
+  width: 100%;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  text-transform: uppercase;
+  font-size: 24px;
+  box-sizing: border-box;
 }

@@ -76,10 +76,8 @@ function App(props) {
 
   return (
     <div className="footlightSearchWidget">
-      <div className="searchDiv">
         <form onSubmit={submitHandler}>
-          <div className="searchFormInner">
-            <input type="submit" id="searchSubmit"></input>
+            <input type="submit"></input>
             <input
               type="text"
               id="query"
@@ -88,7 +86,6 @@ function App(props) {
               onFocus={focusHandler}
               onBlur={blurHandler}
             />
-          </div>
         </form>
         {showResults && (
           <SearchPanel
@@ -99,7 +96,6 @@ function App(props) {
             eventUrl={props.eventUrl}
           />
         )}
-      </div>
     </div>
   );
 }

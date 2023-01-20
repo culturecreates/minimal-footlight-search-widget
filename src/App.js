@@ -76,26 +76,26 @@ function App(props) {
 
   return (
     <div className="footlightSearchWidget">
-        <form onSubmit={submitHandler}>
-            <input type="submit"></input>
-            <input
-              type="text"
-              id="query"
-              placeholder="Recherche"
-              onChange={changeHandler}
-              onFocus={focusHandler}
-              onBlur={blurHandler}
-            />
-        </form>
-        {showResults && (
-          <SearchPanel
-            error={error}
-            events={events}
-            isLoading={isLoading}
-            totalCount={totalCount}
-            eventUrl={props.eventUrl}
-          />
-        )}
+      <form onSubmit={submitHandler} autocomplete="off">
+        <input type="submit"></input>
+        <input
+          type="text"
+          id="query"
+          placeholder="Recherche"
+          onChange={changeHandler}
+          onFocus={focusHandler}
+          onBlur={blurHandler}
+        />
+      </form>
+      {showResults && (
+        <SearchPanel
+          error={error}
+          events={events}
+          isLoading={isLoading}
+          totalCount={totalCount}
+          eventUrl={props.eventUrl}
+        />
+      )}
     </div>
   );
 }

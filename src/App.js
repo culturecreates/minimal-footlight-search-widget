@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import SearchPanel from "./components/SearchPanel";
-import  "./App.css";
+import "./App.css";
 
 function App(props) {
   const [events, setEvents] = useState([]);
@@ -57,8 +57,6 @@ function App(props) {
     setTimeout(() => {
       console.log("Blurr timeout");
       setShowResults(false);
-      
-
     }, 500);
   };
   const changeHandler = (event) => {
@@ -77,29 +75,31 @@ function App(props) {
   }, [searchString, fetchEventsHandler]);
 
   return (
-    <div className="searchDiv">
-      <form onSubmit={submitHandler}>
-        <div className="searchFormInner">
-          <input type="submit" id="searchSubmit"></input>
-          <input
-            type="text"
-            id="query"
-            placeholder="Recherche"
-            onChange={changeHandler}
-            onFocus={focusHandler}
-            onBlur={blurHandler}
+    <div className="footlightSearchWidget">
+      <div className="searchDiv">
+        <form onSubmit={submitHandler}>
+          <div className="searchFormInner">
+            <input type="submit" id="searchSubmit"></input>
+            <input
+              type="text"
+              id="query"
+              placeholder="Recherche"
+              onChange={changeHandler}
+              onFocus={focusHandler}
+              onBlur={blurHandler}
+            />
+          </div>
+        </form>
+        {showResults && (
+          <SearchPanel
+            error={error}
+            events={events}
+            isLoading={isLoading}
+            totalCount={totalCount}
+            eventUrl={props.eventUrl}
           />
-        </div>
-      </form>
-      {showResults && (
-        <SearchPanel
-          error={error}
-          events={events}
-          isLoading={isLoading}
-          totalCount={totalCount}
-          eventUrl={props.eventUrl}
-        />
-      )}
+        )}
+      </div>
     </div>
   );
 }

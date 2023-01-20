@@ -1,19 +1,19 @@
-.searchDiv {
+.footlightSearchWidget .searchDiv {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
-.searchDiv form {
+.footlightSearchWidget .searchDiv form {
   display: inline-block;
   width: 100%;
 }
 
-.searchDiv .searchFormInner {
+.footlightSearchWidget  .searchDiv .searchFormInner {
   position: relative;
 }
 
-.searchDiv .searchFormInner input[type="text"] {
+.footlightSearchWidget .searchDiv .searchFormInner input[type="text"] {
   width: 100%;
   float: left;
   padding: 4px 50px;
@@ -26,7 +26,7 @@
   box-sizing: border-box; 
 }
 
-.searchDiv .searchFormInner input[type="submit"] {
+.footlightSearchWidget .searchDiv .searchFormInner input[type="submit"] {
   position: absolute;
   left: 0;
   cursor: pointer;

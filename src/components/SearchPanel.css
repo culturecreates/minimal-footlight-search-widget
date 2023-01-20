@@ -1,11 +1,11 @@
-.panel-anchor {
+.footlightSearchWidget .panel-anchor {
   position: relative;
   margin: 0rem auto;
   width: 100%;
 
 }
 
-.panel-float {
+.footlightSearchWidget .panel-float {
   position: absolute;
   z-index: 10;
   text-align: center;

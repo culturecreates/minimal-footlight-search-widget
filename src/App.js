@@ -7,6 +7,11 @@ function App(props) {
   const apiOrganizationsUrl = `http://${props.api}/calendars/tout-culture/organizations?page=1&limit=5`;
   const apiAteliersUrl = `http://${props.api}/calendars/tout-culture/events?type=63e00d658097540065660ef7&page=1&limit=5`;
 
+  let searchUrl = "https://toutculture.stagingminimalmtl.com/evenements/"
+  if (props.searchUrl) {
+     searchUrl = props.searchUrl
+  } 
+
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -82,7 +87,7 @@ function App(props) {
     if (searchDate) {
       searchParams.append("start-date-range", searchDate);
     }
-    window.location.href = props.searchUrl + "?" + searchParams.toString();
+    window.location.href = searchUrl + "?" + searchParams.toString();
 
     //fetchDataHandler(searchString);
   };

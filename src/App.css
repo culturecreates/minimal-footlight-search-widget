@@ -37,4 +37,7 @@
   box-shadow: none;
   font-size: 24px;
   box-sizing: border-box;
+  background: none;
+  border-bottom: 1px solid black;
+
 }

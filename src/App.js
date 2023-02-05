@@ -9,28 +9,37 @@ function App(props) {
   const [totalCount, setTotalCount] = useState(0);
   const [searchString, setSearchString] = useState("");
   const [searchDate, setSearchDate] = useState("");
-  const [apiUrl, setApiUrl] = useState(`http://${props.api}/calendars/tout-culture/events?page=1&limit=5`)
-
+  const [apiUrl, setApiUrl] = useState(
+    `http://${props.api}/calendars/tout-culture/events?page=1&limit=5`
+  );
+  const [showResults, setShowResults] = useState(false);
+  const [searchFocus, setSearchFocus] = useState(false);
+  const [mouseOverFootlightSearchWidget, setMouseOverFootlightSearchWidget] =
+    useState(false);
 
   const changeTabHandler = (clickedTab) => {
     if (clickedTab === "Organizations") {
-      setApiUrl(`http://${props.api}/calendars/tout-culture/organizations?page=1&limit=5`);
+      setApiUrl(
+        `http://${props.api}/calendars/tout-culture/organizations?page=1&limit=5`
+      );
     } else if (clickedTab === "Ateliers") {
-      setApiUrl(`http://${props.api}/calendars/tout-culture/events?type=63e00d658097540065660ef7&page=1&limit=5`);
+      setApiUrl(
+        `http://${props.api}/calendars/tout-culture/events?type=63e00d658097540065660ef7&page=1&limit=5`
+      );
     } else {
-      setApiUrl(`http://${props.api}/calendars/tout-culture/events?page=1&limit=5`);
+      setApiUrl(
+        `http://${props.api}/calendars/tout-culture/events?page=1&limit=5`
+      );
     }
-  }
+  };
 
   const fetchDataHandler = useCallback(
     async (q, date) => {
-
       setIsLoading(true);
       setError(false);
       let url = apiUrl;
       if (q) {
         url += `&query=${q}`;
-       
       }
       if (date) {
         url += `&start-date-range=${date}`;
@@ -72,32 +81,44 @@ function App(props) {
 
     const searchParams = new URLSearchParams();
     if (searchString !== "") {
-      searchParams.append('query',searchString)
+      searchParams.append("query", searchString);
     }
     if (searchDate) {
-      searchParams.append('start-date-range', searchDate)
+      searchParams.append("start-date-range", searchDate);
     }
-    window.location.href = props.searchUrl + "?" + searchParams.toString()
-    
+    window.location.href = props.searchUrl + "?" + searchParams.toString();
+
     //fetchDataHandler(searchString);
   };
 
   const focusHandler = () => {
-    console.log("APP trying to show results");
-   // setShowResults(true);
+    console.log("focusHandler");
+    setSearchFocus(true);
+    setMouseOverFootlightSearchWidget(true);
+  };
 
-  }
+  const blurHandler = () => {
+    console.log("blurHandler");
+    setSearchFocus(false);
+  };
 
-  
+  const hideResults = () => {
+    setShowResults(false);
+  };
+
+  const mouseLeaveHandler = () => {
+    setMouseOverFootlightSearchWidget(false);
+  };
+
   const changeHandler = (event) => {
-    console.log("changeHandler:" + event)
+    console.log("changeHandler:" + event);
     setSearchString(event.target.value);
   };
 
   const changeDateHandler = (event) => {
     console.log("changeDateHandler: " + event.target.value);
     setSearchDate(event.target.value);
-  }
+  };
 
   useEffect(() => {
     const identifier = setTimeout(() => {
@@ -110,10 +131,17 @@ function App(props) {
     };
   }, [searchString, searchDate, fetchDataHandler, apiUrl]);
 
-
+  useEffect(() => {
+    console.log(
+      `useEffect searchFocus: ${searchFocus}, showResults:  ${showResults}`
+    );
+    if (searchFocus(false) && mouseOverFootlightSearchWidget(false)) {
+      setShowResults(false);
+    }
+  }, [showResults, searchFocus, mouseOverFootlightSearchWidget]);
 
   return (
-    <div className="footlightSearchWidget">
+    <div className="footlightSearchWidget" onMouseLeave={mouseLeaveHandler}>
       <form onSubmit={submitHandler} autocomplete="off">
         <input type="submit"></input>
         <input
@@ -121,13 +149,11 @@ function App(props) {
           placeholder="Recherche"
           onChange={changeHandler}
           onFocus={focusHandler}
+          onBlur={blurHandler}
         />
-         <input
-          type="date"
-          onChange={changeDateHandler}
-        />
+        <input type="date" onChange={changeDateHandler} />
       </form>
-       
+      {showResults && (
         <ResultsPanel
           error={error}
           events={events}
@@ -135,9 +161,9 @@ function App(props) {
           totalCount={totalCount}
           eventUrl={props.eventUrl}
           onChangeTab={changeTabHandler}
-          showResults={true}
+          onHideResults={hideResults}
         />
-   
+      )}
     </div>
   );
 }

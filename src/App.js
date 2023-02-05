@@ -17,6 +17,7 @@ function App(props) {
   const [showResults, setShowResults] = useState(false);
   const [searchFieldFocus, setSearchFieldFocus] = useState(false);
   const [mouseOverSearchWidget, setMouseOverSearchWidget] = useState(false);
+  const [searchDateFocus, setSearchDateFocus] = useState(false);
 
   const changeTabHandler = (clickedTab) => {
     if (clickedTab === "Organizations") {
@@ -92,6 +93,17 @@ function App(props) {
     setMouseOverSearchWidget(true);
   };
 
+  const dateFocusHandler = () => {
+    console.log("dateFocusHandler");
+    setSearchDateFocus(true);
+    setMouseOverSearchWidget(true);
+  };
+
+  const dateBlurHandler = () => {
+    console.log("dateBlurHandler");
+    setSearchDateFocus(false);
+  };
+
   const blurHandler = () => {
     console.log("blurHandler");
     setSearchFieldFocus(false);
@@ -127,12 +139,16 @@ function App(props) {
     console.log(
       `useEffect searchFieldFocus: ${searchFieldFocus}, showResults:  ${showResults}`
     );
-    if (searchFieldFocus === false && mouseOverSearchWidget === false) {
+    if (
+      searchFieldFocus === false &&
+      mouseOverSearchWidget === false &&
+      searchDateFocus === false
+    ) {
       setShowResults(false);
     } else {
       setShowResults(true);
     }
-  }, [showResults, searchFieldFocus, mouseOverSearchWidget]);
+  }, [showResults, searchFieldFocus, searchDateFocus, mouseOverSearchWidget]);
 
   return (
     <div className="footlightSearchWidget" onMouseLeave={mouseLeaveHandler}>
@@ -145,7 +161,12 @@ function App(props) {
           onFocus={focusHandler}
           onBlur={blurHandler}
         />
-        <input type="date" onChange={changeDateHandler} />
+        <input
+          type="date"
+          onChange={changeDateHandler}
+          onFocus={dateFocusHandler}
+          onBlur={dateBlurHandler}
+        />
       </form>
       {showResults && (
         <ResultsPanel

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import SearchPanel from "./components/SearchPanel";
+import ResultsPanel from "./components/ResultsPanel";
 import "./App.css";
 
 function App(props) {
@@ -7,18 +7,36 @@ function App(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
-  const [showResults, setShowResults] = useState(false);
   const [searchString, setSearchString] = useState("");
+  const [searchDate, setSearchDate] = useState("");
+  const [apiUrl, setApiUrl] = useState(`http://${props.api}/calendars/tout-culture/events?page=1&limit=5`)
 
-  const fetchEventsHandler = useCallback(
-    async (q) => {
+
+  const changeTabHandler = (clickedTab) => {
+    if (clickedTab === "Organizations") {
+      setApiUrl(`http://${props.api}/calendars/tout-culture/organizations?page=1&limit=5`);
+    } else if (clickedTab === "Ateliers") {
+      setApiUrl(`http://${props.api}/calendars/tout-culture/events?type=63e00d658097540065660ef7&page=1&limit=5`);
+    } else {
+      setApiUrl(`http://${props.api}/calendars/tout-culture/events?page=1&limit=5`);
+    }
+  }
+
+  const fetchDataHandler = useCallback(
+    async (q, date) => {
+
       setIsLoading(true);
       setError(false);
-      let url = `https://${props.api}/calendars/tout-culture/events?page=1&limit=5`;
+      let url = apiUrl;
       if (q) {
         url += `&query=${q}`;
+       
+      }
+      if (date) {
+        url += `&start-date-range=${date}`;
       }
       try {
+        console.log("Fetch:" + url);
         const response = await fetch(url);
         const data = await response.json();
         console.log(data);
@@ -45,34 +63,54 @@ function App(props) {
       }
       setIsLoading(false);
     },
-    [props.api]
+    [apiUrl]
   );
 
   const submitHandler = (event) => {
+    console.log("SUBMIT");
     event.preventDefault();
-    fetchEventsHandler(searchString);
+
+    const searchParams = new URLSearchParams();
+    if (searchString !== "") {
+      searchParams.append('query',searchString)
+    }
+    if (searchDate) {
+      searchParams.append('start-date-range', searchDate)
+    }
+    window.location.href = props.searchUrl + "?" + searchParams.toString()
+    
+    //fetchDataHandler(searchString);
   };
-  const focusHandler = () => setShowResults(true);
-  const blurHandler = (event) => {
-    setTimeout(() => {
-      console.log("Blurr timeout");
-      setShowResults(false);
-    }, 500);
-  };
+
+  const focusHandler = () => {
+    console.log("APP trying to show results");
+   // setShowResults(true);
+
+  }
+
+  
   const changeHandler = (event) => {
+    console.log("changeHandler:" + event)
     setSearchString(event.target.value);
   };
 
+  const changeDateHandler = (event) => {
+    console.log("changeDateHandler: " + event.target.value);
+    setSearchDate(event.target.value);
+  }
+
   useEffect(() => {
     const identifier = setTimeout(() => {
-      console.log("QUERY");
-      fetchEventsHandler(searchString);
+      console.log("QUERY: " + searchString + "Date:" + searchDate);
+      fetchDataHandler(searchString, searchDate);
     }, 500);
     return () => {
       console.log("CLEANUP");
       clearTimeout(identifier);
     };
-  }, [searchString, fetchEventsHandler]);
+  }, [searchString, searchDate, fetchDataHandler, apiUrl]);
+
+
 
   return (
     <div className="footlightSearchWidget">
@@ -80,22 +118,26 @@ function App(props) {
         <input type="submit"></input>
         <input
           type="text"
-          id="query"
           placeholder="Recherche"
           onChange={changeHandler}
           onFocus={focusHandler}
-          onBlur={blurHandler}
+        />
+         <input
+          type="date"
+          onChange={changeDateHandler}
         />
       </form>
-      {showResults && (
-        <SearchPanel
+       
+        <ResultsPanel
           error={error}
           events={events}
           isLoading={isLoading}
           totalCount={totalCount}
           eventUrl={props.eventUrl}
+          onChangeTab={changeTabHandler}
+          showResults={true}
         />
-      )}
+   
     </div>
   );
 }

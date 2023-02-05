@@ -25,7 +25,16 @@
   border: none;
   outline: none;
   box-shadow: none;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
+  font-size: 24px;
+  box-sizing: border-box;
+}
+.footlightSearchWidget input[type="date"] {
+  width: 300px;
+  justify-content: end;
+  border: none;
+  outline: none;
+  box-shadow: none;
   font-size: 24px;
   box-sizing: border-box;
 }

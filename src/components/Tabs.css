@@ -1,0 +1,14 @@
+.footlightSearchWidget .tabs-list li {
+  width: 100%;
+  line-height: 40px;
+  background-color: black;
+  color: white;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.footlightSearchWidget .tabs-list li.selected {
+  background-color: rgb(245, 241, 5);
+  color: black;
+  cursor: pointer;
+}

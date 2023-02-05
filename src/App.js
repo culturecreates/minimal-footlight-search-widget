@@ -3,33 +3,28 @@ import ResultsPanel from "./components/ResultsPanel";
 import "./App.css";
 
 function App(props) {
+  const apiEventsUrl = `http://${props.api}/calendars/tout-culture/events?page=1&limit=5`;
+  const apiOrganizationsUrl = `http://${props.api}/calendars/tout-culture/organizations?page=1&limit=5`;
+  const apiAteliersUrl = `http://${props.api}/calendars/tout-culture/events?type=63e00d658097540065660ef7&page=1&limit=5`;
+
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [searchString, setSearchString] = useState("");
   const [searchDate, setSearchDate] = useState("");
-  const [apiUrl, setApiUrl] = useState(
-    `http://${props.api}/calendars/tout-culture/events?page=1&limit=5`
-  );
+  const [apiUrl, setApiUrl] = useState(apiEventsUrl);
   const [showResults, setShowResults] = useState(false);
-  const [searchFocus, setSearchFocus] = useState(false);
-  const [mouseOverFootlightSearchWidget, setMouseOverFootlightSearchWidget] =
-    useState(false);
+  const [searchFieldFocus, setSearchFieldFocus] = useState(false);
+  const [mouseOverSearchWidget, setMouseOverSearchWidget] = useState(false);
 
   const changeTabHandler = (clickedTab) => {
     if (clickedTab === "Organizations") {
-      setApiUrl(
-        `http://${props.api}/calendars/tout-culture/organizations?page=1&limit=5`
-      );
+      setApiUrl(apiOrganizationsUrl);
     } else if (clickedTab === "Ateliers") {
-      setApiUrl(
-        `http://${props.api}/calendars/tout-culture/events?type=63e00d658097540065660ef7&page=1&limit=5`
-      );
+      setApiUrl(apiAteliersUrl);
     } else {
-      setApiUrl(
-        `http://${props.api}/calendars/tout-culture/events?page=1&limit=5`
-      );
+      setApiUrl(apiEventsUrl);
     }
   };
 
@@ -93,21 +88,18 @@ function App(props) {
 
   const focusHandler = () => {
     console.log("focusHandler");
-    setSearchFocus(true);
-    setMouseOverFootlightSearchWidget(true);
+    setSearchFieldFocus(true);
+    setMouseOverSearchWidget(true);
   };
 
   const blurHandler = () => {
     console.log("blurHandler");
-    setSearchFocus(false);
-  };
-
-  const hideResults = () => {
-    setShowResults(false);
+    setSearchFieldFocus(false);
   };
 
   const mouseLeaveHandler = () => {
-    setMouseOverFootlightSearchWidget(false);
+    console.log("mouseLeaveHandler");
+    setMouseOverSearchWidget(false);
   };
 
   const changeHandler = (event) => {
@@ -133,12 +125,14 @@ function App(props) {
 
   useEffect(() => {
     console.log(
-      `useEffect searchFocus: ${searchFocus}, showResults:  ${showResults}`
+      `useEffect searchFieldFocus: ${searchFieldFocus}, showResults:  ${showResults}`
     );
-    if (searchFocus(false) && mouseOverFootlightSearchWidget(false)) {
+    if (searchFieldFocus === false && mouseOverSearchWidget === false) {
       setShowResults(false);
+    } else {
+      setShowResults(true);
     }
-  }, [showResults, searchFocus, mouseOverFootlightSearchWidget]);
+  }, [showResults, searchFieldFocus, mouseOverSearchWidget]);
 
   return (
     <div className="footlightSearchWidget" onMouseLeave={mouseLeaveHandler}>
@@ -161,7 +155,6 @@ function App(props) {
           totalCount={totalCount}
           eventUrl={props.eventUrl}
           onChangeTab={changeTabHandler}
-          onHideResults={hideResults}
         />
       )}
     </div>

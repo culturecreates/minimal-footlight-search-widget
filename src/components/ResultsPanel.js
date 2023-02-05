@@ -34,7 +34,7 @@ const ResultsPanel = (props) => {
   return (
     <div className="panel-anchor">
       {showPanel && (
-      <div className="panel-float" onMouseLeave={props.onHideResults}>
+      <div className="panel-float">
         <Tabs onChangeTab={changeTabHandler} />
         {content}
       </div> )

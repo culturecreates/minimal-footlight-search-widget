@@ -3,9 +3,9 @@ import ResultsPanel from "./components/ResultsPanel";
 import "./App.css";
 
 function App(props) {
-  const apiEventsUrl = `http://${props.api}/calendars/tout-culture/events?page=1&limit=5`;
-  const apiOrganizationsUrl = `http://${props.api}/calendars/tout-culture/organizations?page=1&limit=5`;
-  const apiAteliersUrl = `http://${props.api}/calendars/tout-culture/events?type=63e00d658097540065660ef7&page=1&limit=5`;
+  const apiEventsUrl = `https://${props.api}/calendars/tout-culture/events?page=1&limit=5`;
+  const apiOrganizationsUrl = `https://${props.api}/calendars/tout-culture/organizations?page=1&limit=5`;
+  const apiAteliersUrl = `https://${props.api}/calendars/tout-culture/events?type=63e00d658097540065660ef7&page=1&limit=5`;
 
   let searchUrl = "https://toutculture.stagingminimalmtl.com/evenements/"
   if (props.searchUrl) {

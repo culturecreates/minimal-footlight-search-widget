@@ -46,7 +46,6 @@ function App(props) {
         url += `&start-date-range=${date}`;
       }
       try {
-        console.log("Fetch:" + url);
         const response = await fetch(url);
         const data = await response.json();
         console.log(data);
@@ -96,57 +95,45 @@ function App(props) {
   };
 
   const focusHandler = () => {
-    console.log("focusHandler");
     setSearchFieldFocus(true);
     setMouseOverSearchWidget(true);
   };
 
   const dateFocusHandler = () => {
-    console.log("dateFocusHandler");
     setSearchDateFocus(true);
     setMouseOverSearchWidget(true);
   };
 
   const dateBlurHandler = () => {
-    console.log("dateBlurHandler");
     setSearchDateFocus(false);
   };
 
   const blurHandler = () => {
-    console.log("blurHandler");
     setSearchFieldFocus(false);
   };
 
   const mouseLeaveHandler = () => {
-    console.log("mouseLeaveHandler");
     setMouseOverSearchWidget(false);
   };
 
   const changeHandler = (event) => {
-    console.log("changeHandler:" + event);
     setSearchString(event.target.value);
   };
 
   const changeDateHandler = (event) => {
-    console.log("changeDateHandler: " + event.target.value);
     setSearchDate(event.target.value);
   };
 
   useEffect(() => {
     const identifier = setTimeout(() => {
-      console.log("QUERY: " + searchString + "Date:" + searchDate);
       fetchDataHandler(searchString, searchDate);
     }, 500);
     return () => {
-      console.log("CLEANUP");
       clearTimeout(identifier);
     };
   }, [searchString, searchDate, fetchDataHandler, apiUrl]);
 
   useEffect(() => {
-    console.log(
-      `useEffect searchFieldFocus: ${searchFieldFocus}, showResults:  ${showResults}`
-    );
     if (
       searchFieldFocus === false &&
       mouseOverSearchWidget === false &&

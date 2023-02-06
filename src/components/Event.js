@@ -4,7 +4,6 @@ import "./Event.css";
 
 const Event = (props) => {
   const clickEventHandler = (event) => {
-    console.log(props.eventUrl + event.currentTarget.id);
     window.location.href = props.eventUrl + event.currentTarget.id;
   };
   return (

@@ -1,7 +1,7 @@
 const SearchFooter = (props) => {
   return (
     <h5>
-      VOIR TOUT - {props.count} ÉVÉNEMENTS
+      VOIR TOUT - {props.count}
     </h5>
   );
 };

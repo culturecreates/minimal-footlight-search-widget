@@ -6,7 +6,7 @@ function App(props) {
   // temporary defaults
   let searchUrl = "https://toutculture.stagingminimalmtl.com/evenements/";
   let calendar = "tout-culture"
-  let locale = "en"
+  let locale = "fr"
 
   if (props.calendar) {
     calendar = props.calendarId;

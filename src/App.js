@@ -53,7 +53,7 @@ function App(props) {
 
         const transformedEvents = await data.data.map((eventData) => {
           let place = [];
-          if (eventData.type != "Organization") {
+          if (eventData.type !== "Organization") {
             place =
               eventData.location?.filter((loc) => loc.type === "Place")[0] ||
               "";

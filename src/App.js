@@ -23,8 +23,10 @@ function App(props) {
   const [searchFieldFocus, setSearchFieldFocus] = useState(false);
   const [mouseOverSearchWidget, setMouseOverSearchWidget] = useState(false);
   const [searchDateFocus, setSearchDateFocus] = useState(false);
+  const [tabSelected, setTabSelected] = useState("Events");
 
   const changeTabHandler = (clickedTab) => {
+    setTabSelected(clickedTab);
     if (clickedTab === "Organizations") {
       setApiUrl(apiOrganizationsUrl);
     } else if (clickedTab === "Ateliers") {
@@ -62,7 +64,8 @@ function App(props) {
             id: eventData.id,
             title: eventData.name.fr || eventData.name.en,
             startDate: eventData.startDate || eventData.startDateTime || "",
-            image: eventData.image?.thumbnail || eventData.logo?.thumbnail || "",
+            image:
+              eventData.image?.thumbnail || eventData.logo?.thumbnail || "",
             place: place.name?.fr || place.name?.en || "",
             city:
               place.address?.addressLocality?.fr ||
@@ -171,6 +174,7 @@ function App(props) {
           totalCount={totalCount}
           eventUrl={props.eventUrl}
           onChangeTab={changeTabHandler}
+          tabSelected={tabSelected}
         />
       )}
     </div>

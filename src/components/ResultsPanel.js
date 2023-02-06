@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import EventsList from "./EventsList";
 import SearchFooter from "./SearchFooter";
 import Tabs from "./Tabs";
@@ -29,16 +29,17 @@ const ResultsPanel = (props) => {
     props.onChangeTab(clickedTab);
   };
 
-
-
   return (
     <div className="panel-anchor">
       {showPanel && (
-      <div className="panel-float">
-        <Tabs onChangeTab={changeTabHandler} />
-        {content}
-      </div> )
-      }
+        <div className="panel-float">
+          <Tabs
+            onChangeTab={changeTabHandler}
+            tabSelected={props.tabSelected}
+          />
+          {content}
+        </div>
+      )}
     </div>
   );
 };

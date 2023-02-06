@@ -53,11 +53,12 @@ function App(props) {
         console.log(data);
 
         const transformedEvents = await data.data.map((eventData) => {
-          let place = [];
-          if (eventData.type !== "Organization") {
+          let place = eventData.location || {};
+          // If place is an array then extract first object of type 'Place'
+          if (Array.isArray(place)) {
             place =
-              eventData.location?.filter((loc) => loc.type === "Place")[0] ||
-              "";
+              eventData.location.filter((place) => place.type === "Place")[0] ||
+              {};
           }
 
           return {

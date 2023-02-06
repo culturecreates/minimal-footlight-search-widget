@@ -11,7 +11,7 @@ const ResultsPanel = (props) => {
   if (props.events.length > -1) {
     content = (
       <>
-        <EventsList eventUrl={props.eventUrl} events={props.events} />
+        <EventsList eventUrl={props.eventUrl || ""} events={props.events} />
         <SearchFooter count={props.totalCount} />
       </>
     );

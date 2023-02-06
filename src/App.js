@@ -7,10 +7,10 @@ function App(props) {
   const apiOrganizationsUrl = `https://${props.api}/calendars/tout-culture/organizations?page=1&limit=5`;
   const apiAteliersUrl = `https://${props.api}/calendars/tout-culture/events?type=63e00d658097540065660ef7&page=1&limit=5`;
 
-  let searchUrl = "https://toutculture.stagingminimalmtl.com/evenements/"
+  let searchUrl = "https://toutculture.stagingminimalmtl.com/evenements/";
   if (props.searchUrl) {
-     searchUrl = props.searchUrl
-  } 
+    searchUrl = props.searchUrl;
+  }
 
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,13 +52,18 @@ function App(props) {
         console.log(data);
 
         const transformedEvents = await data.data.map((eventData) => {
-          const place =
-            eventData.location.filter((loc) => loc.type === "Place")[0] || "";
+          let place = [];
+          if (eventData.type != "Organization") {
+            place =
+              eventData.location?.filter((loc) => loc.type === "Place")[0] ||
+              "";
+          }
+
           return {
             id: eventData.id,
             title: eventData.name.fr || eventData.name.en,
-            startDate: eventData.startDate || eventData.startDateTime,
-            image: eventData.image.thumbnail || "",
+            startDate: eventData.startDate || eventData.startDateTime || "",
+            image: eventData.image?.thumbnail || "",
             place: place.name?.fr || place.name?.en || "",
             city:
               place.address?.addressLocality?.fr ||
@@ -67,7 +72,7 @@ function App(props) {
           };
         });
         setEvents(transformedEvents);
-        setTotalCount(data.meta.totalCount);
+        setTotalCount(data.meta?.totalCount || 0);
       } catch {
         setError(true);
       }
@@ -88,8 +93,6 @@ function App(props) {
       searchParams.append("start-date-range", searchDate);
     }
     window.location.href = searchUrl + "?" + searchParams.toString();
-
-    //fetchDataHandler(searchString);
   };
 
   const focusHandler = () => {

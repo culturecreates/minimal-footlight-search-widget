@@ -64,6 +64,7 @@ function App(props) {
             id: eventData.id,
             title: eventData.name.fr || eventData.name.en,
             startDate: eventData.startDate || eventData.startDateTime || "",
+            endDate:  eventData.endDate || eventData.endDateTime || "",
             image:
               eventData.image?.thumbnail || eventData.logo?.thumbnail || "",
             place: place.name?.fr || place.name?.en || "",

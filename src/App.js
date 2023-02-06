@@ -1,15 +1,20 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import ResultsPanel from "./components/ResultsPanel";
 import "./App.css";
 
 function App(props) {
-  const apiEventsUrl = `https://${props.api}/calendars/tout-culture/events?page=1&limit=5`;
-  const apiOrganizationsUrl = `https://${props.api}/calendars/tout-culture/organizations?page=1&limit=5`;
-  const apiAteliersUrl = `https://${props.api}/calendars/tout-culture/events?type=63e00d658097540065660ef7&page=1&limit=5`;
-
+  // temporary defaults
   let searchUrl = "https://toutculture.stagingminimalmtl.com/evenements/";
+  let calendarId = "tout-culture"
+
+  const apiEventsUrl = `https://${props.api}/calendars/${calendarId}/events?page=1&limit=5`;
+  const apiOrganizationsUrl = `https://${props.api}/calendars/${calendarId}/organizations?page=1&limit=5`;
+  const apiAteliersUrl = `https://${props.api}/calendars/${calendarId}/events?type=63e00d658097540065660ef7&page=1&limit=5`;
   if (props.searchUrl) {
     searchUrl = props.searchUrl;
+  }
+  if (props.calendarId) {
+    searchUrl = props.calendarId;
   }
 
   const [events, setEvents] = useState([]);
@@ -20,12 +25,16 @@ function App(props) {
   const [searchDate, setSearchDate] = useState("");
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
   const [showResults, setShowResults] = useState(false);
-  const [searchFieldFocus, setSearchFieldFocus] = useState(false);
+  const [searchFieldFocus, setTextFocus] = useState(false);
   const [mouseOverSearchWidget, setMouseOverSearchWidget] = useState(false);
-  const [searchDateFocus, setSearchDateFocus] = useState(false);
+  const [searchDateFocus, setDateFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
+  const textInputRef = useRef(null);
 
   const changeTabHandler = (clickedTab) => {
+    // set focus on text input to keep results panel open
+    textInputRef.current.focus();
+    setTextFocus(true);
     setTabSelected(clickedTab);
     if (clickedTab === "Organizations") {
       setApiUrl(apiOrganizationsUrl);
@@ -90,9 +99,7 @@ function App(props) {
   );
 
   const submitHandler = (event) => {
-    console.log("SUBMIT");
     event.preventDefault();
-
     const searchParams = new URLSearchParams();
     if (searchString !== "") {
       searchParams.append("query", searchString);
@@ -100,39 +107,37 @@ function App(props) {
     if (searchDate) {
       searchParams.append("start-date-range", searchDate);
     }
-    window.location.href = searchUrl + "?" + searchParams.toString();
+    const url = searchUrl + "?" + searchParams.toString();
+    window.location.href = url;
+    console.log("FORM SUBMIT: " + url);
   };
 
-  const focusHandler = () => {
-    setSearchFieldFocus(true);
-    setMouseOverSearchWidget(true);
+  const textFocusHandler = () => {
+    setTextFocus(true);
   };
-
+  const textBlurHandler = () => {
+    setTextFocus(false);
+  };
+  const textChangeHandler = (event) => {
+    setSearchString(event.target.value);
+  };
   const dateFocusHandler = () => {
-    setSearchDateFocus(true);
-    setMouseOverSearchWidget(true);
+    setDateFocus(true);
   };
-
   const dateBlurHandler = () => {
-    setSearchDateFocus(false);
+    setDateFocus(false);
   };
-
-  const blurHandler = () => {
-    setSearchFieldFocus(false);
+  const dateChangeHandler = (event) => {
+    setSearchDate(event.target.value);
   };
-
   const mouseLeaveHandler = () => {
     setMouseOverSearchWidget(false);
   };
-
-  const changeHandler = (event) => {
-    setSearchString(event.target.value);
+  const mouseEnterHandler = () => {
+    setMouseOverSearchWidget(true);
   };
 
-  const changeDateHandler = (event) => {
-    setSearchDate(event.target.value);
-  };
-
+  // debounce search while typing
   useEffect(() => {
     const identifier = setTimeout(() => {
       fetchDataHandler(searchString, searchDate);
@@ -142,6 +147,7 @@ function App(props) {
     };
   }, [searchString, searchDate, fetchDataHandler, apiUrl]);
 
+  // show or hide results panel
   useEffect(() => {
     if (
       searchFieldFocus === false &&
@@ -149,25 +155,33 @@ function App(props) {
       searchDateFocus === false
     ) {
       setShowResults(false);
-    } else {
+    } else if (
+      (searchFieldFocus === true || searchDateFocus === true) &&
+      mouseOverSearchWidget === true
+    ) {
       setShowResults(true);
     }
   }, [showResults, searchFieldFocus, searchDateFocus, mouseOverSearchWidget]);
 
   return (
-    <div className="footlightSearchWidget" onMouseLeave={mouseLeaveHandler}>
+    <div
+      className="footlightSearchWidget"
+      onMouseLeave={mouseLeaveHandler}
+      onMouseEnter={mouseEnterHandler}
+    >
       <form onSubmit={submitHandler} autocomplete="off">
         <input type="submit"></input>
         <input
           type="text"
           placeholder="Recherche"
-          onChange={changeHandler}
-          onFocus={focusHandler}
-          onBlur={blurHandler}
+          onChange={textChangeHandler}
+          onFocus={textFocusHandler}
+          onBlur={textBlurHandler}
+          ref={textInputRef}
         />
         <input
           type="date"
-          onChange={changeDateHandler}
+          onChange={dateChangeHandler}
           onFocus={dateFocusHandler}
           onBlur={dateBlurHandler}
         />

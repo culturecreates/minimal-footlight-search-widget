@@ -62,7 +62,7 @@ function App(props) {
             id: eventData.id,
             title: eventData.name.fr || eventData.name.en,
             startDate: eventData.startDate || eventData.startDateTime || "",
-            image: eventData.image?.thumbnail || eventData.image?.logo || "",
+            image: eventData.image?.thumbnail || eventData.logo?.thumbnail || "",
             place: place.name?.fr || place.name?.en || "",
             city:
               place.address?.addressLocality?.fr ||

@@ -5,17 +5,24 @@ import "./App.css";
 function App(props) {
   // temporary defaults
   let searchUrl = "https://toutculture.stagingminimalmtl.com/evenements/";
-  let calendarId = "tout-culture"
+  let calendar = "tout-culture"
+  let locale = "en"
 
-  const apiEventsUrl = `https://${props.api}/calendars/${calendarId}/events?page=1&limit=5`;
-  const apiOrganizationsUrl = `https://${props.api}/calendars/${calendarId}/organizations?page=1&limit=5`;
-  const apiAteliersUrl = `https://${props.api}/calendars/${calendarId}/events?type=63e00d658097540065660ef7&page=1&limit=5`;
+  if (props.calendar) {
+    calendar = props.calendarId;
+  }
   if (props.searchUrl) {
     searchUrl = props.searchUrl;
   }
-  if (props.calendarId) {
-    searchUrl = props.calendarId;
+  if (props.locale) {
+    locale = props.locale;
   }
+
+  // constants built using other constants
+  const apiEventsUrl = `https://${props.api}/calendars/${calendar}/events?page=1&limit=5`;
+  const apiOrganizationsUrl = `https://${props.api}/calendars/${calendar}/organizations?page=1&limit=5`;
+  const apiAteliersUrl = `https://${props.api}/calendars/${calendar}/events?type=63e00d658097540065660ef7&page=1&limit=5`;
+
 
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -195,6 +202,7 @@ function App(props) {
           eventUrl={props.eventUrl}
           onChangeTab={changeTabHandler}
           tabSelected={tabSelected}
+          locale={locale}
         />
       )}
     </div>

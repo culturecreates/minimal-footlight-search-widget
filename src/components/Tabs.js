@@ -17,13 +17,13 @@ const Tabs = (props) => {
         onClick={clickEventsTabHandler}
         className={props.tabSelected === "Events" ? "selected" : undefined}
       >
-        Événements
+        {props.locale === "en" ? "Events" : "Événements"}
       </li>
       <li
         onClick={clickAteliersTabHandler}
         className={props.tabSelected === "Ateliers" ? "selected" : undefined}
       >
-        Ateliers
+        {props.locale === "en" ? "Workshops" : "Ateliers"}
       </li>
       <li
         onClick={clickOrganizationsTabHandler}
@@ -31,7 +31,7 @@ const Tabs = (props) => {
           props.tabSelected === "Organizations" ? "selected" : undefined
         }
       >
-        Organisations
+        {props.locale === "en" ? "Organizations" : "Organisations"}
       </li>
     </ul>
   );

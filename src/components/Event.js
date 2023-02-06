@@ -8,13 +8,16 @@ const Event = (props) => {
   };
   const options = { weekday: 'short', month: 'short', day: 'numeric' };
 
+  const locale = props.locale || 'fr'
+  
+
   let startDate, endDate ;
   if (props.event.startDate) {
-    startDate = new Date(props.event.startDate.substring(0,10)).toLocaleDateString('fr', options).toUpperCase();
+    startDate = new Date(props.event.startDate.substring(0,10)).toLocaleDateString(locale, options).toUpperCase();
   }
  
   if (props.event.endDate) {
-     endDate = new Date(props.event.endDate.substring(0,10)).toLocaleDateString('fr', options).toUpperCase();
+     endDate = new Date(props.event.endDate.substring(0,10)).toLocaleDateString(locale, options).toUpperCase();
   }
 
   return (

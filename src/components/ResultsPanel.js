@@ -11,7 +11,7 @@ const ResultsPanel = (props) => {
   if (props.events.length > -1) {
     content = (
       <>
-        <EventsList eventUrl={props.eventUrl || ""} events={props.events} />
+        <EventsList eventUrl={props.eventUrl || ""} events={props.events}  locale={props.locale}/>
         <SearchFooter count={props.totalCount} />
       </>
     );
@@ -36,6 +36,7 @@ const ResultsPanel = (props) => {
           <Tabs
             onChangeTab={changeTabHandler}
             tabSelected={props.tabSelected}
+            locale={props.locale}
           />
           {content}
         </div>

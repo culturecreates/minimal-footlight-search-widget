@@ -82,6 +82,7 @@ function App(props) {
             title: eventData.name.fr || eventData.name.en,
             startDate:
               eventData.subEventDetails?.nextUpcomingSubEventDate ||
+              eventData.subEventDetails?.nextUpcomingSubEventDateTime ||
               eventData.startDate ||
               eventData.startDateTime ||
               "",

@@ -1,0 +1,25 @@
+.date-range-wrapper {
+  margin-left: 8px;
+}
+.date-range-calendar-wrapper .react-calendar__tile {
+  color: black;
+}
+
+.date-range-calendar-wrapper .react-calendar__tile--active {
+  background: #f2eb9f;
+}
+.date-range-calendar-wrapper .react-calendar__tile--rangeEnd,
+.date-range-calendar-wrapper .react-calendar__tile--rangeStart {
+  background-color: #fff649;
+}
+
+.date-range-calendar-wrapper .react-calendar__tile:hover {
+  background-color: #f2eb9f;
+}
+.react-daterange-picker {
+  height: 100%;
+}
+
+.date-range-calendar-wrapper .react-calendar__navigation__label {
+  font-weight: bold;
+}

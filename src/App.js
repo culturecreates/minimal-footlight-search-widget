@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import ResultsPanel from "./components/ResultsPanel";
 import "./App.css";
+import DatePickerStyled from "./components/DatePicketStyled";
+import DateRangePickerStyled from "./components/DateRangePickerStyled";
 
 function App(props) {
   // temporary defaults
   let searchUrl = "https://toutculture.stagingminimalmtl.com/evenements/";
-  let calendar = "tout-culture"
-  let locale = "fr"
+  let calendar = "tout-culture";
+  let locale = "fr";
 
   if (props.calendar) {
     calendar = props.calendarId;
@@ -23,7 +25,6 @@ function App(props) {
   const apiOrganizationsUrl = `https://${props.api}/calendars/${calendar}/organizations?page=1&limit=5`;
   const apiAteliersUrl = `https://${props.api}/calendars/${calendar}/events?type=63e00d658097540065660ef7&page=1&limit=5`;
 
-
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -36,6 +37,7 @@ function App(props) {
   const [mouseOverSearchWidget, setMouseOverSearchWidget] = useState(false);
   const [searchDateFocus, setDateFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
+  const [dateType, setDateType] = useState("range");
   const textInputRef = useRef(null);
 
   const changeTabHandler = (clickedTab) => {
@@ -177,7 +179,7 @@ function App(props) {
       onMouseLeave={mouseLeaveHandler}
       onMouseEnter={mouseEnterHandler}
     >
-      <form onSubmit={submitHandler} autocomplete="off">
+      <form onSubmit={submitHandler} autoComplete="off">
         <input type="submit"></input>
         <input
           type="text"
@@ -187,12 +189,18 @@ function App(props) {
           onBlur={textBlurHandler}
           ref={textInputRef}
         />
-        <input
+        {/* <input
           type="date"
           onChange={dateChangeHandler}
           onFocus={dateFocusHandler}
           onBlur={dateBlurHandler}
-        />
+        /> */}
+        {dateType === "single" && (
+          <DatePickerStyled setDateType={setDateType} />
+        )}
+        {dateType === "range" && (
+          <DateRangePickerStyled setDateType={setDateType} />
+        )}
       </form>
       {showResults && (
         <ResultsPanel

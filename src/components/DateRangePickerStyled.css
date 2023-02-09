@@ -8,25 +8,22 @@
   color: black;
 }
 
-.date-range-calendar-wrapper .react-calendar__tile--active {
+.date-range-calendar-wrapper .react-calendar__tile--active,
+.date-range-calendar-wrapper .react-calendar__tile:hover {
   background: #f2eb9f;
 }
+
 .date-range-calendar-wrapper .react-calendar__tile--rangeEnd,
-.date-range-calendar-wrapper .react-calendar__tile--rangeStart {
+.date-range-calendar-wrapper .react-calendar__tile--rangeStart,
+.date-range-calendar-wrapper .react-calendar__tile--active:enabled:focus,
+.date-range-calendar-wrapper .react-calendar__tile--hasActive {
   background-color: #fff649;
 }
 
-.date-range-calendar-wrapper .react-calendar__tile:hover {
-  background-color: #f2eb9f;
-}
 .react-daterange-picker {
   height: 100%;
 }
 
 .date-range-calendar-wrapper .react-calendar__navigation__label {
   font-weight: bold;
-}
-
-.date-range-calendar-wrapper .react-calendar__tile--hasActive {
-  background-color: #fff649;
 }

@@ -3,14 +3,13 @@ import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import "./DateRangePickerStyled.css";
 
 function DateRangePickerStyled(props) {
-  const { setDateType } = props;
-  const [value, setValue] = useState();
+  const { setDateType, setSearchDate, searchDate } = props;
 
   return (
     <div className="date-range-wrapper">
       <DateRangePicker
-        onChange={setValue}
-        value={value}
+        onChange={setSearchDate}
+        value={searchDate}
         calendarClassName="date-range-calendar-wrapper"
         format="dd MMM yyyy"
         dayPlaceholder="dd"

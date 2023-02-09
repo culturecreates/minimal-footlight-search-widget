@@ -1,6 +1,9 @@
 .date-range-wrapper {
   margin-left: 8px;
 }
+.date-range-wrapper .react-daterange-picker__wrapper {
+  border: 0px;
+}
 .date-range-calendar-wrapper .react-calendar__tile {
   color: black;
 }

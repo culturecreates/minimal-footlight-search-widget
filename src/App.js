@@ -3,6 +3,7 @@ import ResultsPanel from "./components/ResultsPanel";
 import "./App.css";
 import DatePickerStyled from "./components/DatePicketStyled";
 import DateRangePickerStyled from "./components/DateRangePickerStyled";
+import { dateFormatter } from "./components/dateFormatter";
 
 function App(props) {
   // temporary defaults
@@ -58,12 +59,20 @@ function App(props) {
     async (q, date) => {
       setIsLoading(true);
       setError(false);
+
       let url = apiUrl;
       if (q) {
         url += `&query=${q}`;
       }
-      if (date) {
-        url += `&start-date-range=${date}`;
+      if (date && date[0]) {
+        if (date[0]) {
+          let startDate = dateFormatter(date[0]);
+          url += `&start-date-range=${startDate}`;
+        }
+        if (date[1]) {
+          let endDate = dateFormatter(date[1]);
+          url += `&end-date-range=${endDate}`;
+        }
       }
       try {
         const response = await fetch(url);
@@ -196,10 +205,18 @@ function App(props) {
           onBlur={dateBlurHandler}
         /> */}
         {dateType === "single" && (
-          <DatePickerStyled setDateType={setDateType} />
+          <DatePickerStyled
+            setDateType={setDateType}
+            setSearchDate={setSearchDate}
+            searchDate={searchDate}
+          />
         )}
         {dateType === "range" && (
-          <DateRangePickerStyled setDateType={setDateType} />
+          <DateRangePickerStyled
+            setDateType={setDateType}
+            setSearchDate={setSearchDate}
+            searchDate={searchDate}
+          />
         )}
       </form>
       {showResults && (

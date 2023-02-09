@@ -1,22 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import DatePicker from "react-date-picker";
+import "./DatePickerStyled.css";
 
 function DatePickerStyled(props) {
-  const { setDateType } = props;
-  const [value, setValue] = useState(new Date());
-  const [open, setOpen] = useState(false);
+  const { setDateType, setSearchDate, searchDate } = props;
 
   return (
-    <div id="calendar-div">
+    <div className="single-date-wrapper">
       <DatePicker
-        // isOpen={open}
-        onChange={setValue}
-        value={value}
-        // portalContainer={document.getElementById("calendar-div")}
-        // onCalendarOpen={() => setOpen(true)}
-        // onCalendarClose={() => setOpen(false)}
+        onChange={setSearchDate}
+        value={searchDate}
+        dayPlaceholder="dd"
+        monthPlaceholder="MMM"
+        yearPlaceholder="yyyy"
+        format="dd MMM yyyy"
+        calendarClassName="single-date-calendar-wrapper"
       />
-      {/* {open && <>hai</>} */}
     </div>
   );
 }

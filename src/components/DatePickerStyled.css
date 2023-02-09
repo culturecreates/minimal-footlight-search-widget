@@ -1,0 +1,20 @@
+.single-date-wrapper {
+  margin-left: 8px;
+}
+
+.single-date-wrapper .react-date-picker {
+  height: 100%;
+}
+
+.single-date-wrapper .react-date-picker__wrapper {
+  border: 0px;
+}
+.single-date-calendar-wrapper .react-calendar__tile {
+  color: black;
+}
+.single-date-calendar-wrapper .react-calendar__navigation__label {
+  font-weight: bold;
+}
+.single-date-calendar-wrapper .react-calendar__tile--active {
+  background-color: #fff649;
+}

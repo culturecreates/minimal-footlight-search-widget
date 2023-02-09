@@ -38,7 +38,7 @@ function App(props) {
   const [mouseOverSearchWidget, setMouseOverSearchWidget] = useState(false);
   const [searchDateFocus, setDateFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
-  const [dateType, setDateType] = useState("range");
+  const [dateType, setDateType] = useState("single");
   const textInputRef = useRef(null);
 
   const changeTabHandler = (clickedTab) => {
@@ -59,14 +59,13 @@ function App(props) {
     async (q, date) => {
       setIsLoading(true);
       setError(false);
-
       let url = apiUrl;
       if (q) {
         url += `&query=${q}`;
       }
-      if (date && date[0]) {
-        if (date[0]) {
-          let startDate = dateFormatter(date[0]);
+      if (date) {
+        if (date[0] || date) {
+          let startDate = dateFormatter(date[0] ?? date);
           url += `&start-date-range=${startDate}`;
         }
         if (date[1]) {

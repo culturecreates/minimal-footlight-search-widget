@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import "./DateRangePickerStyled.css";
 

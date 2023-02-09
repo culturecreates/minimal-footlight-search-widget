@@ -38,7 +38,7 @@ function App(props) {
   const [mouseOverSearchWidget, setMouseOverSearchWidget] = useState(false);
   const [searchDateFocus, setDateFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
-  const [dateType, setDateType] = useState("single");
+  const [dateType, setDateType] = useState("range");
   const textInputRef = useRef(null);
 
   const changeTabHandler = (clickedTab) => {

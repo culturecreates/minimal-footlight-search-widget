@@ -18,3 +18,7 @@
 .single-date-calendar-wrapper .react-calendar__tile--active {
   background-color: #fff649;
 }
+
+.single-date-calendar-wrapper .react-calendar__tile--hasActive {
+  background-color: #fff649;
+}

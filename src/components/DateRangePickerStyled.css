@@ -26,3 +26,7 @@
 .date-range-calendar-wrapper .react-calendar__navigation__label {
   font-weight: bold;
 }
+
+.date-range-calendar-wrapper .react-calendar__tile--hasActive {
+  background-color: #fff649;
+}

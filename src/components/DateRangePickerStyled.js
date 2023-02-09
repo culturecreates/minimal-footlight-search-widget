@@ -13,7 +13,7 @@ function DateRangePickerStyled(props) {
         calendarClassName="date-range-calendar-wrapper"
         format="dd MMM yyyy"
         dayPlaceholder="dd"
-        monthPlaceholder="MMM"
+        monthPlaceholder="mm"
         yearPlaceholder="yyyy"
       />
     </div>

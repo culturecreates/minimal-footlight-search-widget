@@ -11,7 +11,7 @@ function DatePickerStyled(props) {
         onChange={setSearchDate}
         value={searchDate}
         dayPlaceholder="dd"
-        monthPlaceholder="MMM"
+        monthPlaceholder="mm"
         yearPlaceholder="yyyy"
         format="dd MMM yyyy"
         calendarClassName="single-date-calendar-wrapper"

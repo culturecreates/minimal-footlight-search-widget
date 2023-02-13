@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import "./DateRangePickerStyled.css";
+import { ReactComponent as CalendarIcon } from "../assets/icons/Calendar.svg";
 
 function DateRangePickerStyled(props) {
   const { setDateType, dateType, setSearchDate, searchDate } = props;
@@ -12,6 +13,7 @@ function DateRangePickerStyled(props) {
         onChange={setSearchDate}
         value={searchDate}
         calendarClassName="date-range-calendar-wrapper"
+        calendarIcon={<CalendarIcon />}
         // format={`dd MMM y`}
         // isOpen={open}
         clearIcon={false}

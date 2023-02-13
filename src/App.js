@@ -224,10 +224,10 @@ function App(props) {
               <>
                 {moment(
                   searchDate?.length > 0 ? searchDate[0] : searchDate
-                ).format("DD MMM YYYY")}
+                ).format("DD MMM YY")}
                 &nbsp;
                 {searchDate?.length > 0 && "-"}&nbsp;
-                {moment(searchDate[1]).format("DD MMM YYYY")}
+                {moment(searchDate[1]).format("DD MMM YY")}
               </>
             )}
           </span>

@@ -4,7 +4,8 @@ import "./DateRangePickerStyled.css";
 import { ReactComponent as CalendarIcon } from "../assets/icons/Calendar.svg";
 
 function DateRangePickerStyled(props) {
-  const { setDateType, dateType, setSearchDate, searchDate } = props;
+  const { setDateType, dateType, setSearchDate, searchDate, setDateFocus } =
+    props;
   // const [open, setOpen] = useState(false);
 
   return (
@@ -18,7 +19,7 @@ function DateRangePickerStyled(props) {
         // isOpen={open}
         clearIcon={false}
         // onCalendarOpen={() => setOpen(true)}
-        // onCalendarClose={() => setOpen(false)}
+        onCalendarClose={() => setDateFocus(true)}
         // dayPlaceholder=""
         // monthPlaceholder=""
         // yearPlaceholder=""

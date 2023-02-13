@@ -188,7 +188,13 @@ function App(props) {
       onMouseLeave={mouseLeaveHandler}
       onMouseEnter={mouseEnterHandler}
     >
-      <div style={{ display: "flex" }}>
+      <div
+        style={{
+          display: "flex",
+          backgroundColor: "#ffffff",
+          borderBottom: "1px solid #000000",
+        }}
+      >
         <form
           onSubmit={submitHandler}
           autoComplete="off"
@@ -217,6 +223,7 @@ function App(props) {
             gap: "8px",
             alignItems: "center",
             fontWeight: 400,
+            fontSize: "18px",
           }}
         >
           <span style={{ whiteSpace: "nowrap" }}>
@@ -246,11 +253,12 @@ function App(props) {
               dateType={dateType}
               setSearchDate={setSearchDate}
               searchDate={searchDate}
+              setDateFocus={setDateFocus}
             />
           )}
         </div>
       </div>
-      {(showResults || dateType) && (
+      {showResults && dateType && (
         <ResultsPanel
           error={error}
           events={events}

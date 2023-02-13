@@ -226,7 +226,7 @@ function App(props) {
                   searchDate?.length > 0 ? searchDate[0] : searchDate
                 ).format("DD MMM YYYY")}
                 &nbsp;
-                {searchDate?.length > 0 && "-"}
+                {searchDate?.length > 0 && "-"}&nbsp;
                 {moment(searchDate[1]).format("DD MMM YYYY")}
               </>
             )}
@@ -250,7 +250,7 @@ function App(props) {
           )}
         </div>
       </div>
-      {showResults && (
+      {(showResults || dateType) && (
         <ResultsPanel
           error={error}
           events={events}

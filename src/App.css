@@ -5,6 +5,7 @@
 
 .footlightSearchWidget form {
   display: flex;
+  width: 80%;
 }
 
 .footlightSearchWidget input[type="submit"] {
@@ -21,7 +22,7 @@
 }
 
 .footlightSearchWidget input[type="text"] {
-  width: 100%;
+  width: 80%;
   border: none;
   outline: none;
   box-shadow: none;
@@ -39,5 +40,4 @@
   box-sizing: border-box;
   background: none;
   border-bottom: 1px solid black;
-
 }

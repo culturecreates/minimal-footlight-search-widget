@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import ResultsPanel from "./components/ResultsPanel";
+import Calendar from "react-calendar";
+import { Popover } from "react-tiny-popover";
 import "./App.css";
+import "react-calendar/dist/Calendar.css";
+import { ReactComponent as CalendarIcon } from "./assets/icons/Calendar.svg";
+import moment from "moment/moment";
 
 function App(props) {
   // temporary defaults
   let searchUrl = "https://toutculture.stagingminimalmtl.com/evenements/";
-  let calendar = "tout-culture"
-  let locale = "fr"
+  let calendar = "tout-culture";
+  let locale = "fr";
 
   if (props.calendar) {
     calendar = props.calendarId;
@@ -23,7 +28,6 @@ function App(props) {
   const apiOrganizationsUrl = `https://${props.api}/calendars/${calendar}/organizations?page=1&limit=5`;
   const apiAteliersUrl = `https://${props.api}/calendars/${calendar}/events?type=63e00d658097540065660ef7&page=1&limit=5`;
 
-
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -36,6 +40,9 @@ function App(props) {
   const [mouseOverSearchWidget, setMouseOverSearchWidget] = useState(false);
   const [searchDateFocus, setDateFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [isSingleRange, setIsSingleDate] = useState(false);
+
   const textInputRef = useRef(null);
 
   const changeTabHandler = (clickedTab) => {
@@ -60,8 +67,17 @@ function App(props) {
       if (q) {
         url += `&query=${q}`;
       }
+      console.log(moment(date).format("YYYY-MM-DD"));
+
       if (date) {
-        url += `&start-date-range=${date}`;
+        if (date[0] || date) {
+          let startDate = moment(date[0] ?? date).format("YYYY-MM-DD");
+          url += `&start-date-range=${startDate}`;
+        }
+        if (date[1]) {
+          let endDate = moment(date[1]).format("YYYY-MM-DD");
+          url += `&end-date-range=${endDate}`;
+        }
       }
       try {
         const response = await fetch(url);
@@ -177,23 +193,82 @@ function App(props) {
       onMouseLeave={mouseLeaveHandler}
       onMouseEnter={mouseEnterHandler}
     >
-      <form onSubmit={submitHandler} autocomplete="off">
-        <input type="submit"></input>
-        <input
-          type="text"
-          placeholder="Recherche"
-          onChange={textChangeHandler}
-          onFocus={textFocusHandler}
-          onBlur={textBlurHandler}
-          ref={textInputRef}
-        />
-        <input
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+          backgroundColor: "#ffffff",
+          borderBottom: "1px solid #000000",
+        }}
+      >
+        <form onSubmit={submitHandler} autocomplete="off">
+          <input type="submit"></input>
+          <input
+            type="text"
+            placeholder="Recherche"
+            onChange={textChangeHandler}
+            onFocus={textFocusHandler}
+            onBlur={textBlurHandler}
+            ref={textInputRef}
+          />
+          {/* <input
           type="date"
           onChange={dateChangeHandler}
           onFocus={dateFocusHandler}
           onBlur={dateBlurHandler}
-        />
-      </form>
+        /> */}
+        </form>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
+          <span style={{ whiteSpace: "nowrap" }}>
+            {(searchDate || searchDate?.length > 0) && (
+              <>
+                {moment(
+                  searchDate?.length > 0 ? searchDate[0] : searchDate
+                ).format("DD MMM YY")}
+                &nbsp;
+                {searchDate?.length > 0 && <>-&nbsp;</>}
+                {searchDate?.length > 0 &&
+                  moment(searchDate[1]).format("DD MMM YY")}
+              </>
+            )}
+          </span>
+          <Popover
+            isOpen={isPopoverOpen}
+            align="end"
+            positions={["bottom"]} // preferred positions by priority
+            content={
+              <div>
+                <Calendar
+                  onChange={setSearchDate}
+                  value={searchDate}
+                  selectRange={!isSingleRange}
+                />
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={isSingleRange}
+                    onChange={(e) => setIsSingleDate(e.target.checked)}
+                  />
+                  Rechercher à une date précise
+                </label>
+              </div>
+            }
+          >
+            <div onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
+              <span style={{ cursor: "pointer" }}>
+                <CalendarIcon />
+              </span>
+            </div>
+          </Popover>
+        </div>
+      </div>
       {showResults && (
         <ResultsPanel
           error={error}

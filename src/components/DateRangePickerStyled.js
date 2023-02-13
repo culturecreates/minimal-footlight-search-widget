@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import "./DateRangePickerStyled.css";
 
 function DateRangePickerStyled(props) {
-  const { setDateType, setSearchDate, searchDate } = props;
+  const { setDateType, dateType, setSearchDate, searchDate } = props;
+  // const [open, setOpen] = useState(false);
 
   return (
     <div className="date-range-wrapper">
@@ -11,11 +12,32 @@ function DateRangePickerStyled(props) {
         onChange={setSearchDate}
         value={searchDate}
         calendarClassName="date-range-calendar-wrapper"
-        format="dd MMM yyyy"
-        dayPlaceholder="dd"
-        monthPlaceholder="mm"
-        yearPlaceholder="yyyy"
+        // format={`dd MMM y`}
+        // isOpen={open}
+        clearIcon={false}
+        // onCalendarOpen={() => setOpen(true)}
+        // onCalendarClose={() => setOpen(false)}
+        // dayPlaceholder=""
+        // monthPlaceholder=""
+        // yearPlaceholder=""
+        rangeDivider={""}
       />
+      {/* {dateType && (
+        <div className="change-calendar-type-wrapper">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              style={{}}
+              className="change-calendar-type"
+              checked={dateType === "single" ? true : false}
+              onChange={(e) =>
+                setDateType(e.target.checked ? "single" : "range")
+              }
+            />
+            Rechercher à une date précise
+          </label>
+        </div>
+      )} */}
     </div>
   );
 }

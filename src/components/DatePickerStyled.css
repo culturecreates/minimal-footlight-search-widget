@@ -1,5 +1,7 @@
 .single-date-wrapper {
   margin-left: 8px;
+  display: flex;
+  flex-direction: column;
 }
 
 .single-date-wrapper .react-date-picker {

@@ -4,6 +4,7 @@ import "./App.css";
 import DatePickerStyled from "./components/DatePicketStyled";
 import DateRangePickerStyled from "./components/DateRangePickerStyled";
 import { dateFormatter } from "./components/dateFormatter";
+import moment from "moment/moment";
 
 function App(props) {
   // temporary defaults
@@ -187,37 +188,68 @@ function App(props) {
       onMouseLeave={mouseLeaveHandler}
       onMouseEnter={mouseEnterHandler}
     >
-      <form onSubmit={submitHandler} autoComplete="off">
-        <input type="submit"></input>
-        <input
-          type="text"
-          placeholder="Recherche"
-          onChange={textChangeHandler}
-          onFocus={textFocusHandler}
-          onBlur={textBlurHandler}
-          ref={textInputRef}
-        />
-        {/* <input
+      <div style={{ display: "flex" }}>
+        <form
+          onSubmit={submitHandler}
+          autoComplete="off"
+          style={{ width: "100%" }}
+        >
+          <input type="submit"></input>
+          <input
+            type="text"
+            autoFocus
+            placeholder="Recherche"
+            onChange={textChangeHandler}
+            onFocus={textFocusHandler}
+            onBlur={textBlurHandler}
+            ref={textInputRef}
+          />
+          {/* <input
           type="date"
           onChange={dateChangeHandler}
           onFocus={dateFocusHandler}
           onBlur={dateBlurHandler}
         /> */}
-        {dateType === "single" && (
-          <DatePickerStyled
-            setDateType={setDateType}
-            setSearchDate={setSearchDate}
-            searchDate={searchDate}
-          />
-        )}
-        {dateType === "range" && (
-          <DateRangePickerStyled
-            setDateType={setDateType}
-            setSearchDate={setSearchDate}
-            searchDate={searchDate}
-          />
-        )}
-      </form>
+        </form>
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            alignItems: "center",
+            fontWeight: 400,
+          }}
+        >
+          <span style={{ whiteSpace: "nowrap" }}>
+            {(searchDate || searchDate?.length > 0) && (
+              <>
+                {moment(
+                  searchDate?.length > 0 ? searchDate[0] : searchDate
+                ).format("DD MMM YYYY")}
+                &nbsp;
+                {searchDate?.length > 0 && "-"}
+                {moment(searchDate[1]).format("DD MMM YYYY")}
+              </>
+            )}
+          </span>
+
+          {dateType === "single" && (
+            <DatePickerStyled
+              setDateType={setDateType}
+              dateType={dateType}
+              setSearchDate={setSearchDate}
+              searchDate={searchDate}
+            />
+          )}
+          {dateType === "range" && (
+            <DateRangePickerStyled
+              setDateType={setDateType}
+              dateType={dateType}
+              setSearchDate={setSearchDate}
+              searchDate={searchDate}
+            />
+          )}
+        </div>
+      </div>
       {showResults && (
         <ResultsPanel
           error={error}

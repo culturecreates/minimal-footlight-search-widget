@@ -21,7 +21,8 @@
 }
 
 .footlightSearchWidget input[type="text"] {
-  width: 70%;
+  width: 90%;
+  height: 40px;
   border: none;
   outline: none;
   box-shadow: none;

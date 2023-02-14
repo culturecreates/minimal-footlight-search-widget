@@ -257,6 +257,8 @@ function App(props) {
                   onChange={(value) => {
                     setSearchDate(value);
                     setIsPopoverOpen(!isPopoverOpen);
+                    setDateFocus(true);
+                    setMouseOverSearchWidget(true);
                   }}
                   value={searchDate}
                   selectRange={!isSingleRange}

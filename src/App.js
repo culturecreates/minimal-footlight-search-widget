@@ -241,23 +241,40 @@ function App(props) {
           </span>
           <Popover
             isOpen={isPopoverOpen}
-            align="end"
-            positions={["bottom"]} // preferred positions by priority
+            align="start"
+            positions={["left"]} // preferred positions by priority
             content={
-              <div>
+              <div
+                style={{
+                  background: "#ffffff",
+                  boxShadow: " 0px 19px 20px 4px rgba(0, 0, 0, 0.1)",
+                }}
+              >
                 <Calendar
                   onChange={setSearchDate}
                   value={searchDate}
                   selectRange={!isSingleRange}
+                  className="react-calendar-wrapper"
                 />
-                <label>
+                <div
+                  style={{
+                    height: "48px",
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    paddingLeft: "12px",
+                    background: "rgba(255, 246, 73, 0.16)",
+                  }}
+                >
                   <input
                     type="checkbox"
+                    style={{ height: "24px", width: "24px" }}
                     checked={isSingleRange}
                     onChange={(e) => setIsSingleDate(e.target.checked)}
                   />
-                  Rechercher à une date précise
-                </label>
+                  <label>Rechercher à une date précise</label>
+                </div>
               </div>
             }
           >

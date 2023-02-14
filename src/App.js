@@ -241,6 +241,7 @@ function App(props) {
           </span>
           <Popover
             isOpen={isPopoverOpen}
+            id="react-calendar-checkbox-container"
             clickOutsideCapture={true}
             onClickOutside={(e) => console.log(e)}
             align="end"
@@ -253,7 +254,10 @@ function App(props) {
                 }}
               >
                 <Calendar
-                  onChange={setSearchDate}
+                  onChange={(value) => {
+                    setSearchDate(value);
+                    setIsPopoverOpen(!isPopoverOpen);
+                  }}
                   value={searchDate}
                   selectRange={!isSingleRange}
                   className="react-calendar-wrapper"
@@ -281,7 +285,10 @@ function App(props) {
               </div>
             }
           >
-            <div onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
+            <div
+              onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+              id="calendar-icon-id"
+            >
               <span style={{ cursor: "pointer" }}>
                 <CalendarIcon />
               </span>

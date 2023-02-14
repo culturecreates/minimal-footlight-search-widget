@@ -33,7 +33,7 @@ function App(props) {
   const [error, setError] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [searchString, setSearchString] = useState("");
-  const [searchDate, setSearchDate] = useState("");
+  const [searchDate, setSearchDate] = useState();
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
   const [showResults, setShowResults] = useState(false);
   const [searchFieldFocus, setTextFocus] = useState(false);
@@ -202,7 +202,7 @@ function App(props) {
           borderBottom: "1px solid #000000",
         }}
       >
-        <form onSubmit={submitHandler} autocomplete="off">
+        <form onSubmit={submitHandler} autoComplete="off">
           <input type="submit"></input>
           <input
             type="text"
@@ -241,8 +241,10 @@ function App(props) {
           </span>
           <Popover
             isOpen={isPopoverOpen}
-            align="start"
-            positions={["left"]} // preferred positions by priority
+            clickOutsideCapture={true}
+            onClickOutside={(e) => console.log(e)}
+            align="end"
+            positions={["bottom"]} // preferred positions by priority
             content={
               <div
                 style={{
@@ -259,12 +261,13 @@ function App(props) {
                 <div
                   style={{
                     height: "48px",
-                    width: "100%",
+                    width: "auto",
                     display: "flex",
                     alignItems: "center",
                     gap: "8px",
                     paddingLeft: "12px",
                     background: "rgba(255, 246, 73, 0.16)",
+                    borderTop: "1px solid #545454",
                   }}
                 >
                   <input

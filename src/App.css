@@ -41,6 +41,9 @@
   background: none;
   border-bottom: 1px solid black;
 }
+.react-tiny-popover-container {
+  z-index: 10;
+}
 .react-calendar-wrapper {
   border: 0px !important;
 }

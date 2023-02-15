@@ -145,15 +145,15 @@ function App(props) {
   const textChangeHandler = (event) => {
     setSearchString(event.target.value);
   };
-  const dateFocusHandler = () => {
-    setDateFocus(true);
-  };
-  const dateBlurHandler = () => {
-    setDateFocus(false);
-  };
-  const dateChangeHandler = (event) => {
-    setSearchDate(event.target.value);
-  };
+  // const dateFocusHandler = () => {
+  //   setDateFocus(true);
+  // };
+  // const dateBlurHandler = () => {
+  //   setDateFocus(false);
+  // };
+  // const dateChangeHandler = (event) => {
+  //   setSearchDate(event.target.value);
+  // };
   const mouseLeaveHandler = () => {
     setMouseOverSearchWidget(false);
   };

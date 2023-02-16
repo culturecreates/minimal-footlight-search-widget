@@ -292,7 +292,7 @@ function App(props) {
               id="calendar-icon-id"
             >
               <span style={{ cursor: "pointer" }}>
-                <img src={calendarIcon} style={{width: "30px", height: "30px"}}/>
+                <img src={calendarIcon} alt="icon date picker" style={{width: "30px", height: "30px"}}/>
               </span>
             </div>
           </Popover>

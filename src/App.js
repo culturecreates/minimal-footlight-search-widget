@@ -4,7 +4,7 @@ import Calendar from "react-calendar";
 import { Popover } from "react-tiny-popover";
 import "./App.css";
 import "react-calendar/dist/Calendar.css";
-import { ReactComponent as CalendarIcon } from "./assets/icons/Calendar.svg";
+import calendarIcon from "./assets/icons/Calendar.svg";
 import moment from "moment/moment";
 
 function App(props) {
@@ -292,7 +292,7 @@ function App(props) {
               id="calendar-icon-id"
             >
               <span style={{ cursor: "pointer" }}>
-                <CalendarIcon />
+                <img src={calendarIcon} style={{width: "30px", height: "30px"}}/>
               </span>
             </div>
           </Popover>

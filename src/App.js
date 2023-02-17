@@ -42,6 +42,8 @@ function App(props) {
   const [isSingleRange, setIsSingleDate] = useState(false);
 
   const textInputRef = useRef(null);
+  const refFootlightSearchWidget = useRef(null);
+  const refPopover = useRef(null);
 
   const changeTabHandler = (clickedTab) => {
     // set focus on text input to keep results panel open
@@ -156,9 +158,7 @@ function App(props) {
 
   // show results panel
   useEffect(() => {
-    if (
-      (searchFieldFocus === true || isPopoverOpen === true) 
-    ) {
+    if (searchFieldFocus === true || isPopoverOpen === true) {
       setShowResults(true);
     }
   }, [showResults, searchFieldFocus, isPopoverOpen]);
@@ -166,8 +166,13 @@ function App(props) {
   // click outside to hide -- move to results panel component and popover component
   useEffect(() => {
     const handleClickOutside = (event) => {
-      console.log("useEffect handleClickOutside", event);
-      if (event.target.contains(document.getElementsByClassName("footlightSearchWidget")[0])) {
+      console.log("useEffect handleClickOutside", event.target);
+      if (
+        refFootlightSearchWidget.current &&
+        !refFootlightSearchWidget.current.contains(event.target) &&
+        refPopover.current &&
+        !refPopover.current.contains(event.target)
+      ) {
         setIsPopoverOpen(false);
         setShowResults(false);
       }
@@ -176,12 +181,10 @@ function App(props) {
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [isPopoverOpen, showResults]);
+  }, [isPopoverOpen, showResults, refFootlightSearchWidget]);
 
   return (
-    <div
-      className="footlightSearchWidget"
-    >
+    <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>
       <div
         style={{
           display: "flex",
@@ -236,6 +239,7 @@ function App(props) {
             positions={["bottom"]} // preferred positions by priority
             content={
               <div
+                ref={refPopover}
                 style={{
                   background: "#ffffff",
                   boxShadow: " 0px 19px 20px 4px rgba(0, 0, 0, 0.1)",

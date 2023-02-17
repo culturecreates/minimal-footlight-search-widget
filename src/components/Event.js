@@ -6,18 +6,42 @@ const Event = (props) => {
   const clickEventHandler = (event) => {
     window.location.href = props.eventUrl + event.currentTarget.id;
   };
-  const options = { weekday: 'short', month: 'short', day: 'numeric' };
 
-  const locale = props.locale || 'fr'
-  
+  const dateTimeOptions = { 
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  };
 
-  let startDate, endDate ;
+  const dateTimeFormatter = new Intl.DateTimeFormat("fr-QC", {
+    ...dateTimeOptions,
+    timeZone: "America/Montreal",
+  });
+
+  const dateFormatter = new Intl.DateTimeFormat("fr-QC", {
+    ...dateTimeOptions,
+    timeZone: "UTC",
+  });
+
+  let startDate = "";
+  let endDate = "";
   if (props.event.startDate) {
-    startDate = new Date(props.event.startDate.substring(0,10)).toLocaleDateString(locale, options).toUpperCase();
+    let dateTime = new Date(props.event.startDate)
+    if (props.event.startDate.length > 10) {
+      startDate = dateTimeFormatter.format(dateTime);
+    } else {
+      startDate = dateFormatter.format(dateTime);
+    }
   }
- 
+
   if (props.event.endDate) {
-     endDate = new Date(props.event.endDate.substring(0,10)).toLocaleDateString(locale, options).toUpperCase();
+    let dateTime = new Date(props.event.endDate)
+    if (props.event.endDate.length > 10) {
+      endDate = dateTimeFormatter.format(dateTime);
+    } else {
+      endDate = dateFormatter.format(dateTime);
+    }
   }
 
   return (
@@ -30,8 +54,8 @@ const Event = (props) => {
       <div className="details">
         <div className="title">{props.event.title}</div>
         <div className="date">
-          {startDate}
-          {props.event.endDate && "   -   " + endDate}
+          {startDate.toUpperCase()}
+          {endDate !== startDate && "   -   " + endDate.toUpperCase()}
         </div>
         <div className="place">
           {props.event.place}

@@ -60,6 +60,8 @@ function App(props) {
 
   const fetchDataHandler = useCallback(
     async (q, date) => {
+      textInputRef.current.focus();
+      setTextFocus(true);
       setIsLoading(true);
       setError(false);
       let url = apiUrl;
@@ -145,21 +147,8 @@ function App(props) {
     setSearchString(event.target.value);
   };
 
-  // const datePopoverBlurHandler = () => {
-  //   setIsPopoverOpen(false);
-  // }
-
-  // const dateChangeHandler = (event) => {
-  //   setSearchDate(event.target.value);
-  // };
-
   const mouseLeaveHandler = () => {
     setMouseOverSearchWidget(false);
-    // if (isPopoverOpen) {
-    //   textInputRef.current.focus();
-    //   setTextFocus(true);
-    //   setIsPopoverOpen(false);
-    // }
   };
 
   const mouseEnterHandler = () => {
@@ -183,15 +172,9 @@ function App(props) {
     };
   }, [searchString, searchDate, fetchDataHandler, apiUrl]);
 
-  // show or hide results panel
+  // show results panel
   useEffect(() => {
     if (
-      searchFieldFocus === false &&
-      mouseOverSearchWidget === false &&
-      isPopoverOpen === false
-    ) {
-      setShowResults(false);
-    } else if (
       (searchFieldFocus === true || isPopoverOpen === true) &&
       mouseOverSearchWidget === true
     ) {
@@ -199,21 +182,21 @@ function App(props) {
     }
   }, [showResults, searchFieldFocus, isPopoverOpen, mouseOverSearchWidget]);
 
-  // click event to hide date picker
+  // click outside to hide
   useEffect(() => {
     const handleClickOutside = (event) => {
-      console.log("useEffect handleClickOutside");
-      if (!mouseOverSearchWidget) {
+      console.log("useEffect handleClickOutside", event);
+      if (event.target.contains(document.getElementsByClassName("footlightSearchWidget")[0])) {
+   //   if (!mouseOverSearchWidget) {
         setIsPopoverOpen(false);
+        setShowResults(false);
       }
     };
-   
-      document.addEventListener("click", handleClickOutside, true);
-  
+    document.addEventListener("click", handleClickOutside, true);
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [isPopoverOpen, mouseOverSearchWidget]);
+  }, [isPopoverOpen, mouseOverSearchWidget, showResults]);
 
   return (
     <div

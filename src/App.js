@@ -38,7 +38,6 @@ function App(props) {
   const [showResults, setShowResults] = useState(false);
   const [searchFieldFocus, setTextFocus] = useState(false);
   const [mouseOverSearchWidget, setMouseOverSearchWidget] = useState(false);
-  const [searchDateFocus, setDateFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [isSingleRange, setIsSingleDate] = useState(false);
@@ -145,21 +144,34 @@ function App(props) {
   const textChangeHandler = (event) => {
     setSearchString(event.target.value);
   };
-  // const dateFocusHandler = () => {
-  //   setDateFocus(true);
-  // };
-  // const dateBlurHandler = () => {
-  //   setDateFocus(false);
-  // };
+
+  // const datePopoverBlurHandler = () => {
+  //   setIsPopoverOpen(false);
+  // }
+
   // const dateChangeHandler = (event) => {
   //   setSearchDate(event.target.value);
   // };
+
   const mouseLeaveHandler = () => {
     setMouseOverSearchWidget(false);
+    // if (isPopoverOpen) {
+    //   textInputRef.current.focus();
+    //   setTextFocus(true);
+    //   setIsPopoverOpen(false);
+    // }
   };
+
   const mouseEnterHandler = () => {
     setMouseOverSearchWidget(true);
   };
+
+  useEffect(() => {
+    console.log(
+      `mouseOverSearchWidget: ${mouseOverSearchWidget}  searchFieldFocus: ${searchFieldFocus}`
+    );
+    console.log(`isPopoverOpen: ${isPopoverOpen}`);
+  }, [isPopoverOpen, searchFieldFocus, mouseOverSearchWidget]);
 
   // debounce search while typing
   useEffect(() => {
@@ -176,16 +188,32 @@ function App(props) {
     if (
       searchFieldFocus === false &&
       mouseOverSearchWidget === false &&
-      searchDateFocus === false
+      isPopoverOpen === false
     ) {
       setShowResults(false);
     } else if (
-      (searchFieldFocus === true || searchDateFocus === true) &&
+      (searchFieldFocus === true || isPopoverOpen === true) &&
       mouseOverSearchWidget === true
     ) {
       setShowResults(true);
     }
-  }, [showResults, searchFieldFocus, searchDateFocus, mouseOverSearchWidget]);
+  }, [showResults, searchFieldFocus, isPopoverOpen, mouseOverSearchWidget]);
+
+  // click event to hide date picker
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      console.log("useEffect handleClickOutside");
+      if (!mouseOverSearchWidget) {
+        setIsPopoverOpen(false);
+      }
+    };
+   
+      document.addEventListener("click", handleClickOutside, true);
+  
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, [isPopoverOpen, mouseOverSearchWidget]);
 
   return (
     <div
@@ -241,9 +269,8 @@ function App(props) {
           </span>
           <Popover
             isOpen={isPopoverOpen}
+            // onClickOutside={() => setIsPopoverOpen(false)}
             id="react-calendar-checkbox-container"
-            clickOutsideCapture={true}
-            onClickOutside={(e) => console.log(e)}
             align="end"
             positions={["bottom"]} // preferred positions by priority
             content={
@@ -257,8 +284,6 @@ function App(props) {
                   onChange={(value) => {
                     setSearchDate(value);
                     setIsPopoverOpen(!isPopoverOpen);
-                    setDateFocus(true);
-                    setMouseOverSearchWidget(true);
                   }}
                   value={searchDate}
                   selectRange={!isSingleRange}
@@ -292,7 +317,11 @@ function App(props) {
               id="calendar-icon-id"
             >
               <span style={{ cursor: "pointer" }}>
-                <img src={calendarIcon} alt="icon date picker" style={{width: "30px", height: "30px"}}/>
+                <img
+                  src={calendarIcon}
+                  alt="icon date picker"
+                  style={{ width: "30px", height: "30px" }}
+                />
               </span>
             </div>
           </Popover>

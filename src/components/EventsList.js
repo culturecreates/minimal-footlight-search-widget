@@ -7,7 +7,7 @@ const EventsList = (props) => {
   return (
     <ul className="events-list">
       {props.events.slice(0, 5).map((event) => (
-        <Event event={event}  eventUrl={props.eventUrl} locale={props.locale}/>
+        <Event key={event.id} event={event}  eventUrl={props.eventUrl} locale={props.locale}/>
       ))}
     </ul>
   );

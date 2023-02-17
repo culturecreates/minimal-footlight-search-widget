@@ -96,15 +96,9 @@ function App(props) {
           return {
             id: eventData.id,
             title: eventData.name.fr || eventData.name.en,
-            startDate:
-              eventData.subEventDetails?.nextUpcomingSubEventDate ||
-              eventData.subEventDetails?.nextUpcomingSubEventDateTime ||
-              eventData.startDate ||
-              eventData.startDateTime ||
-              "",
+            startDate: eventData.startDate || eventData.startDateTime || "",
             endDate: eventData.endDate || eventData.endDateTime || "",
-            image:
-              eventData.image?.thumbnail || eventData.logo?.thumbnail || "",
+            image: eventData.image?.thumbnail || "",
             place: place.name?.fr || place.name?.en || "",
             city:
               place.address?.addressLocality?.fr ||

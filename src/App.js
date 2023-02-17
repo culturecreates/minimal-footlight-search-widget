@@ -166,15 +166,17 @@ function App(props) {
   // click outside to hide -- move to results panel component and popover component
   useEffect(() => {
     const handleClickOutside = (event) => {
-      console.log("useEffect handleClickOutside", event.target);
       if (
         refFootlightSearchWidget.current &&
-        !refFootlightSearchWidget.current.contains(event.target) &&
-        refPopover.current &&
-        !refPopover.current.contains(event.target)
+        !refFootlightSearchWidget.current.contains(event.target)
       ) {
-        setIsPopoverOpen(false);
-        setShowResults(false);
+        if (
+          (refPopover.current && !refPopover.current.contains(event.target)) ||
+          !refPopover.current
+        ) {
+          setIsPopoverOpen(false);
+          setShowResults(false);
+        }
       }
     };
     document.addEventListener("click", handleClickOutside, true);

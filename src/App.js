@@ -37,7 +37,6 @@ function App(props) {
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
   const [showResults, setShowResults] = useState(false);
   const [searchFieldFocus, setTextFocus] = useState(false);
-  const [mouseOverSearchWidget, setMouseOverSearchWidget] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [isSingleRange, setIsSingleDate] = useState(false);
@@ -60,8 +59,6 @@ function App(props) {
 
   const fetchDataHandler = useCallback(
     async (q, date) => {
-      textInputRef.current.focus();
-      setTextFocus(true);
       setIsLoading(true);
       setError(false);
       let url = apiUrl;
@@ -147,21 +144,6 @@ function App(props) {
     setSearchString(event.target.value);
   };
 
-  const mouseLeaveHandler = () => {
-    setMouseOverSearchWidget(false);
-  };
-
-  const mouseEnterHandler = () => {
-    setMouseOverSearchWidget(true);
-  };
-
-  useEffect(() => {
-    console.log(
-      `mouseOverSearchWidget: ${mouseOverSearchWidget}  searchFieldFocus: ${searchFieldFocus}`
-    );
-    console.log(`isPopoverOpen: ${isPopoverOpen}`);
-  }, [isPopoverOpen, searchFieldFocus, mouseOverSearchWidget]);
-
   // debounce search while typing
   useEffect(() => {
     const identifier = setTimeout(() => {
@@ -175,19 +157,17 @@ function App(props) {
   // show results panel
   useEffect(() => {
     if (
-      (searchFieldFocus === true || isPopoverOpen === true) &&
-      mouseOverSearchWidget === true
+      (searchFieldFocus === true || isPopoverOpen === true) 
     ) {
       setShowResults(true);
     }
-  }, [showResults, searchFieldFocus, isPopoverOpen, mouseOverSearchWidget]);
+  }, [showResults, searchFieldFocus, isPopoverOpen]);
 
-  // click outside to hide
+  // click outside to hide -- move to results panel component and popover component
   useEffect(() => {
     const handleClickOutside = (event) => {
       console.log("useEffect handleClickOutside", event);
       if (event.target.contains(document.getElementsByClassName("footlightSearchWidget")[0])) {
-   //   if (!mouseOverSearchWidget) {
         setIsPopoverOpen(false);
         setShowResults(false);
       }
@@ -196,13 +176,11 @@ function App(props) {
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [isPopoverOpen, mouseOverSearchWidget, showResults]);
+  }, [isPopoverOpen, showResults]);
 
   return (
     <div
       className="footlightSearchWidget"
-      onMouseLeave={mouseLeaveHandler}
-      onMouseEnter={mouseEnterHandler}
     >
       <div
         style={{

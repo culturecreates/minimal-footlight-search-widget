@@ -14,12 +14,12 @@ const Event = (props) => {
     year: "numeric",
   };
 
-  const dateTimeFormatter = new Intl.DateTimeFormat("fr-QC", {
+  const dateTimeFormatter = new Intl.DateTimeFormat(props.locale, {
     ...dateTimeOptions,
     timeZone: "America/Montreal",
   });
 
-  const dateFormatter = new Intl.DateTimeFormat("fr-QC", {
+  const dateFormatter = new Intl.DateTimeFormat(props.locale, {
     ...dateTimeOptions,
     timeZone: "UTC",
   });
@@ -55,7 +55,7 @@ const Event = (props) => {
         <div className="title">{props.event.title}</div>
         <div className="date">
           {startDate.toUpperCase()}
-          {endDate !== startDate && "   -   " + endDate.toUpperCase()}
+          {endDate !== startDate && endDate && "   -   " + endDate.toUpperCase()}
         </div>
         <div className="place">
           {props.event.place}

@@ -6,6 +6,7 @@ import "./App.css";
 import "react-calendar/dist/Calendar.css";
 import calendarIcon from "./assets/icons/Calendar.svg";
 import moment from "moment/moment";
+import DisplayDate from "./components/DisplayDate"
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -39,13 +40,15 @@ function App(props) {
   const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=5`;
   const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=63e00d658097540065660ef7&page=1&limit=5`;
 
-  // states
+  // States
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [searchString, setSearchString] = useState("");
   const [searchDate, setSearchDate] = useState();
+  const [startDateSpan, setStartDateSpan] = useState("");
+  const [endDateSpan, setEndDateSpan] = useState("");
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
   const [showResults, setShowResults] = useState(false);
   const [searchFieldFocus, setTextFocus] = useState(false);
@@ -53,7 +56,7 @@ function App(props) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [isSingleRange, setIsSingleDate] = useState(false);
 
-  // refs
+  // Refs
   const textInputRef = useRef(null);
   const refFootlightSearchWidget = useRef(null);
   const refPopover = useRef(null);
@@ -74,25 +77,21 @@ function App(props) {
   };
 
   const fetchDataHandler = useCallback(
-    async (q, date) => {
+    async (q, startDate, endDate) => {
       setIsLoading(true);
       setError(false);
       let url = apiUrl;
       if (q) {
         url += `&query=${q}`;
       }
-      console.log(moment(date).format("YYYY-MM-DD"));
 
-      if (date) {
-        if (date[0] || date) {
-          let startDate = moment(date[0] ?? date).format("YYYY-MM-DD");
+      if (startDate) {
           url += `&start-date-range=${startDate}`;
         }
-        if (date[1]) {
-          let endDate = moment(date[1]).format("YYYY-MM-DD");
+       if (endDate) {
           url += `&end-date-range=${endDate}`;
         }
-      }
+      
       try {
         const response = await fetch(url);
         const data = await response.json();
@@ -130,7 +129,6 @@ function App(props) {
     [apiUrl]
   );
 
-  
   const submitHandler = (event) => {
     // TODO: change to searchUrl depending on events or orgs
     event.preventDefault();
@@ -139,7 +137,10 @@ function App(props) {
       searchParams.append("query", searchString);
     }
     if (searchDate) {
-      searchParams.append("start-date-range", searchDate);
+      searchParams.append("start-date-range", startDateSpan);
+    }
+    if (searchDate[1]) {
+      searchParams.append("end-date-range", endDateSpan);
     }
     const url = eventSearchUrl + "?" + searchParams.toString();
     window.location.href = url;
@@ -156,18 +157,26 @@ function App(props) {
     setSearchString(event.target.value);
   };
 
+  const searchDateHandler = (value) => {
+    setSearchDate(value);
+    setStartDateSpan(moment(value[0] ?? value).format("YYYY-MM-DD"));
+    if (value[0]) {
+      setEndDateSpan(moment(value[1]).format("YYYY-MM-DD"));
+    }
+    setIsPopoverOpen(!isPopoverOpen);
+  };
+
   // Effects
   useEffect(() => {
     // debounce search while typing
     const identifier = setTimeout(() => {
-      fetchDataHandler(searchString, searchDate);
+      fetchDataHandler(searchString, startDateSpan, endDateSpan);
     }, 500);
     return () => {
       clearTimeout(identifier);
     };
-  }, [searchString, searchDate, fetchDataHandler, apiUrl]);
+  }, [searchString, startDateSpan, endDateSpan, fetchDataHandler, apiUrl]);
 
-  
   useEffect(() => {
     // show results panel
     if (searchFieldFocus === true || isPopoverOpen === true) {
@@ -175,7 +184,6 @@ function App(props) {
     }
   }, [showResults, searchFieldFocus, isPopoverOpen]);
 
-  
   useEffect(() => {
     // click outside to hide -- move to results panel component and popover component
     const handleClickOutside = (event) => {
@@ -219,14 +227,9 @@ function App(props) {
             onBlur={textBlurHandler}
             ref={textInputRef}
           />
-          {/* <input
-          type="date"
-          onChange={dateChangeHandler}
-          onFocus={dateFocusHandler}
-          onBlur={dateBlurHandler}
-        /> */}
         </form>
         <div
+          className="topDateDiv"
           style={{
             display: "flex",
             alignItems: "center",
@@ -236,13 +239,10 @@ function App(props) {
           <span style={{ whiteSpace: "nowrap" }}>
             {(searchDate || searchDate?.length > 0) && (
               <>
-                {moment(
-                  searchDate?.length > 0 ? searchDate[0] : searchDate
-                ).format("DD MMM YY")}
+                <DisplayDate date={startDateSpan} />
                 &nbsp;
                 {searchDate?.length > 0 && <>-&nbsp;</>}
-                {searchDate?.length > 0 &&
-                  moment(searchDate[1]).format("DD MMM YY")}
+                {searchDate?.length > 0 && <DisplayDate date={endDateSpan} /> }
               </>
             )}
           </span>
@@ -261,13 +261,11 @@ function App(props) {
                 }}
               >
                 <Calendar
-                  onChange={(value) => {
-                    setSearchDate(value);
-                    setIsPopoverOpen(!isPopoverOpen);
-                  }}
+                  onChange={searchDateHandler}
                   value={searchDate}
                   selectRange={!isSingleRange}
                   className="react-calendar-wrapper"
+                  locale={locale}
                 />
                 <div
                   style={{

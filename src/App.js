@@ -18,10 +18,10 @@ function App(props) {
     props.orgUrl ||
     "https://toutculture.stagingminimalmtl.com/organismes-detail/?organize=";
   const eventSearchUrl =
-    props.eventSearchUrl ||
+    props.searchEventsUrl ||
     "https://toutculture.stagingminimalmtl.com/evenements/";
   const orgSearchUrl =
-    props.orgSearchUrl ||
+    props.searchOrgsUrl ||
     "https://toutculture.stagingminimalmtl.com/organismes/";
   const locale = props.locale || "fr";
 

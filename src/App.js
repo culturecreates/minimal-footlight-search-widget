@@ -8,26 +8,38 @@ import calendarIcon from "./assets/icons/Calendar.svg";
 import moment from "moment/moment";
 
 function App(props) {
-  // temporary defaults
-  let searchUrl = "https://toutculture.stagingminimalmtl.com/evenements/";
-  let calendar = "tout-culture";
-  let locale = "fr";
+  // ALL props passed in from HTML widget
+  const api = props.api || "api.footlight.io";
+  const calendar = props.calendarId || "tout-culture";
+  const eventUrl =
+    props.eventUrl ||
+    "http://demo.tout-culture.s3-website.ca-central-1.amazonaws.com/events/event-details.html?eventId=";
+  const orgUrl =
+    props.orgUrl ||
+    "https://toutculture.stagingminimalmtl.com/organismes-detail/?organize=";
+  const eventSearchUrl =
+    props.eventSearchUrl ||
+    "https://toutculture.stagingminimalmtl.com/evenements/";
+  const orgSearchUrl =
+    props.orgSearchUrl ||
+    "https://toutculture.stagingminimalmtl.com/organismes/";
+  const locale = props.locale || "fr";
 
-  if (props.calendar) {
-    calendar = props.calendarId;
-  }
-  if (props.searchUrl) {
-    searchUrl = props.searchUrl;
-  }
-  if (props.locale) {
-    locale = props.locale;
-  }
+  // object to pass HTML widget props to children components
+  const widgetProps = {
+    eventUrl: eventUrl,
+    orgUrl: orgUrl,
+    eventSearchUrl: eventSearchUrl,
+    orgSearchUrl: orgSearchUrl,
+    locale: locale,
+  };
 
   // constants built using other constants
-  const apiEventsUrl = `https://${props.api}/calendars/${calendar}/events?page=1&limit=5`;
-  const apiOrganizationsUrl = `https://${props.api}/calendars/${calendar}/organizations?page=1&limit=5`;
-  const apiAteliersUrl = `https://${props.api}/calendars/${calendar}/events?type=63e00d658097540065660ef7&page=1&limit=5`;
+  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?page=1&limit=5`;
+  const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=5`;
+  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=63e00d658097540065660ef7&page=1&limit=5`;
 
+  // states
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -41,10 +53,12 @@ function App(props) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [isSingleRange, setIsSingleDate] = useState(false);
 
+  // refs
   const textInputRef = useRef(null);
   const refFootlightSearchWidget = useRef(null);
   const refPopover = useRef(null);
 
+  // Handlers
   const changeTabHandler = (clickedTab) => {
     // set focus on text input to keep results panel open
     textInputRef.current.focus();
@@ -116,7 +130,9 @@ function App(props) {
     [apiUrl]
   );
 
+  
   const submitHandler = (event) => {
+    // TODO: change to searchUrl depending on events or orgs
     event.preventDefault();
     const searchParams = new URLSearchParams();
     if (searchString !== "") {
@@ -125,7 +141,7 @@ function App(props) {
     if (searchDate) {
       searchParams.append("start-date-range", searchDate);
     }
-    const url = searchUrl + "?" + searchParams.toString();
+    const url = eventSearchUrl + "?" + searchParams.toString();
     window.location.href = url;
     console.log("FORM SUBMIT: " + url);
   };
@@ -140,8 +156,9 @@ function App(props) {
     setSearchString(event.target.value);
   };
 
-  // debounce search while typing
+  // Effects
   useEffect(() => {
+    // debounce search while typing
     const identifier = setTimeout(() => {
       fetchDataHandler(searchString, searchDate);
     }, 500);
@@ -150,15 +167,17 @@ function App(props) {
     };
   }, [searchString, searchDate, fetchDataHandler, apiUrl]);
 
-  // show results panel
+  
   useEffect(() => {
+    // show results panel
     if (searchFieldFocus === true || isPopoverOpen === true) {
       setShowResults(true);
     }
   }, [showResults, searchFieldFocus, isPopoverOpen]);
 
-  // click outside to hide -- move to results panel component and popover component
+  
   useEffect(() => {
+    // click outside to hide -- move to results panel component and popover component
     const handleClickOutside = (event) => {
       if (
         refFootlightSearchWidget.current &&
@@ -294,10 +313,9 @@ function App(props) {
           events={events}
           isLoading={isLoading}
           totalCount={totalCount}
-          eventUrl={props.eventUrl}
+          widgetProps={widgetProps}
           onChangeTab={changeTabHandler}
           tabSelected={tabSelected}
-          locale={locale}
         />
       )}
     </div>

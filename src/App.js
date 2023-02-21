@@ -144,7 +144,11 @@ function App(props) {
     if (endDateSpan) {
       searchParams.append("end-date-range", endDateSpan);
     }
-    const url = eventSearchUrl + "?" + searchParams.toString();
+    let searchUrl = eventSearchUrl;
+    if (tabSelected === "Organizations") {
+      searchUrl = orgSearchUrl;
+    } 
+    let url = searchUrl + "?" + searchParams.toString();
     window.location.href = url;
     console.log("FORM SUBMIT: " + url);
   };

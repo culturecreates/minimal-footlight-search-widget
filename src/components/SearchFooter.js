@@ -1,8 +1,10 @@
+import "./SearchFooter.css";
+
 const SearchFooter = (props) => {
   return (
-    <h5>
-      VOIR TOUT - {props.count}
-    </h5>
+    <div className="footer-submit" onClick={props.onSubmit}>
+      <p>VOIR TOUT - {props.count}</p>
+    </div>
   );
 };
 

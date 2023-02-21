@@ -136,10 +136,10 @@ function App(props) {
     if (searchString !== "") {
       searchParams.append("query", searchString);
     }
-    if (searchDate) {
+    if (startDateSpan) {
       searchParams.append("start-date-range", startDateSpan);
     }
-    if (searchDate[1]) {
+    if (endDateSpan) {
       searchParams.append("end-date-range", endDateSpan);
     }
     const url = eventSearchUrl + "?" + searchParams.toString();
@@ -314,6 +314,7 @@ function App(props) {
           widgetProps={widgetProps}
           onChangeTab={changeTabHandler}
           tabSelected={tabSelected}
+          onSubmit={submitHandler}
         />
       )}
     </div>

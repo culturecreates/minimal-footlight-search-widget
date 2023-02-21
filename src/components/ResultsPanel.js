@@ -12,7 +12,7 @@ const ResultsPanel = (props) => {
     content = (
       <>
         <EventsList eventUrl={props.widgetProps.eventUrl || ""} events={props.events}  locale={props.widgetProps.locale}/>
-        <SearchFooter count={props.totalCount} />
+        <SearchFooter count={props.totalCount} onSubmit={props.onSubmit}/>
       </>
     );
   }

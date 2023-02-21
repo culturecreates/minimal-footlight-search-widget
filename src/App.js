@@ -69,8 +69,6 @@ function App(props) {
     if (tabSelected !== clickedTab) {
       setIsLoading(true);
     }
-   
-    
     setTabSelected(clickedTab);
     if (clickedTab === "Organizations") {
       setApiUrl(apiOrganizationsUrl);
@@ -89,7 +87,6 @@ function App(props) {
       if (q) {
         url += `&query=${q}`;
       }
-
       if (startDate) {
           url += `&start-date-range=${startDate}`;
         }
@@ -167,6 +164,8 @@ function App(props) {
     setStartDateSpan(moment(value[0] ?? value).format("YYYY-MM-DD"));
     if (value[0]) {
       setEndDateSpan(moment(value[1]).format("YYYY-MM-DD"));
+    } else {
+      setEndDateSpan(null);
     }
     setIsPopoverOpen(!isPopoverOpen);
   };

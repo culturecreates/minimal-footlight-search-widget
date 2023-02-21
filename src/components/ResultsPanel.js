@@ -11,7 +11,7 @@ const ResultsPanel = (props) => {
   if (props.events.length > -1) {
     content = (
       <>
-        <EventsList eventUrl={props.widgetProps.eventUrl || ""} events={props.events}  locale={props.widgetProps.locale}/>
+        <EventsList  tabSelected={props.tabSelected} widgetProps={props.widgetProps} events={props.events} />
         <SearchFooter count={props.totalCount} onSubmit={props.onSubmit}/>
       </>
     );
@@ -21,9 +21,14 @@ const ResultsPanel = (props) => {
     content = <p>An error occured</p>;
   }
 
-  // if (props.isLoading) {
-  //   content = <p>Loading...</p>;
-  // }
+  if (props.isLoading) {
+    if (props.widgetProps.locale === "fr") {
+      content = <p>Téléchargement...</p>;
+    } else {
+      content = <p>Loading...</p>;
+    }
+   
+  }
 
   const changeTabHandler = (clickedTab) => {
     props.onChangeTab(clickedTab);

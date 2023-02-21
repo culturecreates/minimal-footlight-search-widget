@@ -66,6 +66,11 @@ function App(props) {
     // set focus on text input to keep results panel open
     textInputRef.current.focus();
     setTextFocus(true);
+    if (tabSelected !== clickedTab) {
+      setIsLoading(true);
+    }
+   
+    
     setTabSelected(clickedTab);
     if (clickedTab === "Organizations") {
       setApiUrl(apiOrganizationsUrl);

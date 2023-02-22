@@ -9,7 +9,9 @@ root.render(
   <App
     api={widget.dataset.api}
     eventUrl={widget.dataset.eventUrl}
-    searchUrl={widget.dataset.searchUrl}
+    orgUrl={widget.dataset.orgUrl}
+    searchEventsUrl={widget.dataset.searchEventsUrl}
+    searchOrgsUrl={widget.dataset.searchOrgsUrl}
     calendar={widget.dataset.dataCalendar}
     locale={widget.dataset.locale}
   />

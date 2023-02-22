@@ -132,7 +132,6 @@ function App(props) {
   );
 
   const submitHandler = (event) => {
-    // TODO: change to searchUrl depending on events or orgs
     event.preventDefault();
     const searchParams = new URLSearchParams();
     if (searchString !== "") {
@@ -148,8 +147,7 @@ function App(props) {
     if (tabSelected === "Organizations") {
       searchUrl = orgSearchUrl;
     }
-    setShowResults(false);
-    setSearchString("");
+    setSearchString(""); // otherwise backbutton will restore results panel but no text will be in search bar.
     let url = searchUrl + "?" + searchParams.toString();
     window.location.href = url;
     console.log("FORM SUBMIT: " + url);

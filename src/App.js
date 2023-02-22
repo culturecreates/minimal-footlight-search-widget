@@ -6,7 +6,7 @@ import "./App.css";
 import "react-calendar/dist/Calendar.css";
 import calendarIcon from "./assets/icons/Calendar.svg";
 import moment from "moment/moment";
-import DisplayDate from "./components/DisplayDate"
+import DisplayDate from "./components/DisplayDate";
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -88,12 +88,12 @@ function App(props) {
         url += `&query=${q}`;
       }
       if (startDate) {
-          url += `&start-date-range=${startDate}`;
-        }
-       if (endDate) {
-          url += `&end-date-range=${endDate}`;
-        }
-      
+        url += `&start-date-range=${startDate}`;
+      }
+      if (endDate) {
+        url += `&end-date-range=${endDate}`;
+      }
+
       try {
         const response = await fetch(url);
         const data = await response.json();
@@ -147,7 +147,7 @@ function App(props) {
     let searchUrl = eventSearchUrl;
     if (tabSelected === "Organizations") {
       searchUrl = orgSearchUrl;
-    } 
+    }
     let url = searchUrl + "?" + searchParams.toString();
     window.location.href = url;
     console.log("FORM SUBMIT: " + url);
@@ -236,82 +236,84 @@ function App(props) {
             ref={textInputRef}
           />
         </form>
-        <div
-          className="topDateDiv"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-          }}
-        >
-          <span style={{ whiteSpace: "nowrap" }}>
-            {(searchDate || searchDate?.length > 0) && (
-              <>
-                <DisplayDate date={startDateSpan} />
-                &nbsp;
-                {searchDate?.length > 0 && <>-&nbsp;</>}
-                {searchDate?.length > 0 && <DisplayDate date={endDateSpan} /> }
-              </>
-            )}
-          </span>
-          <Popover
-            isOpen={isPopoverOpen}
-            // onClickOutside={() => setIsPopoverOpen(false)}
-            id="react-calendar-checkbox-container"
-            align="end"
-            positions={["bottom"]} // preferred positions by priority
-            content={
-              <div
-                ref={refPopover}
-                style={{
-                  background: "#ffffff",
-                  boxShadow: " 0px 19px 20px 4px rgba(0, 0, 0, 0.1)",
-                }}
-              >
-                <Calendar
-                  onChange={searchDateHandler}
-                  value={searchDate}
-                  selectRange={!isSingleRange}
-                  className="react-calendar-wrapper"
-                  locale={locale}
-                />
+        {tabSelected !== "Organizations" && (
+          <div
+            className="topDateDiv"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <span style={{ whiteSpace: "nowrap" }}>
+              {(searchDate || searchDate?.length > 0) && (
+                <>
+                  <DisplayDate date={startDateSpan} />
+                  &nbsp;
+                  {searchDate?.length > 0 && <>-&nbsp;</>}
+                  {searchDate?.length > 0 && <DisplayDate date={endDateSpan} />}
+                </>
+              )}
+            </span>
+            <Popover
+              isOpen={isPopoverOpen}
+              // onClickOutside={() => setIsPopoverOpen(false)}
+              id="react-calendar-checkbox-container"
+              align="end"
+              positions={["bottom"]} // preferred positions by priority
+              content={
                 <div
+                  ref={refPopover}
                   style={{
-                    height: "48px",
-                    width: "auto",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    paddingLeft: "12px",
-                    background: "rgba(255, 246, 73, 0.16)",
-                    borderTop: "1px solid #545454",
+                    background: "#ffffff",
+                    boxShadow: " 0px 19px 20px 4px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <input
-                    type="checkbox"
-                    style={{ height: "24px", width: "24px" }}
-                    checked={isSingleRange}
-                    onChange={(e) => setIsSingleDate(e.target.checked)}
+                  <Calendar
+                    onChange={searchDateHandler}
+                    value={searchDate}
+                    selectRange={!isSingleRange}
+                    className="react-calendar-wrapper"
+                    locale={locale}
                   />
-                  <label>Rechercher à une date précise</label>
+                  <div
+                    style={{
+                      height: "48px",
+                      width: "auto",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      paddingLeft: "12px",
+                      background: "rgba(255, 246, 73, 0.16)",
+                      borderTop: "1px solid #545454",
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      style={{ height: "24px", width: "24px" }}
+                      checked={isSingleRange}
+                      onChange={(e) => setIsSingleDate(e.target.checked)}
+                    />
+                    <label>Rechercher à une date précise</label>
+                  </div>
                 </div>
-              </div>
-            }
-          >
-            <div
-              onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-              id="calendar-icon-id"
+              }
             >
-              <span style={{ cursor: "pointer" }}>
-                <img
-                  src={calendarIcon}
-                  alt="icon date picker"
-                  style={{ width: "30px", height: "30px" }}
-                />
-              </span>
-            </div>
-          </Popover>
-        </div>
+              <div
+                onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+                id="calendar-icon-id"
+              >
+                <span style={{ cursor: "pointer" }}>
+                  <img
+                    src={calendarIcon}
+                    alt="icon date picker"
+                    style={{ width: "25px", height: "25px" }}
+                  />
+                </span>
+              </div>
+            </Popover>
+          </div>
+        )}
       </div>
       {showResults && (
         <ResultsPanel

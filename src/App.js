@@ -148,6 +148,8 @@ function App(props) {
     if (tabSelected === "Organizations") {
       searchUrl = orgSearchUrl;
     }
+    setShowResults(false);
+    setSearchString("");
     let url = searchUrl + "?" + searchParams.toString();
     window.location.href = url;
     console.log("FORM SUBMIT: " + url);
@@ -172,6 +174,8 @@ function App(props) {
       setEndDateSpan(null);
     }
     setIsPopoverOpen(!isPopoverOpen);
+    textInputRef.current.focus();
+    setTextFocus(true);
   };
 
   // Effects

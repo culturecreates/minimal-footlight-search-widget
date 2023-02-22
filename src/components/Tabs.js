@@ -4,9 +4,9 @@ const Tabs = (props) => {
   const clickEventsTabHandler = () => {
     props.onChangeTab("Events");
   };
-  const clickAteliersTabHandler = () => {
-    props.onChangeTab("Ateliers");
-  };
+  // const clickAteliersTabHandler = () => {
+  //   props.onChangeTab("Ateliers");
+  // };
   const clickOrganizationsTabHandler = () => {
     props.onChangeTab("Organizations");
   };
@@ -19,12 +19,12 @@ const Tabs = (props) => {
       >
         {props.locale === "en" ? "Events" : "Événements"}
       </li>
-      <li
+      {/* <li
         onClick={clickAteliersTabHandler}
         className={props.tabSelected === "Ateliers" ? "selected" : undefined}
       >
         {props.locale === "en" ? "Workshops" : "Ateliers"}
-      </li>
+      </li> */}
       <li
         onClick={clickOrganizationsTabHandler}
         className={

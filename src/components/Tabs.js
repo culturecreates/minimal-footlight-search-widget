@@ -19,12 +19,12 @@ const Tabs = (props) => {
       >
         {props.locale === "en" ? "Events" : "Événements"}
       </li>
-      {/* <li
+      <li
         onClick={clickAteliersTabHandler}
         className={props.tabSelected === "Ateliers" ? "selected" : undefined}
       >
         {props.locale === "en" ? "Workshops" : "Ateliers"}
-      </li> */}
+      </li>
       <li
         onClick={clickOrganizationsTabHandler}
         className={

@@ -12,7 +12,7 @@ root.render(
     orgUrl={widget.dataset.orgUrl}
     searchEventsUrl={widget.dataset.searchEventsUrl}
     searchOrgsUrl={widget.dataset.searchOrgsUrl}
-    calendar={widget.dataset.dataCalendar}
+    calendar={widget.dataset.calendar}
     locale={widget.dataset.locale}
   />
 );

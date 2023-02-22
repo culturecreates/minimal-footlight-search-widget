@@ -11,7 +11,7 @@ import DisplayDate from "./components/DisplayDate";
 function App(props) {
   // ALL props passed in from HTML widget
   const api = props.api || "api.footlight.io";
-  const calendar = props.calendarId || "tout-culture";
+  const calendar = props.calendar || "tout-culture";
   const eventUrl =
     props.eventUrl ||
     "http://demo.tout-culture.s3-website.ca-central-1.amazonaws.com/events/event-details.html?eventId=";

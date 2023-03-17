@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import EventsList from "./EventsList";
 import SearchFooter from "./SearchFooter";
-import Tabs from "./Tabs";
 import "./ResultsPanel.css";
 
 const ResultsPanel = (props) => {
   const [showPanel] = useState(true);
 
   let content = <p>Pas de resultats</p>;
-  if (props.events.length > -1) {
+
+  if (props.events.length > 0) {
     content = (
       <>
         <EventsList  tabSelected={props.tabSelected} widgetProps={props.widgetProps} events={props.events} />
@@ -30,19 +30,11 @@ const ResultsPanel = (props) => {
    
   }
 
-  const changeTabHandler = (clickedTab) => {
-    props.onChangeTab(clickedTab);
-  };
 
   return (
     <div className="panel-anchor">
       {showPanel && (
-        <div className="panel-float">
-          <Tabs
-            onChangeTab={changeTabHandler}
-            tabSelected={props.tabSelected}
-            locale={props.widgetProps.locale}
-          />
+        <div>
           {content}
         </div>
       )}

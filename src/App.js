@@ -50,7 +50,7 @@ function App(props) {
   const [startDateSpan, setStartDateSpan] = useState("");
   const [endDateSpan, setEndDateSpan] = useState("");
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
-  const [showResults, setShowResults] = useState(false);
+  const [showResults, setShowResults] = useState(true);
   const [searchFieldFocus, setTextFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -194,27 +194,27 @@ function App(props) {
     }
   }, [showResults, searchFieldFocus, isPopoverOpen]);
 
-  useEffect(() => {
-    // click outside to hide -- move to results panel component and popover component
-    const handleClickOutside = (event) => {
-      if (
-        refFootlightSearchWidget.current &&
-        !refFootlightSearchWidget.current.contains(event.target)
-      ) {
-        if (
-          (refPopover.current && !refPopover.current.contains(event.target)) ||
-          !refPopover.current
-        ) {
-          setIsPopoverOpen(false);
-          setShowResults(false);
-        }
-      }
-    };
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  }, [isPopoverOpen, showResults, refFootlightSearchWidget]);
+  // useEffect(() => {
+  //   // click outside to hide -- move to results panel component and popover component
+  //   const handleClickOutside = (event) => {
+  //     if (
+  //       refFootlightSearchWidget.current &&
+  //       !refFootlightSearchWidget.current.contains(event.target)
+  //     ) {
+  //       if (
+  //         (refPopover.current && !refPopover.current.contains(event.target)) ||
+  //         !refPopover.current
+  //       ) {
+  //         setIsPopoverOpen(false);
+  //         setShowResults(false);
+  //       }
+  //     }
+  //   };
+  //   document.addEventListener("click", handleClickOutside, true);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside, true);
+  //   };
+  // }, [isPopoverOpen, showResults, refFootlightSearchWidget]);
 
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>

@@ -245,9 +245,13 @@ function App(props) {
               display: "flex",
               alignItems: "center",
               gap: "8px",
+              cursor: "pointer",
             }}
           >
-            <span style={{ whiteSpace: "nowrap" }}>
+            <span
+              style={{ whiteSpace: "nowrap" }}
+              onClick={() => setIsPopoverOpen(!isPopoverOpen)}
+            >
               {(searchDate || searchDate?.length > 0) && (
                 <>
                   <DisplayDate date={startDateSpan} />

@@ -1,6 +1,7 @@
 .footlightSearchWidget .container {
   display: flex;
   align-items: flex-start;
+  margin-bottom: 15px;
 }
 
 .footlightSearchWidget .container:hover {

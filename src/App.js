@@ -119,6 +119,10 @@ function App(props) {
               place.address?.addressLocality?.fr ||
               place.address?.addressLocality?.en ||
               "",
+            streetAddress: 
+            place.address?.streetAddress?.fr ||
+            place.address?.streetAddress?.en ||
+            ""
           };
         });
         setEvents(transformedEvents);

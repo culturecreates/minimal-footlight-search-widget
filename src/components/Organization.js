@@ -18,7 +18,7 @@ const Event = (props) => {
         <div className="title">{props.event.title}</div>
       
         <div className="place">
-          {props.event.place}
+          {props.event.streetAddress}
           {props.event.city && ", " + props.event.city}
         </div>
       </div>

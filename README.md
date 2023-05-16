@@ -2,13 +2,13 @@
 
 Instructions for adding the HTML to display this search widget:
 
-Add script and CSS lines to <head>
+Add script and CSS lines to head
 ```
 <script defer="defer" src="https://minimal-footlight-search-widget.s3.ca-central-1.amazonaws.com/dist/index.js"></script>
 <link href="https://minimal-footlight-search-widget.s3.ca-central-1.amazonaws.com/dist/index.css" rel="stylesheet">
 ```
 
-Add this div to your webpage <body>
+Add this div to your webpage body
 ```
 <div id="minimal-footlight-search-widget" 
      data-api="api.footlight.io" 

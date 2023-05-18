@@ -235,7 +235,7 @@ function App(props) {
           <input type="submit"></input>
           <input
             type="text"
-            placeholder="Recherche"
+            placeholder={locale === "en" ? "Search" : "Recherche"}
             onChange={textChangeHandler}
             onFocus={textFocusHandler}
             onBlur={textBlurHandler}
@@ -304,7 +304,7 @@ function App(props) {
                       checked={isSingleRange}
                       onChange={(e) => setIsSingleDate(e.target.checked)}
                     />
-                    <label>Rechercher à une date précise</label>
+                    <label>{locale === "en" ? "Single date" : "Rechercher à une date précise"}</label>
                   </div>
                 </div>
               }

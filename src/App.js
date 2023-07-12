@@ -168,9 +168,9 @@ function App(props) {
 
   const searchDateHandler = (value) => {
     setSearchDate(value);
-    setStartDateSpan(DisplayDate( {date: value[0] ?? value} ));
+    setStartDateSpan(new Date(value[0] ?? value).toISOString().slice(0, 10));
     if (value[0]) {
-      setEndDateSpan(DisplayDate( {date: value[1]} ));
+      setEndDateSpan(new Date(value[1]).toISOString().slice(0, 10));
     } else {
       setEndDateSpan(null);
     }

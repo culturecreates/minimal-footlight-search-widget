@@ -5,7 +5,6 @@ import { Popover } from "react-tiny-popover";
 import "./App.css";
 import "react-calendar/dist/Calendar.css";
 import calendarIcon from "./assets/icons/Calendar.svg";
-import moment from "moment/moment";
 import DisplayDate from "./components/DisplayDate";
 
 function App(props) {
@@ -169,9 +168,9 @@ function App(props) {
 
   const searchDateHandler = (value) => {
     setSearchDate(value);
-    setStartDateSpan(moment(value[0] ?? value).format("YYYY-MM-DD"));
+    setStartDateSpan(DisplayDate( {date: value[0] ?? value} ));
     if (value[0]) {
-      setEndDateSpan(moment(value[1]).format("YYYY-MM-DD"));
+      setEndDateSpan(DisplayDate( {date: value[1]} ));
     } else {
       setEndDateSpan(null);
     }

@@ -1,5 +1,6 @@
 .footlightSearchWidget .footer-submit {
   cursor: pointer;
-  text-align: left;
+  text-align: center;
   padding: 15px;
+  background: var(--primary-flash-yellow, #FFF649);
 }

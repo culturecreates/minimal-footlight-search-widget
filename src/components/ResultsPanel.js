@@ -3,46 +3,92 @@ import EventsList from "./EventsList";
 import SearchFooter from "./SearchFooter";
 import Tabs from "./Tabs";
 import "./ResultsPanel.css";
+import Calender from "./Calender";
 
 const ResultsPanel = (props) => {
+  const {
+    setSearchDate,
+    setStartDateSpan,
+    setEndDateSpan,
+    locale,
+    tabSelected,
+    widgetProps,
+    events,
+    totalCount,
+    onChangeTab,
+    onSubmit,
+    error,
+    isLoading,
+    searchDate
+  } = props;
+
   const [showPanel] = useState(true);
 
   let content;
 
-  if (props.events.length > -1) {
+  if (events.length > -1) {
     content = (
-      <>
-        <EventsList  tabSelected={props.tabSelected} widgetProps={props.widgetProps} events={props.events} />
-        <SearchFooter count={props.totalCount}  locale={props.widgetProps.locale} onSubmit={props.onSubmit}/>
-      </>
+      <div className="content">
+        <div>
+          <EventsList
+            tabSelected={tabSelected}
+            widgetProps={widgetProps}
+            events={events}
+          />
+        </div>
+      </div>
     );
   }
 
-  if (props.error) {
-      content = props.widgetProps.locale === "fr" ? <p>Une erreur est survenue.</p> : <p>An error occured.</p>;
+  if (error) {
+    content =
+      widgetProps.locale === "fr" ? (
+        <p>Une erreur est survenue.</p>
+      ) : (
+        <p>An error occured.</p>
+      );
   }
 
-  if (props.isLoading) {
-      content = props.widgetProps.locale === "fr" ? <p>TÉLÉCHARGEMENT...</p> : <p>LOADING...</p> ;
+  if (isLoading) {
+    content =
+      widgetProps.locale === "fr" ? (
+        <p>TÉLÉCHARGEMENT...</p>
+      ) : (
+        <p>LOADING...</p>
+      );
   }
 
   const changeTabHandler = (clickedTab) => {
-    props.onChangeTab(clickedTab);
+    onChangeTab(clickedTab);
   };
 
   return (
-    <div className="panel-anchor">
+    <>
       {showPanel && (
-        <div className="panel-float">
+        <div className="panel-result">
           <Tabs
             onChangeTab={changeTabHandler}
-            tabSelected={props.tabSelected}
-            locale={props.widgetProps.locale}
+            tabSelected={tabSelected}
+            locale={widgetProps.locale}
           />
-          {content}
+          <div className="panel-content">
+            {content}
+            <Calender
+              locale={locale}
+              setSearchDate={setSearchDate}
+              setStartDateSpan={setStartDateSpan}
+              setEndDateSpan={setEndDateSpan}
+              searchDate={searchDate}
+            />
+          </div>
+          <SearchFooter
+            count={totalCount}
+            locale={widgetProps.locale}
+            onSubmit={onSubmit}
+          />
         </div>
       )}
-    </div>
+    </>
   );
 };
 

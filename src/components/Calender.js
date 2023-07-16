@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Calendar from "react-calendar";
+import "./calendar.css";
 
 function Calender(props) {
   const {
@@ -20,23 +21,47 @@ function Calender(props) {
     } else {
       setEndDateSpan(null);
     }
-    // setIsPopoverOpen(!isPopoverOpen);
-    // textInputRef.current.focus();
-    // setTextFocus(true);
+  };
+
+  const handleDateErase = () => {
+    setSearchDate(null);
+    setStartDateSpan(null);
+    setEndDateSpan(null);
+  };
+
+  const handleDateSelectionTypeChange = (e) => {
+    setIsSingleDate(e.target.checked);
+
+    setSearchDate(null);
+    setStartDateSpan(null);
+    setEndDateSpan(null);
   };
 
   return (
-    <div style={{ width: "auto%", maxWidth: "40%" }}>
-      <div>
-        <input
-          type="checkbox"
-          style={{ height: "24px", width: "24px" }}
-          checked={isSingleRange}
-          onChange={(e) => setIsSingleDate(e.target.checked)}
-        />
-        <label>
-          {locale === "en" ? "Single date" : "Rechercher à une date précise"}
-        </label>
+    <div
+      style={{
+        maxWidth: "40%",
+        borderLeft: "1px solid var(--primary-light-grey, #000)",
+      }}
+    >
+      <div className="calendar-control">
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              id="single-date-control"
+              style={{ height: "24px", width: "24px" }}
+              checked={isSingleRange}
+              onChange={(e) => handleDateSelectionTypeChange(e)}
+            />
+            <span></span>
+            {locale === "en" ? "Single date" : "Rechercher à une date précise"}
+          </label>
+        </div>
+
+        <button onClick={handleDateErase}>
+          {locale === "en" ? "Erase" : "Effacer"}
+        </button>
       </div>
       <Calendar
         onChange={searchDateHandler}

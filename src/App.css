@@ -1,6 +1,15 @@
-:root{
-  --primary-light-grey:#e0e0e0;
-  --primary-flash-yellow:rgba(255, 246, 73, 1)
+:root {
+  --primary-light-grey: #e0e0e0;
+  --primary-flash-yellow: #fff649;
+  --primary-ultra-light-grey: #f4f4f4;
+  --primary-light-yellow: #f2eb9f;
+  --primary-black: #000000;
+  --primary-white:#FFFFFF;
+  /* --primary-ultra-light-grey:#f7f7f7; */
+}
+
+html {
+  font-family: TT Commons;
 }
 
 .footlightSearchWidget {
@@ -31,7 +40,7 @@
   border: none;
   outline: none;
   box-shadow: none;
-  text-transform: uppercase; 
+  text-transform: uppercase;
   font-size: 24px;
   box-sizing: border-box;
 }
@@ -64,7 +73,7 @@
 
 .react-calendar-wrapper .react-calendar__tile--rangeEnd,
 .react-calendar-wrapper .react-calendar__tile--rangeStart {
-  background: #fff649 !important;
+  background: var(--primary-flash-yellow) !important;
 }
 
 .react-calendar-wrapper .react-calendar__navigation__label {
@@ -79,9 +88,10 @@
 .react-calendar-wrapper .react-calendar__tile--active:enabled:hover,
 .react-calendar-wrapper .react-calendar__tile--active:enabled:focus,
 .react-calendar-wrapper .react-calendar__tile--hasActive {
-  background: #fff649;
+  background: var(--primary-light-yellow);
 }
 
 .react-calendar-wrapper .react-calendar__tile--active {
-  background: #f2eb9f;
+  background: var(--primary-light-yellow);
 }
+

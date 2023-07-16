@@ -1,6 +1,7 @@
 .footlightSearchWidget .events-list {
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 .footlightSearchWidget .tabs-list {

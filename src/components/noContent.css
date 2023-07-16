@@ -1,0 +1,30 @@
+.no-content-wrapper {
+  width: 100%;
+  margin: 16px;
+  background: var(--primary-ultra-light-grey);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-content-wrapper p {
+  color: var(--primary-black, #000);
+  text-align: center;
+  font-style: normal;
+  font-weight: 400;
+  margin: 15px 0;
+}
+
+.no-content-wrapper p:first-child {
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 110%;
+}
+
+.no-content-wrapper p:last-child {
+  font-size: 18px;
+  line-height: 22px;
+  text-transform: uppercase;
+}

@@ -4,6 +4,7 @@ import SearchFooter from "./SearchFooter";
 import Tabs from "./Tabs";
 import "./ResultsPanel.css";
 import Calender from "./Calender";
+import NoContent from "./NoContent";
 
 const ResultsPanel = (props) => {
   const {
@@ -19,14 +20,14 @@ const ResultsPanel = (props) => {
     onSubmit,
     error,
     isLoading,
-    searchDate
+    searchDate,
   } = props;
 
   const [showPanel] = useState(true);
 
   let content;
 
-  if (events.length > -1) {
+  if (events.length > 0 && totalCount > 0) {
     content = (
       <div className="content">
         <div>
@@ -38,6 +39,17 @@ const ResultsPanel = (props) => {
         </div>
       </div>
     );
+  } else {
+    const message =
+      locale === "fr"
+        ? `Aucun ${tabSelected} disponible`
+        : `No ${tabSelected} found `;
+    const date =
+      locale === "fr" && tabSelected !== "Organisations"
+        ? `${searchDate}`
+        : `${searchDate}`;
+
+    content = <NoContent message={message} date={date} locale={locale}/>;
   }
 
   if (error) {

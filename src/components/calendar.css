@@ -1,0 +1,94 @@
+.footlightSearchWidget .calendar-control {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 16px 4px 8px;
+  background: var(
+    --primary-ultra-light-grey,
+    linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.96) 0%,
+      rgba(255, 255, 255, 0.96) 100%
+    ),
+    #000
+  );
+}
+
+.footlightSearchWidget .calendar-control button {
+  border: none;
+  cursor: pointer;
+  background: none;
+  color: var(--primary-black, #000);
+  /* font-family: sans-serif; */
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 122.222% */
+  text-decoration-line: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.footlightSearchWidget .calendar-control div > label {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 8px;
+}
+
+.footlightSearchWidget .calendar-control label {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  text-align: left;
+}
+
+.footlightSearchWidget .calendar-control input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+  accent-color: rgb(143, 31, 31);
+}
+
+/* Text color for the label */
+.footlightSearchWidget .calendar-control input[type="checkbox"] + span {
+  cursor: pointer;
+  font: 16px sans-serif;
+  color: var(--primary-black);
+}
+
+/* Checkbox un-checked style */
+.footlightSearchWidget .calendar-control input[type="checkbox"] + span:before {
+  content: "";
+  border: 1px solid var(--primary-black);
+  background-color: var(--primary-white);
+  border-radius: 0px;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: -2px;
+}
+
+/* Checked checkbox style (in this case the background is green #e7ffba, change this to change the color) */
+.footlightSearchWidget
+  .calendar-control
+  input[type="checkbox"]:checked
+  + span:before {
+  background-image: url("https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/collection/build/ionicons/svg/ios-checkmark.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 40px;
+  border-radius: 0px;
+  background-color: var(--primary-white);
+  color: var(--primary-black);
+}
+
+/* Disabled checkbox styles */
+.footlightSearchWidget
+  .calendar-control
+  input[type="checkbox"]:disabled
+  + span {
+  cursor: default;
+  color: black;
+  opacity: 0.5;
+}

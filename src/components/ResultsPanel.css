@@ -28,17 +28,22 @@
   display: flex;
 }
 
-.footlightSearchWidget .panel-content{
+.footlightSearchWidget .panel-content {
   display: flex;
   justify-content: space-between;
 }
-.footlightSearchWidget .react-calendar{
+.footlightSearchWidget .react-calendar {
   max-width: 100%;
   width: auto;
 }
 .footlightSearchWidget .panel-content .content {
   min-width: 60%;
-  border-right: 1px solid var(--primary-light-grey, #000);
+  /* border-right: 1px solid var(--primary-light-grey, #000); */
+  flex-grow: 1;
+}
+
+.footlightSearchWidget .panel-content .content > div:first-child {
+  flex-grow: 1;
 }
 
 /* Custom datepicker styles */
@@ -51,8 +56,15 @@
   background: none;
 }
 
+.footlightSearchWidget .react-calendar__tile:enabled:hover{
+  background: var(--primary-flash-yellow);
+}
+
+.footlightSearchWidget .react-calendar__tile--now:enabled:hover {
+  background: var(--primary-flash-yellow);
+}
+
 .footlightSearchWidget .react-calendar__tile--now > abbr {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-

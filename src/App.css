@@ -95,3 +95,9 @@ html {
   background: var(--primary-light-yellow);
 }
 
+.footlightSearchWidget .loader{
+  width: 60%;
+  text-align: center;
+  display: grid;
+  place-content: center;
+}

@@ -268,6 +268,7 @@ function App(props) {
                 setStartDateSpan={setStartDateSpan}
                 setEndDateSpan={setEndDateSpan}
                 searchDate={searchDate}
+                setIsLoading={setIsLoading}
               />
             </>
           )}

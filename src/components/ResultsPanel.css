@@ -24,9 +24,7 @@
   min-width: 30rem;
 }
 
-.footlightSearchWidget .panel-anchor .content {
-  display: flex;
-}
+
 
 .footlightSearchWidget .panel-content {
   display: flex;
@@ -37,9 +35,10 @@
   width: auto;
 }
 .footlightSearchWidget .panel-content .content {
-  min-width: 60%;
+  width: 60%;
+  display: flex;
   /* border-right: 1px solid var(--primary-light-grey, #000); */
-  flex-grow: 1;
+  /* flex-grow: 1; */
 }
 
 .footlightSearchWidget .panel-content .content > div:first-child {

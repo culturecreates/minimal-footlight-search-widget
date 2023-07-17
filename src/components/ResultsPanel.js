@@ -5,6 +5,7 @@ import Tabs from "./Tabs";
 import "./ResultsPanel.css";
 import Calender from "./Calender";
 import NoContent from "./NoContent";
+import Loader from "./Loader";
 
 const ResultsPanel = (props) => {
   const {
@@ -21,11 +22,14 @@ const ResultsPanel = (props) => {
     error,
     isLoading,
     searchDate,
+    setIsLoading,
   } = props;
 
   const [showPanel] = useState(true);
 
   let content;
+  const loadingText =
+    widgetProps.locale === "fr" ? <p>TÉLÉCHARGEMENT...</p> : <p>LOADING...</p>;
 
   if (events.length > 0 && totalCount > 0) {
     content = (
@@ -49,7 +53,14 @@ const ResultsPanel = (props) => {
         ? `${searchDate}`
         : `${searchDate}`;
 
-    content = <NoContent message={message} date={date} locale={locale}/>;
+    content = (
+      <NoContent
+        message={message}
+        date={date}
+        locale={locale}
+        isLoading={isLoading}
+      />
+    );
   }
 
   if (error) {
@@ -62,12 +73,7 @@ const ResultsPanel = (props) => {
   }
 
   if (isLoading) {
-    content =
-      widgetProps.locale === "fr" ? (
-        <p>TÉLÉCHARGEMENT...</p>
-      ) : (
-        <p>LOADING...</p>
-      );
+    content = <Loader text={loadingText} />;
   }
 
   const changeTabHandler = (clickedTab) => {
@@ -85,12 +91,14 @@ const ResultsPanel = (props) => {
           />
           <div className="panel-content">
             {content}
+            
             <Calender
               locale={locale}
               setSearchDate={setSearchDate}
               setStartDateSpan={setStartDateSpan}
               setEndDateSpan={setEndDateSpan}
               searchDate={searchDate}
+              setIsLoading={setIsLoading}
             />
           </div>
           <SearchFooter

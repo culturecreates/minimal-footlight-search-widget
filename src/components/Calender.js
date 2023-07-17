@@ -9,6 +9,7 @@ function Calender(props) {
     setStartDateSpan,
     setEndDateSpan,
     searchDate,
+    setIsLoading
   } = props;
 
   const [isSingleRange, setIsSingleDate] = useState(false);
@@ -18,6 +19,7 @@ function Calender(props) {
     setStartDateSpan(new Date(value[0] ?? value).toISOString().slice(0, 10));
     if (value[0]) {
       setEndDateSpan(new Date(value[1]).toISOString().slice(0, 10));
+      setIsLoading(true)
     } else {
       setEndDateSpan(null);
     }

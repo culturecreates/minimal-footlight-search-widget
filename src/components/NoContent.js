@@ -1,42 +1,22 @@
 import React from "react";
-import moment from "moment";
 import "moment/locale/es";
 import "./noContent.css";
+import { dateFormatter } from "../helpers/helpers";
 
 function NoContent(props) {
-  const { message, date, locale, isLoading } = props;
-  let day = "";
-  let formatedDateText = "";
-
-  const flag = date !== "undefined" && date !== "null" && !isLoading;
-  if (flag) {
-    if (date.includes(",")) {
-      console.log("works");
-    } else {
-      day = moment(date).format("Do");
-      moment.locale(locale);
-      formatedDateText = moment(date).format("MMMM YYYY");
-    }
-  }
+  const { message, date, locale } = props;
+  const formatedDateText = dateFormatter(date, locale);
 
   return (
-    <>
-      {!isLoading ? (
-        <div className="no-content-wrapper">
-          <p>{message}</p>
-          <p>{flag && day.slice(0, day.length - 1) + " " + formatedDateText}</p>
-        </div>
-      ) : (
-        <></>
-      )}
-    </>
+    <div className="no-content-wrapper">
+      <p>{message}</p>
+      <p>{formatedDateText}</p>
+    </div>
   );
 }
 
-// Custom comparison function for memoization
 function arePropsEqual(prevProps, nextProps) {
-  // Only re-render if the `isLoading` prop has changed
-  return prevProps.isLoading === nextProps.isLoading;
+  return prevProps.isLoading === nextProps.isLoading;   // neccssery to prevent date from updating before loading appear
 }
 
 export default React.memo(NoContent, arePropsEqual);

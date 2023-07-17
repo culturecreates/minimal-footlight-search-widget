@@ -224,31 +224,6 @@ function App(props) {
             ref={textInputRef}
           />
         </form>
-        {tabSelected !== "Organizations" && (
-          <div
-            className="topDateDiv"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              cursor: "pointer",
-            }}
-          >
-            <span
-              style={{ whiteSpace: "nowrap" }}
-              onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-            >
-              {(searchDate || searchDate?.length > 0) && (
-                <>
-                  <DisplayDate date={startDateSpan} />
-                  &nbsp;
-                  {searchDate?.length > 0 && <>-&nbsp;</>}
-                  {searchDate?.length > 0 && <DisplayDate date={endDateSpan} />}
-                </>
-              )}
-            </span>
-          </div>
-        )}
       </div>
       <div className="panel-anchor">
         <div className="panel-float">

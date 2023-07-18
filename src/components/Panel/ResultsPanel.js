@@ -24,10 +24,10 @@ const ResultsPanel = (props) => {
     isLoading,
     searchDate,
     setIsLoading,
+    panelDisplayControl,
+    screenType,
   } = props;
-
   const [showPanel] = useState(true);
-  const [isMobileView] = useState(window.screen.width < "650px");
 
   let content;
   const loadingText =
@@ -85,7 +85,7 @@ const ResultsPanel = (props) => {
 
   return (
     <>
-      {showPanel && !isMobileView ? (   // for desktop and tablet view
+      {showPanel && screenType === "desktop" ? ( // for desktop and tablet view
         <div className="panel-result">
           <Tabs
             onChangeTab={changeTabHandler}
@@ -110,33 +110,36 @@ const ResultsPanel = (props) => {
             onSubmit={onSubmit}
           />
         </div>
-      ) : ( // for mobile view
+      ) : (
+        // for mobile view
         <>
-        <div className="panel-result">
-          <Tabs
-            onChangeTab={changeTabHandler}
-            tabSelected={tabSelected}
-            locale={widgetProps.locale}
-          />
-          <div className="panel-content">
-            {content}
-
-            <Calender
-              locale={locale}
-              setSearchDate={setSearchDate}
-              setStartDateSpan={setStartDateSpan}
-              setEndDateSpan={setEndDateSpan}
-              searchDate={searchDate}
-              setIsLoading={setIsLoading}
+          <div className="panel-result">
+            <Tabs
+              onChangeTab={changeTabHandler}
+              tabSelected={tabSelected}
+              locale={widgetProps.locale}
+            />
+            <div className="panel-content">
+              {panelDisplayControl ? (
+                content
+              ) : (
+                <Calender
+                  locale={locale}
+                  setSearchDate={setSearchDate}
+                  setStartDateSpan={setStartDateSpan}
+                  setEndDateSpan={setEndDateSpan}
+                  searchDate={searchDate}
+                  setIsLoading={setIsLoading}
+                />
+              )}
+            </div>
+            <SearchFooter
+              count={totalCount}
+              locale={widgetProps.locale}
+              onSubmit={onSubmit}
             />
           </div>
-          <SearchFooter
-            count={totalCount}
-            locale={widgetProps.locale}
-            onSubmit={onSubmit}
-          />
-        </div>
-        </>     
+        </>
       )}
     </>
   );

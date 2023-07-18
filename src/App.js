@@ -51,6 +51,7 @@ function App(props) {
   const [tabSelected, setTabSelected] = useState("Events");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [panelDisplayControl, setPanelDisplayControl] = useState(true); // controls which component to render in panel for mobile view. false = datepicker
+  const [screenType, setScreenType] = useState();
 
   // Refs
   const textInputRef = useRef(null);
@@ -163,6 +164,12 @@ function App(props) {
     setSearchString(event.target.value);
   };
 
+  const widthHandler = () => {
+    const isWide = window.innerWidth < 650;
+    const width = isWide ? "mobile" : "desktop";
+    setScreenType(width);
+  };
+
   // Effects
   useEffect(() => {
     // debounce search while typing
@@ -203,11 +210,17 @@ function App(props) {
     };
   }, [isPopoverOpen, showResults, refFootlightSearchWidget]);
 
+  useEffect(() => {
+    // for finding width of screen
+    window.addEventListener("resize", widthHandler);
+    return () => window.removeEventListener("resize", widthHandler);
+  }, []);
+
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>
       <div>
         <form onSubmit={submitHandler} autoComplete="off">
-          <input type="submit"></input>
+          {/* <input type="submit"></input> */}
           <input
             type="text"
             placeholder={locale === "en" ? "Search" : "Recherche"}
@@ -243,6 +256,7 @@ function App(props) {
                 searchDate={searchDate}
                 setIsLoading={setIsLoading}
                 panelDisplayControl={panelDisplayControl}
+                screenType={screenType}
               />
             </>
           )}

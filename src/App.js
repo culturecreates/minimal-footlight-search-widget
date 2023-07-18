@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import ResultsPanel from "./components/ResultsPanel";
 import "./App.css";
 import "react-calendar/dist/Calendar.css";
-import DisplayDate from "./components/DisplayDate";
+import { DateFormatter } from "./components/DateFormatter";
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -224,6 +224,21 @@ function App(props) {
             ref={textInputRef}
           />
         </form>
+        {tabSelected !== "Organizations" && (
+          <div
+            className="topDateDiv"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              cursor: "pointer",
+              textTransform: "uppercase",
+              padding: "0 11px"
+            }}
+          >
+            <DateFormatter date={searchDate} locale={locale} />
+          </div>
+        )}
       </div>
       <div className="panel-anchor">
         <div className="panel-float">

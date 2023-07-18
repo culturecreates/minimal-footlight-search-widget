@@ -48,15 +48,11 @@ const ResultsPanel = (props) => {
       locale === "fr"
         ? `Aucun ${tabSelected} disponible`
         : `No ${tabSelected} found `;
-    const date =
-      locale === "fr" && tabSelected !== "Organisations"
-        ? `${searchDate}`
-        : `${searchDate}`;
 
     content = (
       <NoContent
         message={message}
-        date={date}
+        date={searchDate}
         locale={locale}
         isLoading={isLoading}
       />
@@ -91,7 +87,7 @@ const ResultsPanel = (props) => {
           />
           <div className="panel-content">
             {content}
-            
+
             <Calender
               locale={locale}
               setSearchDate={setSearchDate}

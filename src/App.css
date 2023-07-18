@@ -19,7 +19,7 @@ html {
 
 .footlightSearchWidget form {
   display: flex;
-  width: 80%;
+  flex-grow: 1;
 }
 
 .footlightSearchWidget input[type="submit"] {
@@ -36,13 +36,14 @@ html {
 }
 
 .footlightSearchWidget input[type="text"] {
-  width: 80%;
   border: none;
   outline: none;
   box-shadow: none;
   text-transform: uppercase;
   font-size: 24px;
   box-sizing: border-box;
+  flex-grow: 1;
+  overflow-x: scroll;
 }
 
 .footlightSearchWidget input[type="date"] {

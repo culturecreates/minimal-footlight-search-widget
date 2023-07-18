@@ -1,7 +1,7 @@
 import React from "react";
 import "moment/locale/es";
 import "./noContent.css";
-import { DateFormatter } from "./DateFormatter";
+import { DateFormatter } from "../Date/DateFormatter";
 
 function NoContent(props) {
   const { message, date, locale } = props;

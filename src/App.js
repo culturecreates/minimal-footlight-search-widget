@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import ResultsPanel from "./components/ResultsPanel";
+import ResultsPanel from "./components/Panel/ResultsPanel";
 import "./App.css";
 import "react-calendar/dist/Calendar.css";
-import { DateFormatter } from "./components/DateFormatter";
+import { DateFormatter } from "./components/Date/DateFormatter";
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -50,6 +50,7 @@ function App(props) {
   const [searchFieldFocus, setTextFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [panelDisplayControl, setPanelDisplayControl] = useState(true); // controls which component to render in panel for mobile view. false = datepicker
 
   // Refs
   const textInputRef = useRef(null);
@@ -204,15 +205,7 @@ function App(props) {
 
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-          backgroundColor: "#ffffff",
-          marginBottom: "5px",
-        }}
-      >
+      <div>
         <form onSubmit={submitHandler} autoComplete="off">
           <input type="submit"></input>
           <input
@@ -225,17 +218,7 @@ function App(props) {
           />
         </form>
         {tabSelected !== "Organizations" && (
-          <div
-            className="topDateDiv"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              cursor: "pointer",
-              textTransform: "uppercase",
-              padding: "0 11px"
-            }}
-          >
+          <div className="topDateDiv">
             <DateFormatter date={searchDate} locale={locale} />
           </div>
         )}
@@ -259,6 +242,7 @@ function App(props) {
                 setEndDateSpan={setEndDateSpan}
                 searchDate={searchDate}
                 setIsLoading={setIsLoading}
+                panelDisplayControl={panelDisplayControl}
               />
             </>
           )}

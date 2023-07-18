@@ -24,12 +24,16 @@
   min-width: 30rem;
 }
 
-
-
 .footlightSearchWidget .panel-content {
   display: flex;
   justify-content: space-between;
+  max-height: 550px;
 }
+
+.footlightSearchWidget .panel-content .content div:last-child {
+  overflow-y: scroll;
+}
+
 .footlightSearchWidget .react-calendar {
   max-width: 100%;
   width: auto;
@@ -37,6 +41,7 @@
 .footlightSearchWidget .panel-content .content {
   width: 60%;
   display: flex;
+  flex-direction: column;
   /* border-right: 1px solid var(--primary-light-grey, #000); */
   /* flex-grow: 1; */
 }
@@ -55,7 +60,7 @@
   background: none;
 }
 
-.footlightSearchWidget .react-calendar__tile:enabled:hover{
+.footlightSearchWidget .react-calendar__tile:enabled:hover {
   background: var(--primary-flash-yellow);
 }
 
@@ -66,4 +71,14 @@
 .footlightSearchWidget .react-calendar__tile--now > abbr {
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+.footlightSearchWidget .panel-content .result-header {
+  padding: 32px 30px 16px;
+  display: flex;
+  justify-content: flex-start;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
 }

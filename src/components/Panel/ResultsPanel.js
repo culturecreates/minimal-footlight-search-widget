@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import EventsList from "./EventsList";
-import SearchFooter from "./SearchFooter";
-import Tabs from "./Tabs";
+import EventsList from "../Events/EventsList";
+import SearchFooter from "../Footer/SearchFooter";
+import Tabs from "../Tabs/Tabs";
 import "./ResultsPanel.css";
-import Calender from "./Calender";
-import NoContent from "./NoContent";
-import Loader from "./Loader";
+import Calender from "../Calendar/Calender";
+import NoContent from "../Noresult/NoContent";
+import Loader from "../Loader";
+import ResultHeading from "./ResultHeading";
 
 const ResultsPanel = (props) => {
   const {
@@ -26,6 +27,7 @@ const ResultsPanel = (props) => {
   } = props;
 
   const [showPanel] = useState(true);
+  const [isMobileView] = useState(window.screen.width < "650px");
 
   let content;
   const loadingText =
@@ -34,6 +36,11 @@ const ResultsPanel = (props) => {
   if (events.length > 0 && totalCount > 0) {
     content = (
       <div className="content">
+        <ResultHeading
+          searchDate={searchDate}
+          locale={locale}
+          isLoading={isLoading}
+        />
         <div>
           <EventsList
             tabSelected={tabSelected}
@@ -78,7 +85,7 @@ const ResultsPanel = (props) => {
 
   return (
     <>
-      {showPanel && (
+      {showPanel && !isMobileView ? (   // for desktop and tablet view
         <div className="panel-result">
           <Tabs
             onChangeTab={changeTabHandler}
@@ -103,6 +110,33 @@ const ResultsPanel = (props) => {
             onSubmit={onSubmit}
           />
         </div>
+      ) : ( // for mobile view
+        <>
+        <div className="panel-result">
+          <Tabs
+            onChangeTab={changeTabHandler}
+            tabSelected={tabSelected}
+            locale={widgetProps.locale}
+          />
+          <div className="panel-content">
+            {content}
+
+            <Calender
+              locale={locale}
+              setSearchDate={setSearchDate}
+              setStartDateSpan={setStartDateSpan}
+              setEndDateSpan={setEndDateSpan}
+              searchDate={searchDate}
+              setIsLoading={setIsLoading}
+            />
+          </div>
+          <SearchFooter
+            count={totalCount}
+            locale={widgetProps.locale}
+            onSubmit={onSubmit}
+          />
+        </div>
+        </>     
       )}
     </>
   );

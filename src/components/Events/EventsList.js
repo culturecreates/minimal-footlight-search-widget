@@ -1,7 +1,6 @@
 import React from "react";
-
 import Event from "./Event";
-import Organization from "./Organization";
+import Organization from "../Organization/Organization";
 import "./EventsList.css";
 
 const EventsList = (props) => {

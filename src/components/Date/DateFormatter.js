@@ -3,8 +3,6 @@ import DisplayDate from "./DisplayDate";
 export const DateFormatter = (props) => {
   const { date, locale, monthFormat = "short", yearFormat = "2-digit" } = props;
   const flag =
-    date !== "undefined" &&
-    date !== "null" &&
     date !== undefined &&
     date !== null; // true if date is valid
   let text = "";

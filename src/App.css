@@ -3,9 +3,14 @@
   --primary-flash-yellow: #fff649;
   --primary-ultra-light-grey: #f4f4f4;
   --primary-light-yellow: #f2eb9f;
+  --primary-medium-grey:rgb(233, 231, 231);
   --primary-black: #000000;
   --primary-white: #ffffff;
   /* --primary-ultra-light-grey:#f7f7f7; */
+}
+
+body {
+  margin: 0;
 }
 
 html {
@@ -24,7 +29,7 @@ html {
 
 .footlightSearchWidget input[type="submit"] {
   cursor: pointer;
-  background: url("/public/search-icon.svg") no-repeat left 10px center;
+  background: url("./assets/icons/search-icon.svg") no-repeat left 10px center;
   background-color: white;
   border: none;
   box-shadow: none;
@@ -43,7 +48,6 @@ html {
   font-size: 24px;
   box-sizing: border-box;
   flex-grow: 1;
-  overflow-x: scroll;
 }
 
 .footlightSearchWidget input[type="date"] {
@@ -103,7 +107,7 @@ html {
   place-content: center;
 }
 
-.footlightSearchWidget > div:first-child {
+.footlightSearchWidget > .input-container {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -118,4 +122,67 @@ html {
   cursor: pointer;
   text-transform: uppercase;
   padding: 0 11px;
+}
+
+.footlightSearchWidget .input-searchbar {
+  display: flex;
+  flex-grow: 1;
+}
+
+@media screen and (max-width: 650px) {
+  .footlightSearchWidget input[type="text"] {
+    height: 40px;
+    width: 100%;
+  }
+
+  .footlightSearchWidget input[type="submit"] {
+    margin-left: -5px;
+  }
+
+  .footlightSearchWidget .input-container {
+    height: 80px;
+    align-items: center;
+    margin-bottom: 0px;
+    border-bottom: 1px solid var(--primary-medium-grey, #000);
+    /* background: var(
+      --primary-ultra-light-grey,
+      linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.96) 0%,
+        rgba(255, 255, 255, 0.96) 100%
+      ),
+      #000
+    ); */
+  }
+
+  .footlightSearchWidget .input-searchbar {
+    display: flex;
+    border-bottom: 1px solid black;
+    flex-grow: 1;
+    align-items: end;
+    margin: 10px 0;
+    max-width: 80%;
+  }
+  .footlightSearchWidget .icon-container {
+    height: 28px;
+    width: 28px;
+    margin: 16px 0 0 20px;
+  }
+  .footlightSearchWidget form {
+    margin: 0 20px;
+    justify-content: space-between;
+  }
+
+  .footlightSearchWidget input[type="datepicker-icon"] {
+    cursor: pointer;
+    background: url("./assets/icons/Calendar.svg") no-repeat left 10px center;
+    background-color: white;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    text-indent: 100px;
+    width: 45px;
+    height: 40px;
+    box-sizing: border-box;
+  }
 }

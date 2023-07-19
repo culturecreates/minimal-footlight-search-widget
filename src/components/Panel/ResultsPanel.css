@@ -39,9 +39,10 @@
   width: auto;
 }
 .footlightSearchWidget .panel-content .content {
-  width: 60%;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .footlightSearchWidget .panel-content .content > div:first-child {
@@ -79,6 +80,14 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
+}
+
+.footlightSearchWidget .panel-content .calendar-container{
+  max-width: 40%;
+}
+
+.footlightSearchWidget .panel-content .calendar-container{
+  width: 60%;
 }
 
 

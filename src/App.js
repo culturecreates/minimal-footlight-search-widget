@@ -3,6 +3,8 @@ import ResultsPanel from "./components/Panel/ResultsPanel";
 import "./App.css";
 import "react-calendar/dist/Calendar.css";
 import { DateFormatter } from "./components/Date/DateFormatter";
+import CalendarIcon from "./assets/icons/Calendar.svg";
+import CloseIcon from "./assets/icons/Close.svg";
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -50,8 +52,9 @@ function App(props) {
   const [searchFieldFocus, setTextFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [panelDisplayControl, setPanelDisplayControl] = useState(true); // controls which component to render in panel for mobile view. false = datepicker
+  const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
+  const [placeHolderText, setPlaceHoldertext] = useState("");
 
   // Refs
   const textInputRef = useRef(null);
@@ -75,6 +78,8 @@ function App(props) {
       setApiUrl(apiEventsUrl);
     }
   };
+
+  console.log(screenType);
 
   const fetchDataHandler = useCallback(
     async (q, startDate, endDate) => {
@@ -170,6 +175,20 @@ function App(props) {
     setScreenType(width);
   };
 
+  const onCloseHandler = () => {
+    if (panelOnDisplay === "result") {
+      setShowResults(false);
+      setTextFocus(false);
+    } else if (panelOnDisplay === "datepicker") {
+      setPanelOnDisplay("result");
+    }
+  };
+
+  const datePickerDisplayHandler = () => {
+    setTextFocus(true);
+    setPanelOnDisplay("datepicker");
+  };
+
   // Effects
   useEffect(() => {
     // debounce search while typing
@@ -218,19 +237,49 @@ function App(props) {
 
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>
-      <div>
+      <div className="input-container">
         <form onSubmit={submitHandler} autoComplete="off">
-          {/* <input type="submit"></input> */}
-          <input
-            type="text"
-            placeholder={locale === "en" ? "Search" : "Recherche"}
-            onChange={textChangeHandler}
-            onFocus={textFocusHandler}
-            onBlur={textBlurHandler}
-            ref={textInputRef}
-          />
+          <div className="input-searchbar">
+            <input type="submit"></input>
+            {panelOnDisplay === "datepicker" && screenType === "mobile" && (
+              <input type="datepicker-icon"></input>
+            )}
+            <input
+              type="text"
+              placeholder={locale === "en" ? "Search" : "Recherche"}
+              onChange={textChangeHandler}
+              onFocus={textFocusHandler}
+              onBlur={textBlurHandler}
+              ref={textInputRef}
+            />
+          </div>
+          {screenType === "mobile" && (
+            <>
+              {!(
+                panelOnDisplay === "datepicker" && screenType === "mobile"
+              ) && (
+                <div
+                  className="icon-container"
+                  onClick={() => {
+                    datePickerDisplayHandler();
+                  }}
+                >
+                  <img src={CalendarIcon} alt="calendar"></img>
+                </div>
+              )}
+              <div
+                className="icon-container"
+                style={{ marginRight: "5px" }}
+                onClick={() => {
+                  onCloseHandler();
+                }}
+              >
+                <img src={CloseIcon} alt="calendar"></img>
+              </div>
+            </>
+          )}
         </form>
-        {tabSelected !== "Organizations" && (
+        {tabSelected !== "Organizations" && screenType !== "mobile" && (
           <div className="topDateDiv">
             <DateFormatter date={searchDate} locale={locale} />
           </div>
@@ -255,7 +304,7 @@ function App(props) {
                 setEndDateSpan={setEndDateSpan}
                 searchDate={searchDate}
                 setIsLoading={setIsLoading}
-                panelDisplayControl={panelDisplayControl}
+                panelOnDisplay={panelOnDisplay}
                 screenType={screenType}
               />
             </>

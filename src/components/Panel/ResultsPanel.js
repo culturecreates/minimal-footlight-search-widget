@@ -24,7 +24,7 @@ const ResultsPanel = (props) => {
     isLoading,
     searchDate,
     setIsLoading,
-    panelDisplayControl,
+    panelOnDisplay,
     screenType,
   } = props;
   const [showPanel] = useState(true);
@@ -83,6 +83,8 @@ const ResultsPanel = (props) => {
     onChangeTab(clickedTab);
   };
 
+  console.log(panelOnDisplay, "disp");
+
   return (
     <>
       {showPanel && screenType === "desktop" ? ( // for desktop and tablet view
@@ -93,16 +95,18 @@ const ResultsPanel = (props) => {
             locale={widgetProps.locale}
           />
           <div className="panel-content">
-            {content}
+            <div className="result-container">{content}</div>
 
-            <Calender
-              locale={locale}
-              setSearchDate={setSearchDate}
-              setStartDateSpan={setStartDateSpan}
-              setEndDateSpan={setEndDateSpan}
-              searchDate={searchDate}
-              setIsLoading={setIsLoading}
-            />
+            <div className="calendar-container">
+              <Calender
+                locale={locale}
+                setSearchDate={setSearchDate}
+                setStartDateSpan={setStartDateSpan}
+                setEndDateSpan={setEndDateSpan}
+                searchDate={searchDate}
+                setIsLoading={setIsLoading}
+              />
+            </div>
           </div>
           <SearchFooter
             count={totalCount}
@@ -114,13 +118,15 @@ const ResultsPanel = (props) => {
         // for mobile view
         <>
           <div className="panel-result">
-            <Tabs
-              onChangeTab={changeTabHandler}
-              tabSelected={tabSelected}
-              locale={widgetProps.locale}
-            />
+            {panelOnDisplay !== "datepicker" && (
+              <Tabs
+                onChangeTab={changeTabHandler}
+                tabSelected={tabSelected}
+                locale={widgetProps.locale}
+              />
+            )}
             <div className="panel-content">
-              {panelDisplayControl ? (
+              {panelOnDisplay !== "datepicker" ? (
                 content
               ) : (
                 <Calender

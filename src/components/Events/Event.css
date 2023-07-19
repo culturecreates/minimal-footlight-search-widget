@@ -56,6 +56,7 @@
   line-height: 18px; /* 171.429% */
   text-transform: uppercase;
   color: var(--primary-black, #000);
+  margin-bottom: 5px;
 }
 .footlightSearchWidget .title {
   text-align: left;

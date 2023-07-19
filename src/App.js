@@ -5,6 +5,7 @@ import "react-calendar/dist/Calendar.css";
 import { DateFormatter } from "./components/Date/DateFormatter";
 import CalendarIcon from "./assets/icons/Calendar.svg";
 import CloseIcon from "./assets/icons/Close.svg";
+import DisplayDate from "./components/Date/DisplayDate"
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -54,7 +55,7 @@ function App(props) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
-  const [placeHolderText, setPlaceHoldertext] = useState("");
+  const [placeHolderText, setPlaceHoldertext] = useState(locale === "en" ? "Search" : "Recherche");
 
   // Refs
   const textInputRef = useRef(null);
@@ -79,11 +80,10 @@ function App(props) {
     }
   };
 
-  console.log(screenType);
-
   const fetchDataHandler = useCallback(
     async (q, startDate, endDate) => {
       setIsLoading(true);
+      setPanelOnDisplay("result")
       setError(false);
       let url = apiUrl;
       if (q) {
@@ -161,9 +161,11 @@ function App(props) {
 
   const textFocusHandler = () => {
     setTextFocus(true);
+    setPlaceHoldertext("")
   };
   const textBlurHandler = () => {
     setTextFocus(false);
+    setPlaceHoldertext(locale === "en" ? "Search" : "Recherche")
   };
   const textChangeHandler = (event) => {
     setSearchString(event.target.value);
@@ -184,9 +186,9 @@ function App(props) {
     }
   };
 
-  const datePickerDisplayHandler = () => {
+  const datePickerDisplayHandler = (panel="result") => {
     setTextFocus(true);
-    setPanelOnDisplay("datepicker");
+    setPanelOnDisplay(panel);
   };
 
   // Effects
@@ -242,11 +244,13 @@ function App(props) {
           <div className="input-searchbar">
             <input type="submit"></input>
             {panelOnDisplay === "datepicker" && screenType === "mobile" && (
-              <input type="datepicker-icon"></input>
+              <input type="datepicker-icon" onClick={()=>{
+                datePickerDisplayHandler("result")
+              }}></input>
             )}
             <input
               type="text"
-              placeholder={locale === "en" ? "Search" : "Recherche"}
+              placeholder={placeHolderText}
               onChange={textChangeHandler}
               onFocus={textFocusHandler}
               onBlur={textBlurHandler}
@@ -261,7 +265,7 @@ function App(props) {
                 <div
                   className="icon-container"
                   onClick={() => {
-                    datePickerDisplayHandler();
+                    datePickerDisplayHandler("datepicker");
                   }}
                 >
                   <img src={CalendarIcon} alt="calendar"></img>

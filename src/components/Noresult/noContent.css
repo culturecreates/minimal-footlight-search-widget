@@ -1,5 +1,5 @@
 .no-content-wrapper {
-  width: 60%;
+  flex-grow: 1;
   margin: 16px;
   background: var(--primary-ultra-light-grey);
   display: flex;

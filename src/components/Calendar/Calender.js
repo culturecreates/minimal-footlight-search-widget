@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Calendar from "react-calendar";
+import DisplayDate from "../Date/DisplayDate";
 import "./calendar.css";
 
 function Calender(props) {
@@ -9,7 +10,8 @@ function Calender(props) {
     setStartDateSpan,
     setEndDateSpan,
     searchDate,
-    setIsLoading
+    setIsLoading,
+    screenType
   } = props;
 
   const [isSingleRange, setIsSingleDate] = useState(false);
@@ -23,6 +25,7 @@ function Calender(props) {
     } else {
       setEndDateSpan(null);
     }
+
   };
 
   const handleDateErase = () => {
@@ -34,9 +37,11 @@ function Calender(props) {
   const handleDateSelectionTypeChange = (e) => {
     setIsSingleDate(e.target.checked);
 
-    setSearchDate(null);
-    setStartDateSpan(null);
-    setEndDateSpan(null);
+    if (searchDate !== null) {
+      setSearchDate(null);
+      setStartDateSpan(null);
+      setEndDateSpan(null);
+    }
   };
 
   return (

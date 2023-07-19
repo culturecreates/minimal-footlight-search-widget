@@ -83,8 +83,6 @@ const ResultsPanel = (props) => {
     onChangeTab(clickedTab);
   };
 
-  console.log(panelOnDisplay, "disp");
-
   return (
     <>
       {showPanel && screenType === "desktop" ? ( // for desktop and tablet view
@@ -136,6 +134,7 @@ const ResultsPanel = (props) => {
                   setEndDateSpan={setEndDateSpan}
                   searchDate={searchDate}
                   setIsLoading={setIsLoading}
+                  screenType={screenType}
                 />
               )}
             </div>

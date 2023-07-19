@@ -1,11 +1,14 @@
 const DisplayDate = (props) => {
+  const { date, locale, monthFormat, yearFormat} = props;
   const dateTimeOptions = {
     day: "numeric",
-    month: "short",
-    year: "2-digit",
+    month: monthFormat,
+    year: yearFormat,
     timeZone: "America/Montreal",
   };
-  return new Intl.DateTimeFormat("en-UK", { ...dateTimeOptions }).format(new Date(props.date))
-}
+  return new Intl.DateTimeFormat(locale, { ...dateTimeOptions }).format(
+    new Date(date)
+  );
+};
 
 export default DisplayDate;

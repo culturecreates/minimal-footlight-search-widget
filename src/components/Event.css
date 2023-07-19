@@ -5,8 +5,7 @@
 }
 
 .footlightSearchWidget .container:hover {
-  background-color: aqua;
-
+  background: var(--primary-ultra-light-grey, linear-gradient(0deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.96) 100%), #000);
 }
 
 .footlightSearchWidget img {

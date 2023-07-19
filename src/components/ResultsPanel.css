@@ -2,19 +2,68 @@
   position: relative;
   margin: 0rem auto;
   width: 100%;
-
 }
 
 .footlightSearchWidget .panel-float {
   position: absolute;
-  z-index: 10;
+  width: 100%;
+  display: flex;
+}
+
+.footlightSearchWidget .panel-result {
+  /* position: absolute; */
+  /* z-index: 10; */
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: normal;
-  border: thin solid black;
+  /* border: thin solid black; */
   background: white;
   width: 100%;
-  max-width: 40rem;
+  /* max-width: 40rem; */
   min-width: 30rem;
+}
+
+
+
+.footlightSearchWidget .panel-content {
+  display: flex;
+  justify-content: space-between;
+}
+.footlightSearchWidget .react-calendar {
+  max-width: 100%;
+  width: auto;
+}
+.footlightSearchWidget .panel-content .content {
+  width: 60%;
+  display: flex;
+  /* border-right: 1px solid var(--primary-light-grey, #000); */
+  /* flex-grow: 1; */
+}
+
+.footlightSearchWidget .panel-content .content > div:first-child {
+  flex-grow: 1;
+}
+
+/* Custom datepicker styles */
+
+.footlightSearchWidget .react-calendar__tile {
+  padding: 24px 0px 24.8px;
+}
+
+.footlightSearchWidget .react-calendar__tile--now {
+  background: none;
+}
+
+.footlightSearchWidget .react-calendar__tile:enabled:hover{
+  background: var(--primary-flash-yellow);
+}
+
+.footlightSearchWidget .react-calendar__tile--now:enabled:hover {
+  background: var(--primary-flash-yellow);
+}
+
+.footlightSearchWidget .react-calendar__tile--now > abbr {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }

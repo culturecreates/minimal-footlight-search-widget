@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import ResultsPanel from "./components/ResultsPanel";
-import Calendar from "react-calendar";
-import { Popover } from "react-tiny-popover";
 import "./App.css";
 import "react-calendar/dist/Calendar.css";
-import calendarIcon from "./assets/icons/Calendar.svg";
-import DisplayDate from "./components/DisplayDate";
+import { DateFormatter } from "./components/DateFormatter";
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -37,7 +34,7 @@ function App(props) {
   // constants built using other constants
   const apiEventsUrl = `https://${api}/calendars/${calendar}/events?page=1&limit=15`;
   const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=5&sort=name.fr&concept=63d167da016e830064fbb03b`;
-  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=63e00d658097540065660ef7&page=1&limit=5`;
+  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=5`;
 
   // States
   const [events, setEvents] = useState([]);
@@ -53,7 +50,6 @@ function App(props) {
   const [searchFieldFocus, setTextFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [isSingleRange, setIsSingleDate] = useState(false);
 
   // Refs
   const textInputRef = useRef(null);
@@ -118,10 +114,10 @@ function App(props) {
               place.address?.addressLocality?.fr ||
               place.address?.addressLocality?.en ||
               "",
-            streetAddress: 
-            place.address?.streetAddress?.fr ||
-            place.address?.streetAddress?.en ||
-            ""
+            streetAddress:
+              place.address?.streetAddress?.fr ||
+              place.address?.streetAddress?.en ||
+              "",
           };
         });
         setEvents(transformedEvents);
@@ -164,19 +160,6 @@ function App(props) {
   };
   const textChangeHandler = (event) => {
     setSearchString(event.target.value);
-  };
-
-  const searchDateHandler = (value) => {
-    setSearchDate(value);
-    setStartDateSpan(new Date(value[0] ?? value).toISOString().slice(0, 10));
-    if (value[0]) {
-      setEndDateSpan(new Date(value[1]).toISOString().slice(0, 10));
-    } else {
-      setEndDateSpan(null);
-    }
-    setIsPopoverOpen(!isPopoverOpen);
-    textInputRef.current.focus();
-    setTextFocus(true);
   };
 
   // Effects
@@ -227,7 +210,7 @@ function App(props) {
           justifyContent: "space-between",
           width: "100%",
           backgroundColor: "#ffffff",
-          borderBottom: "1px solid #000000",
+          marginBottom: "5px",
         }}
       >
         <form onSubmit={submitHandler} autoComplete="off">
@@ -249,93 +232,38 @@ function App(props) {
               alignItems: "center",
               gap: "8px",
               cursor: "pointer",
+              textTransform: "uppercase",
+              padding: "0 11px"
             }}
           >
-            <span
-              style={{ whiteSpace: "nowrap" }}
-              onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-            >
-              {(searchDate || searchDate?.length > 0) && (
-                <>
-                  <DisplayDate date={startDateSpan} />
-                  &nbsp;
-                  {searchDate?.length > 0 && <>-&nbsp;</>}
-                  {searchDate?.length > 0 && <DisplayDate date={endDateSpan} />}
-                </>
-              )}
-            </span>
-            <Popover
-              isOpen={isPopoverOpen}
-              // onClickOutside={() => setIsPopoverOpen(false)}
-              id="react-calendar-checkbox-container"
-              align="end"
-              positions={["bottom"]} // preferred positions by priority
-              content={
-                <div
-                  ref={refPopover}
-                  style={{
-                    background: "#ffffff",
-                    boxShadow: " 0px 19px 20px 4px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
-                  <Calendar
-                    onChange={searchDateHandler}
-                    value={searchDate}
-                    selectRange={!isSingleRange}
-                    className="react-calendar-wrapper"
-                    locale={locale}
-                  />
-                  <div
-                    style={{
-                      height: "48px",
-                      width: "auto",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      paddingLeft: "12px",
-                      background: "rgba(255, 246, 73, 0.16)",
-                      borderTop: "1px solid #545454",
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      style={{ height: "24px", width: "24px" }}
-                      checked={isSingleRange}
-                      onChange={(e) => setIsSingleDate(e.target.checked)}
-                    />
-                    <label>{locale === "en" ? "Single date" : "Rechercher à une date précise"}</label>
-                  </div>
-                </div>
-              }
-            >
-              <div
-                onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-                id="calendar-icon-id"
-              >
-                <span style={{ cursor: "pointer" }}>
-                  <img
-                    src={calendarIcon}
-                    alt="icon date picker"
-                    style={{ width: "25px", height: "25px" }}
-                  />
-                </span>
-              </div>
-            </Popover>
+            <DateFormatter date={searchDate} locale={locale} />
           </div>
         )}
       </div>
-      {showResults && (
-        <ResultsPanel
-          error={error}
-          events={events}
-          isLoading={isLoading}
-          totalCount={totalCount}
-          widgetProps={widgetProps}
-          onChangeTab={changeTabHandler}
-          tabSelected={tabSelected}
-          onSubmit={submitHandler}
-        />
-      )}
+      <div className="panel-anchor">
+        <div className="panel-float">
+          {showResults && (
+            <>
+              <ResultsPanel
+                error={error}
+                events={events}
+                isLoading={isLoading}
+                totalCount={totalCount}
+                widgetProps={widgetProps}
+                onChangeTab={changeTabHandler}
+                tabSelected={tabSelected}
+                onSubmit={submitHandler}
+                locale={locale}
+                setSearchDate={setSearchDate}
+                setStartDateSpan={setStartDateSpan}
+                setEndDateSpan={setEndDateSpan}
+                searchDate={searchDate}
+                setIsLoading={setIsLoading}
+              />
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

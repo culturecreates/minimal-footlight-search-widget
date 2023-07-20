@@ -135,6 +135,7 @@ function App(props) {
               place.address?.streetAddress?.en ||
               "",
           };
+          
         });
         setEvents(transformedEvents);
         setTotalCount(data.meta?.totalCount || 0);
@@ -200,7 +201,6 @@ function App(props) {
     const identifier = setTimeout(() => {
       fetchDataHandler(searchString, startDateSpan, endDateSpan);
     }, 500);
-    console.log(searchString, startDateSpan,"sd" ,endDateSpan,"ed");
     return () => {
       clearTimeout(identifier);
     };

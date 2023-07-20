@@ -9,26 +9,28 @@ function Calender(props) {
     setSearchDate,
     setStartDateSpan,
     setEndDateSpan,
+    endDateSpan,
     searchDate,
+    startDateSpan,
     setIsLoading,
   } = props;
 
   const [isSingleRange, setIsSingleDate] = useState(false);
 
   const searchDateHandler = (value) => {
+    setSearchDate(value);
     if (isSingleRange) {
-      setSearchDate(value);
       setStartDateSpan(dateConverter(new Date(value)));
-    }
-    else{
-      setStartDateSpan(dateConverter(new Date(value[0])));
-    }
-    
-    if (value[0]) {
-      setEndDateSpan(dateConverter(new Date(value[1])));
-      setIsLoading(true);
+      setEndDateSpan(null); // Clear the end date span for single date selection
     } else {
-      setEndDateSpan(null);
+      if (value !== null) {
+        setStartDateSpan(dateConverter(new Date(value[0])));
+        setEndDateSpan(dateConverter(new Date(value[1])));
+      } else {
+        setStartDateSpan(null);
+        setEndDateSpan(null);
+        setIsLoading(false); // Reset the loading state when the date range is cleared
+      }
     }
   };
 
@@ -36,16 +38,19 @@ function Calender(props) {
     setSearchDate(null);
     setStartDateSpan(null);
     setEndDateSpan(null);
+    setIsLoading(false); // Reset the loading state when the date is erased
   };
 
   const handleDateSelectionTypeChange = (e) => {
-    setIsSingleDate(e.target.checked);
-
-    if (searchDate !== null) {
+    if (isSingleRange) {
       setSearchDate(null);
       setStartDateSpan(null);
       setEndDateSpan(null);
+    } else {
+      setSearchDate([null, null]);
     }
+    setIsSingleDate(e.target.checked);
+    setIsLoading(false); // Reset the loading state (if needed)
   };
 
   return (

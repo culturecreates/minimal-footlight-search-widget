@@ -1,37 +1,44 @@
 import "./Tabs.css";
 
 const Tabs = (props) => {
+  const {
+    // setSearchDate,
+    // setStartDateSpan,
+    // setEndDateSpan,
+    tabSelected,
+    locale,
+    onChangeTab,
+  } = props;
+
   const clickEventsTabHandler = () => {
-    props.onChangeTab("Events");
+    onChangeTab("Events");
   };
   const clickAteliersTabHandler = () => {
-    props.onChangeTab("Ateliers");
+    onChangeTab("Ateliers");
   };
   const clickOrganizationsTabHandler = () => {
-    props.onChangeTab("Organizations");
+    onChangeTab("Organizations");
   };
 
   return (
     <ul className="tabs-list">
       <li
         onClick={clickEventsTabHandler}
-        className={props.tabSelected === "Events" ? "selected" : undefined}
+        className={tabSelected === "Events" ? "selected" : undefined}
       >
-        {props.locale === "en" ? "Events" : "Événements"}
+        {locale === "en" ? "Events" : "Événements"}
       </li>
       <li
         onClick={clickAteliersTabHandler}
-        className={props.tabSelected === "Ateliers" ? "selected" : undefined}
+        className={tabSelected === "Ateliers" ? "selected" : undefined}
       >
-        {props.locale === "en" ? "Workshops" : "Ateliers"}
+        {locale === "en" ? "Workshops" : "Ateliers"}
       </li>
       <li
         onClick={clickOrganizationsTabHandler}
-        className={
-          props.tabSelected === "Organizations" ? "selected" : undefined
-        }
+        className={tabSelected === "Organizations" ? "selected" : undefined}
       >
-        {props.locale === "en" ? "Organizations" : "Organisations"}
+        {locale === "en" ? "Organizations" : "Organisations"}
       </li>
     </ul>
   );

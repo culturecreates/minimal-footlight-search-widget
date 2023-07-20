@@ -1,12 +1,12 @@
 :root {
-  --primary-light-grey: #e0e0e0;
-  --primary-flash-yellow: #fff649;
-  --primary-ultra-light-grey: #f4f4f4;
+  --primary-light-grey: #D6D6D6;
+  --primary-dark-grey:#707070;
+  --primary-flash-yellow: #FFF649;
+  --primary-ultra-light-grey: #F5F5F5;
   --primary-light-yellow: #f2eb9f;
-  --primary-medium-grey: rgb(233, 231, 231);
+  --primary-medium-grey: #B8B8B8;
   --primary-black: #000000;
   --primary-white: #ffffff;
-  /* --primary-ultra-light-grey:#f7f7f7; */
 }
 
 body {
@@ -134,7 +134,7 @@ html {
   width: 4em;
   height: 4em;
   border: 0.5em solid rgba(0, 0, 0, 0.1);
-  border-left-color: #c4ca7c;
+  border-left-color: var(--primary-black);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

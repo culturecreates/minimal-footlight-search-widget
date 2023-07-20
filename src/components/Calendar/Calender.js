@@ -16,8 +16,14 @@ function Calender(props) {
   const [isSingleRange, setIsSingleDate] = useState(false);
 
   const searchDateHandler = (value) => {
-    setSearchDate(value);
-    setStartDateSpan(dateConverter(new Date(value[0])));
+    if (isSingleRange) {
+      setSearchDate(value);
+      setStartDateSpan(dateConverter(new Date(value)));
+    }
+    else{
+      setStartDateSpan(dateConverter(new Date(value[0])));
+    }
+    
     if (value[0]) {
       setEndDateSpan(dateConverter(new Date(value[1])));
       setIsLoading(true);

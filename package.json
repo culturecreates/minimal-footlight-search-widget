@@ -6,12 +6,10 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.1",
     "@testing-library/user-event": "^7.2.1",
-    "moment": "^2.29.4",
     "react": "^18.0.0",
     "react-calendar": "^4.0.0",
     "react-dom": "^18.0.0",
-    "react-scripts": "^5.0.1",
-    "react-tiny-popover": "^7.2.1"
+    "react-scripts": "^5.0.1"
   },
   "devDependencies": {
     "parcel": "^2.8.3"

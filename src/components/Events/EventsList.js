@@ -1,7 +1,6 @@
 import React from "react";
-
 import Event from "./Event";
-import Organization from "./Organization";
+import Organization from "../Organization/Organization";
 import "./EventsList.css";
 
 const EventsList = (props) => {
@@ -11,7 +10,7 @@ const EventsList = (props) => {
     <ul className="events-list">
       {tabChoice === "Organizations" &&
         props.events
-          .slice(0, 5)
+          .slice(0, 4)
           .map((event) => (
             <Organization
               key={event.id}
@@ -22,7 +21,7 @@ const EventsList = (props) => {
           ))}
       {tabChoice !== "Organizations" &&
         props.events
-          .slice(0, 5)
+          .slice(0, 4)
           .map((event) => (
             <Event
               key={event.id}

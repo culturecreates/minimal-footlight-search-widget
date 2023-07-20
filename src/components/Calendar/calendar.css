@@ -92,3 +92,9 @@
   color: black;
   opacity: 0.5;
 }
+
+@media screen and (max-width: 650px) {
+  .footlightSearchWidget .calendar-control{
+    background: var(--primary-flash-yellow);
+  }
+}

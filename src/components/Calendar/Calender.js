@@ -9,7 +9,7 @@ function Calender(props) {
     setStartDateSpan,
     setEndDateSpan,
     searchDate,
-    setIsLoading
+    setIsLoading,
   } = props;
 
   const [isSingleRange, setIsSingleDate] = useState(false);
@@ -34,17 +34,17 @@ function Calender(props) {
   const handleDateSelectionTypeChange = (e) => {
     setIsSingleDate(e.target.checked);
 
-    setSearchDate(null);
-    setStartDateSpan(null);
-    setEndDateSpan(null);
+    if (searchDate !== null) {
+      setSearchDate(null);
+      setStartDateSpan(null);
+      setEndDateSpan(null);
+    }
   };
 
   return (
     <div
       style={{
-        maxWidth: "40%",
         minHeight: "500px",
-        // paddingBottom:"16px",
         borderLeft: "1px solid var(--primary-light-grey, #000)",
       }}
     >

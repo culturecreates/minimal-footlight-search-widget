@@ -68,7 +68,7 @@
   font-weight: 600;
   font-size: 17px;
   line-height: 21px;
-  margin: 0px 10px 5px 0px; 
+  margin: 0px 10px 5px 0px;
   max-height: 65px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -86,23 +86,29 @@
   justify-content: space-between;
   align-items: center;
   margin-left: 5px;
-  display: -webkit-box;
+  /* display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
-  overflow: hidden;
+  overflow: hidden; */
 }
 
 @media screen and (max-width: 650px) {
-  .footlightSearchWidget .title{
+  .footlightSearchWidget .title {
     font-size: 15px;
     line-height: 19px;
   }
 
-  .footlightSearchWidget .place{
+  .footlightSearchWidget .place {
     font-size: 12px;
   }
 
-  .footlightSearchWidget .date{
+  .footlightSearchWidget .date {
     font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .footlightSearchWidget .container:hover {
+    background: none;
   }
 }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Calendar from "react-calendar";
+import { dateConverter } from "../../helpers/helper";
 import "./calendar.css";
 
 function Calender(props) {
@@ -16,10 +17,10 @@ function Calender(props) {
 
   const searchDateHandler = (value) => {
     setSearchDate(value);
-    setStartDateSpan(new Date(value[0] ?? value).toISOString().slice(0, 10));
+    setStartDateSpan(dateConverter(new Date(value[0])));
     if (value[0]) {
-      setEndDateSpan(new Date(value[1]).toISOString().slice(0, 10));
-      setIsLoading(true)
+      setEndDateSpan(dateConverter(new Date(value[1])));
+      setIsLoading(true);
     } else {
       setEndDateSpan(null);
     }

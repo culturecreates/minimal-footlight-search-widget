@@ -1,5 +1,4 @@
 import React from "react";
-import "moment/locale/es";
 import "./noContent.css";
 import { DateFormatter } from "../Date/DateFormatter";
 

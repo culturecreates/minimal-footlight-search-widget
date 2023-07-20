@@ -40,6 +40,7 @@ const ResultsPanel = (props) => {
           searchDate={searchDate}
           locale={locale}
           isLoading={isLoading}
+          tabSelected={tabSelected}
         />
         <div>
           <EventsList
@@ -91,20 +92,25 @@ const ResultsPanel = (props) => {
             onChangeTab={changeTabHandler}
             tabSelected={tabSelected}
             locale={widgetProps.locale}
+            // setSearchDate={setSearchDate}
+            // setStartDateSpan={setStartDateSpan}
+            // setEndDateSpan={setEndDateSpan}
           />
           <div className="panel-content">
             <div className="result-container">{content}</div>
 
-            <div className="calendar-container">
-              <Calender
-                locale={locale}
-                setSearchDate={setSearchDate}
-                setStartDateSpan={setStartDateSpan}
-                setEndDateSpan={setEndDateSpan}
-                searchDate={searchDate}
-                setIsLoading={setIsLoading}
-              />
-            </div>
+            {tabSelected !== "Organizations" && (
+              <div className="calendar-container">
+                <Calender
+                  locale={locale}
+                  setSearchDate={setSearchDate}
+                  setStartDateSpan={setStartDateSpan}
+                  setEndDateSpan={setEndDateSpan}
+                  searchDate={searchDate}
+                  setIsLoading={setIsLoading}
+                />
+              </div>
+            )}
           </div>
           <SearchFooter
             count={totalCount}
@@ -126,7 +132,7 @@ const ResultsPanel = (props) => {
             <div className="panel-content">
               {panelOnDisplay !== "datepicker" ? (
                 content
-              ) : (
+              ) : tabSelected !== "Organizations" ? (
                 <Calender
                   locale={locale}
                   setSearchDate={setSearchDate}
@@ -136,6 +142,8 @@ const ResultsPanel = (props) => {
                   setIsLoading={setIsLoading}
                   screenType={screenType}
                 />
+              ) : (
+                <></>
               )}
             </div>
             <SearchFooter

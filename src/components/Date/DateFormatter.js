@@ -20,7 +20,7 @@ export const DateFormatter = (props) => {
       );
     } else {
       // for single date selection
-      text = displayDate(date, locale, monthFormat, yearFormat);
+      text = displayDate(date, locale, monthFormat, yearFormat).replace(",","  ");
     }
   }
   return <>{text}</>;

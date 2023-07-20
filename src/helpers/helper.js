@@ -9,3 +9,13 @@ export const displayDate = (date, locale, monthFormat, yearFormat) => {
     new Date(date)
   );
 };
+
+export const dateConverter = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const paddedDay = String(day).padStart(2, "0");
+  const paddedMonth = String(month).padStart(2, "0");
+  const formattedDate = `${year}/${paddedMonth}/${paddedDay}`;
+  return formattedDate;
+};

@@ -118,8 +118,12 @@ function App(props) {
           return {
             id: eventData.id,
             title: eventData.name.fr || eventData.name.en,
-            startDate: eventData.startDate || eventData.startDateTime || "",
-            endDate: eventData.endDate || eventData.endDateTime || "",
+            ...(tabSelected !== "Organizations"
+              ? {
+                  startDate: eventData.startDate || eventData.startDateTime || "",
+                  endDate: eventData.endDate || eventData.endDateTime || "",
+                }
+              : {}),
             image: eventData.image?.thumbnail || "",
             place: place.name?.fr || place.name?.en || "",
             city:
@@ -139,7 +143,7 @@ function App(props) {
       }
       setIsLoading(false);
     },
-    [apiUrl]
+    [apiUrl, tabSelected]
   );
 
   const submitHandler = (event) => {
@@ -252,7 +256,7 @@ function App(props) {
       }
     }
     setPlaceHoldertext(text);
-  }, [locale, screenType, searchDate,isLoading]);
+  }, [locale, screenType, searchDate, isLoading]);
 
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>
@@ -260,14 +264,16 @@ function App(props) {
         <form onSubmit={submitHandler} autoComplete="off">
           <div className="input-searchbar">
             <input type="submit"></input>
-            {panelOnDisplay === "datepicker" && screenType === "mobile" && (
-              <input
-                type="datepicker-icon"
-                onClick={() => {
-                  datePickerDisplayHandler("result");
-                }}
-              ></input>
-            )}
+            {panelOnDisplay === "datepicker" &&
+              screenType === "mobile" &&
+              tabSelected !== "Organizations" && (
+                <input
+                  type="datepicker-icon"
+                  onClick={() => {
+                    datePickerDisplayHandler("result");
+                  }}
+                ></input>
+              )}
             <input
               type="text"
               placeholder={placeHolderText}
@@ -279,18 +285,17 @@ function App(props) {
           </div>
           {screenType === "mobile" && (
             <>
-              {!(
-                panelOnDisplay === "datepicker" && screenType === "mobile"
-              ) && (
-                <div
-                  className="icon-container"
-                  onClick={() => {
-                    datePickerDisplayHandler("datepicker");
-                  }}
-                >
-                  <img src={CalendarIcon} alt="calendar"></img>
-                </div>
-              )}
+              {!(panelOnDisplay === "datepicker" && screenType === "mobile") &&
+                tabSelected !== "Organizations" && (
+                  <div
+                    className="icon-container"
+                    onClick={() => {
+                      datePickerDisplayHandler("datepicker");
+                    }}
+                  >
+                    <img src={CalendarIcon} alt="calendar"></img>
+                  </div>
+                )}
               <div
                 className="icon-container"
                 style={{ marginRight: "5px" }}

@@ -8,6 +8,7 @@
   position: absolute;
   width: 100%;
   display: flex;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 .footlightSearchWidget .panel-result {
@@ -48,7 +49,7 @@
   flex-grow: 1;
 }
 
-.footlightSearchWidget .panel-content .content > div:first-child {
+.footlightSearchWidget .panel-content .content > div:last-child {
   flex-grow: 1;
 }
 
@@ -97,5 +98,9 @@
 @media screen and (max-width: 650px) {
   .footlightSearchWidget .panel-content .content {
     width: 100%;
+  }
+  .footlightSearchWidget .panel-content > div{
+    width: 100%;
+    max-width: 100%;
   }
 }

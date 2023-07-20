@@ -1,7 +1,10 @@
 import React from "react";
 
 function Loader(props) {
-  const { text, icon } = props;
+  const {
+    //  text,
+    icon,
+  } = props;
   return (
     <div className="loader">
       {icon !== undefined && icon !== null ? (
@@ -9,7 +12,7 @@ function Loader(props) {
       ) : (
         <></>
       )}
-      {text}
+      <p>{/* {text} */}</p>
     </div>
   );
 }

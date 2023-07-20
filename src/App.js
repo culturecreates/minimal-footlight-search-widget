@@ -5,7 +5,8 @@ import "react-calendar/dist/Calendar.css";
 import { DateFormatter } from "./components/Date/DateFormatter";
 import CalendarIcon from "./assets/icons/Calendar.svg";
 import CloseIcon from "./assets/icons/Close.svg";
-import DisplayDate from "./components/Date/DisplayDate"
+import { useSize } from "./helpers/hooks";
+import { displayDate } from "./helpers/helper";
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -52,15 +53,19 @@ function App(props) {
   const [showResults, setShowResults] = useState(false);
   const [searchFieldFocus, setTextFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
-  const [placeHolderText, setPlaceHoldertext] = useState(locale === "en" ? "Search" : "Recherche");
+  const [placeHolderText, setPlaceHoldertext] = useState(
+    locale === "en" ? "Search" : "Recherche"
+  );
 
   // Refs
   const textInputRef = useRef(null);
   const refFootlightSearchWidget = useRef(null);
   const refPopover = useRef(null);
+
+  // value hooks
+  const width = useSize();
 
   // Handlers
   const changeTabHandler = (clickedTab) => {
@@ -83,7 +88,7 @@ function App(props) {
   const fetchDataHandler = useCallback(
     async (q, startDate, endDate) => {
       setIsLoading(true);
-      setPanelOnDisplay("result")
+      setPanelOnDisplay("result");
       setError(false);
       let url = apiUrl;
       if (q) {
@@ -161,20 +166,14 @@ function App(props) {
 
   const textFocusHandler = () => {
     setTextFocus(true);
-    setPlaceHoldertext("")
+    setPlaceHoldertext("");
   };
   const textBlurHandler = () => {
     setTextFocus(false);
-    setPlaceHoldertext(locale === "en" ? "Search" : "Recherche")
+    setPlaceHoldertext(locale === "en" ? "Search" : "Recherche");
   };
   const textChangeHandler = (event) => {
     setSearchString(event.target.value);
-  };
-
-  const widthHandler = () => {
-    const isWide = window.innerWidth < 650;
-    const width = isWide ? "mobile" : "desktop";
-    setScreenType(width);
   };
 
   const onCloseHandler = () => {
@@ -186,7 +185,7 @@ function App(props) {
     }
   };
 
-  const datePickerDisplayHandler = (panel="result") => {
+  const datePickerDisplayHandler = (panel = "result") => {
     setTextFocus(true);
     setPanelOnDisplay(panel);
   };
@@ -204,10 +203,10 @@ function App(props) {
 
   useEffect(() => {
     // show results panel
-    if (searchFieldFocus === true || isPopoverOpen === true) {
+    if (searchFieldFocus === true) {
       setShowResults(true);
     }
-  }, [showResults, searchFieldFocus, isPopoverOpen]);
+  }, [showResults, searchFieldFocus]);
 
   useEffect(() => {
     // click outside to hide -- move to results panel component and popover component
@@ -220,7 +219,6 @@ function App(props) {
           (refPopover.current && !refPopover.current.contains(event.target)) ||
           !refPopover.current
         ) {
-          setIsPopoverOpen(false);
           setShowResults(false);
         }
       }
@@ -229,13 +227,32 @@ function App(props) {
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [isPopoverOpen, showResults, refFootlightSearchWidget]);
+  }, [showResults, refFootlightSearchWidget]);
 
   useEffect(() => {
-    // for finding width of screen
-    window.addEventListener("resize", widthHandler);
-    return () => window.removeEventListener("resize", widthHandler);
-  }, []);
+    // set viw type accoring to screen size
+    const isWide = width < 650;
+    setScreenType(isWide ? "mobile" : "desktop");
+  }, [width]);
+
+  useEffect(() => {
+    // set viw type accoring to screen size
+    const monthFormat = "2-digit";
+    const yearFormat = "2-digit";
+    let text = "";
+    if (searchDate && screenType === "mobile") {
+      if (Array.isArray(searchDate)) {
+        // for date range selection
+        const dateArray = searchDate.map((dateItem) => {
+          return displayDate(dateItem, locale, monthFormat, yearFormat);
+        });
+        text = dateArray.join(" - ");
+      } else {
+        text = displayDate(searchDate, locale, monthFormat, yearFormat);
+      }
+    }
+    setPlaceHoldertext(text);
+  }, [locale, screenType, searchDate,isLoading]);
 
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>
@@ -244,9 +261,12 @@ function App(props) {
           <div className="input-searchbar">
             <input type="submit"></input>
             {panelOnDisplay === "datepicker" && screenType === "mobile" && (
-              <input type="datepicker-icon" onClick={()=>{
-                datePickerDisplayHandler("result")
-              }}></input>
+              <input
+                type="datepicker-icon"
+                onClick={() => {
+                  datePickerDisplayHandler("result");
+                }}
+              ></input>
             )}
             <input
               type="text"

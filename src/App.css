@@ -3,7 +3,7 @@
   --primary-flash-yellow: #fff649;
   --primary-ultra-light-grey: #f4f4f4;
   --primary-light-yellow: #f2eb9f;
-  --primary-medium-grey:rgb(233, 231, 231);
+  --primary-medium-grey: rgb(233, 231, 231);
   --primary-black: #000000;
   --primary-white: #ffffff;
   /* --primary-ultra-light-grey:#f7f7f7; */
@@ -52,7 +52,7 @@ html {
 
 .footlightSearchWidget input[type="date"] {
   width: 300px;
-  justify-content: end;
+  justify-content: flex-end;
   border: none;
   outline: none;
   box-shadow: none;
@@ -130,6 +130,21 @@ html {
   flex-grow: 1;
 }
 
+.footlightSearchWidget .loader > p {
+  width: 4em;
+  height: 4em;
+  border: 0.5em solid rgba(0, 0, 0, 0.1);
+  border-left-color: #c4ca7c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media screen and (max-width: 650px) {
   .footlightSearchWidget input[type="text"] {
     height: 40px;
@@ -163,7 +178,7 @@ html {
     display: flex;
     border-bottom: 1px solid black;
     flex-grow: 1;
-    align-items: end;
+    align-items: flex-end;
     margin: 10px 0;
     max-width: 80%;
   }
@@ -188,5 +203,19 @@ html {
     width: 45px;
     height: 40px;
     box-sizing: border-box;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .footlightSearchWidget .icon-container {
+    height: 23px;
+    width: 23px;
+    margin: 21px 0 0 20px;
+  }
+
+  .footlightSearchWidget input[type="text"] {
+    height: 40px;
+    width: 100%;
+    font-size: 16px;
   }
 }

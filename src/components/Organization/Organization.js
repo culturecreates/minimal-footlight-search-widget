@@ -1,5 +1,6 @@
 import React from "react";
 import "../Events/Event.css";
+import placeImg from "../../assets/icons/Pin.svg";
 
 const Event = (props) => {
   const { eventUrl, event } = props;
@@ -17,8 +18,9 @@ const Event = (props) => {
         <div className="title">{event.title}</div>
 
         <div className="place">
+          {event.streetAddress&&<img src={placeImg} alt="place"></img>}
           {event.streetAddress}
-          {event.city && ", " + event.city}
+          {/* {event.city && ", " + event.city} */}
         </div>
       </div>
     </div>

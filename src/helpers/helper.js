@@ -5,9 +5,16 @@ export const displayDate = (date, locale, monthFormat, yearFormat) => {
     year: yearFormat,
     timeZone: "Asia/Kolkata",
   };
-  return new Intl.DateTimeFormat(locale, { ...dateTimeOptions }).format(
+  const formatedDate = new Intl.DateTimeFormat(locale, { ...dateTimeOptions }).format(
     new Date(date)
   );
+
+  const parts = formatedDate.split(' '); // Split the string into parts
+  const month = parts[0];
+  const day = parts[1].slice(0, -1); 
+  const year = parts[2];
+
+  return `${day} ${month} ${year}`
 };
 
 export const dateConverter = (date) => {

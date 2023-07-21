@@ -26,6 +26,8 @@ const ResultsPanel = (props) => {
     setIsLoading,
     panelOnDisplay,
     screenType,
+    setIsSingleDate,
+    isSingleDate
   } = props;
   const [showPanel] = useState(true);
 
@@ -108,6 +110,8 @@ const ResultsPanel = (props) => {
                   setEndDateSpan={setEndDateSpan}
                   searchDate={searchDate}
                   setIsLoading={setIsLoading}
+                  isSingleDate={isSingleDate}
+                  setIsSingleDate={setIsSingleDate}
                 />
               </div>
             )}
@@ -141,6 +145,8 @@ const ResultsPanel = (props) => {
                   searchDate={searchDate}
                   setIsLoading={setIsLoading}
                   screenType={screenType}
+                  isSingleDate={isSingleDate}
+                  setIsSingleDate={setIsSingleDate}
                 />
               ) : (
                 <></>

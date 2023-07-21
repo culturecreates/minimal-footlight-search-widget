@@ -59,7 +59,10 @@ const Event = (props) => {
         <div className="title">{event.title}</div>
         <div className="date">
           {startDate.toUpperCase().replace(",", " ") + "   "}
-          &nbsp; &#9135;&#9135; &nbsp;
+          {/* &nbsp; &#9135;&#9135; &nbsp; */}
+          {endDate !== startDate && endDate && (
+            <>&nbsp; &#9135;&#9135; &nbsp;</>
+          )}
           {endDate !== startDate &&
             endDate &&
             "   " + endDate.toUpperCase().replace(",", " ")}

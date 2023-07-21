@@ -5,16 +5,24 @@ export const displayDate = (date, locale, monthFormat, yearFormat) => {
     year: yearFormat,
     timeZone: "Asia/Kolkata",
   };
-  const formatedDate = new Intl.DateTimeFormat(locale, { ...dateTimeOptions }).format(
-    new Date(date)
-  );
+  const formatedDate = new Intl.DateTimeFormat(locale, {
+    ...dateTimeOptions,
+  }).format(new Date(date));
 
-  const parts = formatedDate.split(' '); // Split the string into parts
-  const month = parts[0];
-  const day = parts[1].slice(0, -1); 
-  const year = parts[2];
-
-  return `${day} ${month} ${year}`
+  const flag = monthFormat === "short" && yearFormat !== "2-digit";
+  let parts = "";
+  let month = "";
+  let day = "";
+  let year = "";
+  if (flag) {
+    parts = formatedDate.split(" ");
+    month = parts[0];
+    day = parts[1];
+    year = parts[2];
+  } else {
+    return formatedDate;
+  }
+  return `${day} ${month} ${year}`;
 };
 
 export const dateConverter = (date) => {
@@ -27,4 +35,9 @@ export const dateConverter = (date) => {
   return formattedDate;
 };
 
-export const iconContainerClassNames = ["prev2-button","prev-button","next-button","next2-button"]
+export const iconContainerClassNames = [
+  "prev2-button",
+  "prev-button",
+  "next-button",
+  "next2-button",
+];

@@ -27,7 +27,7 @@ function Calender(props) {
       setStartDateSpan(dateConverter(new Date(value)));
       setEndDateSpan(null);
     } else {
-      if (value !== null) {
+      if (value[0] !== null) {
         setStartDateSpan(dateConverter(new Date(value[0])));
         setEndDateSpan(dateConverter(new Date(value[1])));
       } else {

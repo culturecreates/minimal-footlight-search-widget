@@ -4,7 +4,7 @@ export const DateFormatter = (props) => {
   const { date, locale, monthFormat = "short", yearFormat = "2-digit" } = props;
   const flag = date !== undefined && date !== null; // true if date is valid
   let text = "";
-
+console.log(date);
   if (flag) {
     if (Array.isArray(date)) {
       // for date range selection

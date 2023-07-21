@@ -19,3 +19,5 @@ export const dateConverter = (date) => {
   const formattedDate = `${year}/${paddedMonth}/${paddedDay}`;
   return formattedDate;
 };
+
+export const iconContainerClassNames = ["prev2-button","prev-button","next-button","next2-button"]

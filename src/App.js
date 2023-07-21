@@ -309,7 +309,7 @@ function App(props) {
             </>
           )}
         </form>
-        {tabSelected !== "Organizations" && screenType !== "mobile" && (
+        {tabSelected !== "Organizations" && screenType !== "mobile"&& (
           <div className="topDateDiv">
             <DateFormatter date={searchDate} locale={locale} />
           </div>

@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import { dateConverter } from "../../helpers/helper";
+import { iconContainerClassNames } from "../../helpers/helper";
+// import prevButton from "../../assets/icons/prev-button.svg"
+// import prev2Button from "../../assets/icons/prev2-button.svg"
+// import nextButton from "../../assets/icons/next-button.svg"
+// import next2Button from "../../assets/icons/next2-button.svg"
 import "./calendar.css";
 
 function Calender(props) {
@@ -9,19 +14,18 @@ function Calender(props) {
     setSearchDate,
     setStartDateSpan,
     setEndDateSpan,
-    endDateSpan,
     searchDate,
-    startDateSpan,
-    setIsLoading,
   } = props;
 
   const [isSingleRange, setIsSingleDate] = useState(false);
+
+  // handlers
 
   const searchDateHandler = (value) => {
     setSearchDate(value);
     if (isSingleRange) {
       setStartDateSpan(dateConverter(new Date(value)));
-      setEndDateSpan(null); // Clear the end date span for single date selection
+      setEndDateSpan(null);
     } else {
       if (value !== null) {
         setStartDateSpan(dateConverter(new Date(value[0])));
@@ -29,7 +33,6 @@ function Calender(props) {
       } else {
         setStartDateSpan(null);
         setEndDateSpan(null);
-        setIsLoading(false); // Reset the loading state when the date range is cleared
       }
     }
   };
@@ -38,20 +41,35 @@ function Calender(props) {
     setSearchDate(null);
     setStartDateSpan(null);
     setEndDateSpan(null);
-    setIsLoading(false); // Reset the loading state when the date is erased
   };
 
   const handleDateSelectionTypeChange = (e) => {
-    if (isSingleRange) {
-      setSearchDate(null);
-      setStartDateSpan(null);
-      setEndDateSpan(null);
-    } else {
-      setSearchDate([null, null]);
-    }
     setIsSingleDate(e.target.checked);
-    setIsLoading(false); // Reset the loading state (if needed)
+
+    setSearchDate(null);
+    setStartDateSpan(null);
+    setEndDateSpan(null);
   };
+
+  // effects
+
+  useEffect(() => {
+    iconContainerClassNames.forEach((item) => {
+      const myElement = document.getElementsByClassName(
+        `react-calendar__navigation__${item}`
+      )[0];
+
+      if (!myElement) {
+        return; // If the element is not found, skip to the next iteration
+      }
+
+      myElement.textContent = "";
+      myElement.style.backgroundImage = `url('./${item}.svg')`;
+      myElement.style.backgroundSize = "contain";
+      myElement.style.backgroundRepeat = "no-repeat";
+      myElement.style.backgroundPosition = "center";
+    });
+  }, []);
 
   return (
     <div

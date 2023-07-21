@@ -114,6 +114,12 @@
   font-size: 20px;
 }
 
+.footlightSearchWidget .react-calendar__year-view .react-calendar__tile,
+.footlightSearchWidget .react-calendar__century-view .react-calendar__tile,
+.footlightSearchWidget .react-calendar__decade-view .react-calendar__tile {
+  font-size: 16px;
+}
+
 @media screen and (max-width: 820px) {
   .footlightSearchWidget
     .react-calendar-wrapper

@@ -1,4 +1,5 @@
-import {displayDate} from "../../helpers/helper.js";
+import { displayDate } from "../../helpers/helper.js";
+import line from "../../assets/icons/Line 24.svg";
 
 export const DateFormatter = (props) => {
   const { date, locale, monthFormat = "short", yearFormat = "2-digit" } = props;
@@ -12,16 +13,16 @@ export const DateFormatter = (props) => {
       });
 
       text = (
-        <div>
+        <>
           {dateArray[0]}
-          &nbsp; - &nbsp;
+          &nbsp;<img src={line} alt=""></img> &nbsp;
           {dateArray[1]}
-        </div>
+        </>
       );
     } else {
       // for single date selection
       text = displayDate(date, locale, monthFormat, yearFormat);
     }
   }
-  return <>{text}</>;
+  return <div className="formatted-date">{text}</div>;
 };

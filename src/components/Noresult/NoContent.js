@@ -6,15 +6,15 @@ function NoContent(props) {
   const { message, date, locale } = props;
   return (
     <div className="no-content-wrapper">
-      <p>{message}</p>
-      <p>
+      <div>{message}</div>
+      <div>
         <DateFormatter
           date={date}
           locale={locale}
           monthFormat="long"
           yearFormat="numeric"
         />
-      </p>
+      </div>
     </div>
   );
 }

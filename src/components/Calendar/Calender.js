@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Calendar from "react-calendar";
 import { dateConverter } from "../../helpers/helper";
-import { iconContainerClassNames } from "../../helpers/helper";
-
+import prevButton from "../../assets/icons/prev-button.svg";
+import nextButton from "../../assets/icons/next-button.svg";
+import next2Button from "../../assets/icons/next2-button.svg";
+import prev2Button from "../../assets/icons/prev2-button.svg";
 import "./calendar.css";
 
 function Calender(props) {
@@ -50,37 +52,6 @@ function Calender(props) {
     setEndDateSpan(null);
   };
 
-  // effects
-
-  useEffect(() => {
-    iconContainerClassNames.forEach((item) => {
-      const myElement = document.getElementsByClassName(
-        `react-calendar__navigation__${item}`
-      )[0];
-
-      if (!myElement) {
-        return;
-      }
-
-      myElement.textContent = "";
-
-      const imageElement = document.createElement("img");
-      import(`../../assets/icons/${item}.svg`)
-        .then((icon) => {
-          imageElement.src = icon.default;
-        })
-        .catch((error) => {
-          console.error(`Error loading icon: ${error}`);
-        });
-
-      imageElement.style.width = "100%";
-      imageElement.style.height = "100%";
-      imageElement.style.objectFit = "contain";
-
-      myElement.appendChild(imageElement);
-    });
-  }, []);
-
   return (
     <div
       style={{
@@ -113,6 +84,10 @@ function Calender(props) {
         selectRange={!isSingleDate}
         className="react-calendar-wrapper"
         locale={locale}
+        prevLabel={<img src={prevButton} alt=""></img>}
+        prev2Label={<img src={prev2Button} alt=""></img>}
+        next2Label={<img src={next2Button} alt=""></img>}
+        nextLabel={<img src={nextButton} alt=""></img>}
       />
     </div>
   );

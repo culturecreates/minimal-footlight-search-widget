@@ -31,7 +31,7 @@ export const dateConverter = (date) => {
   const year = date.getFullYear();
   const paddedDay = String(day).padStart(2, "0");
   const paddedMonth = String(month).padStart(2, "0");
-  const formattedDate = `${year}/${paddedMonth}/${paddedDay}`;
+  const formattedDate = `${year}-${paddedMonth}-${paddedDay}`;
   return formattedDate;
 };
 

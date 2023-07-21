@@ -93,8 +93,86 @@
   opacity: 0.5;
 }
 
+.footlightSearchWidget .react-calendar__navigation {
+  display: flex;
+  align-items: center;
+  margin: 1em 8px;
+}
+
+.footlightSearchWidget .react-calendar__navigation__prev2-button,
+.footlightSearchWidget .react-calendar__navigation__next2-button {
+  margin: 0 8px;
+}
+
+.footlightSearchWidget .react-calendar__navigation button {
+  height: 30px;
+}
+
+.footlightSearchWidget
+  .react-calendar-wrapper
+  .react-calendar__navigation__label {
+  font-size: 20px;
+}
+
+.footlightSearchWidget .react-calendar__year-view .react-calendar__tile,
+.footlightSearchWidget .react-calendar__century-view .react-calendar__tile,
+.footlightSearchWidget .react-calendar__decade-view .react-calendar__tile {
+  font-size: 16px;
+}
+
+@media screen and (max-width: 820px) {
+  .footlightSearchWidget
+    .react-calendar-wrapper
+    .react-calendar__navigation__label {
+    font-size: 18px;
+  }
+  .footlightSearchWidget .react-calendar__navigation {
+    margin: 1em 0px;
+  }
+
+  .footlightSearchWidget .react-calendar__navigation button {
+    min-width: 35px;
+  }
+
+  .footlightSearchWidget .react-calendar__navigation__prev2-button,
+  .footlightSearchWidget .react-calendar__navigation__next2-button {
+    margin: 0 0px;
+  }
+}
+
 @media screen and (max-width: 650px) {
-  .footlightSearchWidget .calendar-control{
+  .footlightSearchWidget .calendar-control {
     background: var(--primary-flash-yellow);
+  }
+  .footlightSearchWidget
+    .react-calendar-wrapper
+    .react-calendar__navigation__label {
+    font-size: 20px;
+  }
+
+  .footlightSearchWidget .react-calendar__navigation {
+    margin: 1em 8px;
+  }
+
+  .footlightSearchWidget .react-calendar__navigation button {
+    min-width: 44px;
+  }
+
+  .footlightSearchWidget .react-calendar__navigation__prev2-button,
+  .footlightSearchWidget .react-calendar__navigation__next2-button {
+    margin: 0 8px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .footlightSearchWidget
+    .react-calendar-wrapper
+    .react-calendar__navigation__label {
+    font-size: 18px;
+  }
+  .footlightSearchWidget .react-calendar__navigation {
+    display: flex;
+    align-items: center;
+    margin: 1em 0;
   }
 }

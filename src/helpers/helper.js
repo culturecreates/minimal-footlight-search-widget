@@ -5,9 +5,24 @@ export const displayDate = (date, locale, monthFormat, yearFormat) => {
     year: yearFormat,
     timeZone: "Asia/Kolkata",
   };
-  return new Intl.DateTimeFormat(locale, { ...dateTimeOptions }).format(
-    new Date(date)
-  );
+  const formatedDate = new Intl.DateTimeFormat(locale, {
+    ...dateTimeOptions,
+  }).format(new Date(date));
+
+  const flag = monthFormat === "short" && yearFormat !== "2-digit";
+  let parts = "";
+  let month = "";
+  let day = "";
+  let year = "";
+  if (flag) {
+    parts = formatedDate.split(" ");
+    month = parts[0];
+    day = parts[1];
+    year = parts[2];
+  } else {
+    return formatedDate;
+  }
+  return `${day} ${month} ${year}`;
 };
 
 export const dateConverter = (date) => {
@@ -19,3 +34,10 @@ export const dateConverter = (date) => {
   const formattedDate = `${year}/${paddedMonth}/${paddedDay}`;
   return formattedDate;
 };
+
+export const iconContainerClassNames = [
+  "prev2-button",
+  "prev-button",
+  "next-button",
+  "next2-button",
+];

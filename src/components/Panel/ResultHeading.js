@@ -7,7 +7,7 @@ function ResultHeading(props) {
 
   if (searchDate === null ) {
     headingText = locale === "fr" ? "Prochainement" : "Upcoming";
-  } else if (Array.isArray(searchDate) || tabSelected !== "Organizations") {
+  } else if (searchDate!==null && tabSelected !== "Organizations") {
     headingText = <DateFormatter date={searchDate} locale={locale} />;
   } else {
     headingText = locale === "fr" ? "Aujourd’hui" : "Today";

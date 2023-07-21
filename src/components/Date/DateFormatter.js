@@ -1,27 +1,28 @@
-import {displayDate} from "../../helpers/helper.js";
+import { displayDate } from "../../helpers/helper.js";
+import line from "../../assets/icons/Line 24.svg";
 
 export const DateFormatter = (props) => {
   const { date, locale, monthFormat = "short", yearFormat = "2-digit" } = props;
   const flag = date !== undefined && date !== null; // true if date is valid
   let text = "";
-
   if (flag) {
     if (Array.isArray(date)) {
       // for date range selection
       const dateArray = date.map((dateItem) => {
         return displayDate(dateItem, locale, monthFormat, yearFormat);
       });
+
       text = (
-        <div>
+        <>
           {dateArray[0]}
-          &nbsp; - &nbsp;
+          &nbsp;<img src={line} alt=""></img> &nbsp;
           {dateArray[1]}
-        </div>
+        </>
       );
     } else {
       // for single date selection
-      text = displayDate(date, locale, monthFormat, yearFormat).replace(",","  ");
+      text = displayDate(date, locale, monthFormat, yearFormat);
     }
   }
-  return <>{text}</>;
+  return <div className="formatted-date">{text}</div>;
 };

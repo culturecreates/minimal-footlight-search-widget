@@ -125,6 +125,19 @@ html {
   padding: 0 11px;
 }
 
+.footlightSearchWidget .formatted-date{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footlightSearchWidget .formatted-date img{
+  width: 7px;
+  margin-left: 1px;
+  height: 1px;
+  margin-top: 1px;
+}
+
 .footlightSearchWidget .input-searchbar {
   display: flex;
   flex-grow: 1;
@@ -157,7 +170,7 @@ html {
     height: 40px;
     width: 40px;
   }
-
+  
   .footlightSearchWidget .input-container {
     height: 80px;
     align-items: center;

@@ -120,7 +120,8 @@ function App(props) {
             title: eventData.name.fr || eventData.name.en,
             ...(tabSelected !== "Organizations"
               ? {
-                  startDate: eventData.startDate || eventData.startDateTime || "",
+                  startDate:
+                    eventData.startDate || eventData.startDateTime || "",
                   endDate: eventData.endDate || eventData.endDateTime || "",
                 }
               : {}),
@@ -200,7 +201,6 @@ function App(props) {
     const identifier = setTimeout(() => {
       fetchDataHandler(searchString, startDateSpan, endDateSpan);
     }, 500);
-    console.log(searchString, startDateSpan,"sd" ,endDateSpan,"ed");
     return () => {
       clearTimeout(identifier);
     };
@@ -242,7 +242,7 @@ function App(props) {
 
   useEffect(() => {
     // set viw type accoring to screen size
-    const monthFormat = "2-digit";
+    const monthFormat = "short";
     const yearFormat = "2-digit";
     let text = "";
     if (searchDate && screenType === "mobile") {

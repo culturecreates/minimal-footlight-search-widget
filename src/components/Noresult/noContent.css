@@ -8,7 +8,7 @@
   align-items: center;
 }
 
-.no-content-wrapper p {
+.no-content-wrapper div {
   color: var(--primary-black, #000);
   text-align: center;
   font-style: normal;
@@ -16,14 +16,14 @@
   margin: 15px 0;
 }
 
-.no-content-wrapper p:first-child {
+.no-content-wrapper div:first-child {
   font-size: 30px;
   font-style: normal;
   font-weight: 400;
   line-height: 110%;
 }
 
-.no-content-wrapper p:last-child {
+.no-content-wrapper div:last-child {
   font-size: 18px;
   line-height: 22px;
   text-transform: uppercase;

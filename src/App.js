@@ -55,6 +55,7 @@ function App(props) {
   const [tabSelected, setTabSelected] = useState("Events");
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
+  const [isSingleDate, setIsSingleDate] = useState(false);
   const [placeHolderText, setPlaceHoldertext] = useState(
     locale === "en" ? "Search" : "Recherche"
   );
@@ -336,6 +337,8 @@ function App(props) {
                 setIsLoading={setIsLoading}
                 panelOnDisplay={panelOnDisplay}
                 screenType={screenType}
+                setIsSingleDate={setIsSingleDate}
+                isSingleDate={isSingleDate}
               />
             </>
           )}

@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Calendar from "react-calendar";
 import { dateConverter } from "../../helpers/helper";
 import { iconContainerClassNames } from "../../helpers/helper";
-// import prevButton from "../../assets/icons/prev-button.svg"
-// import prev2Button from "../../assets/icons/prev2-button.svg"
-// import nextButton from "../../assets/icons/next-button.svg"
-// import next2Button from "../../assets/icons/next2-button.svg"
+
 import "./calendar.css";
 
 function Calender(props) {
@@ -15,15 +12,15 @@ function Calender(props) {
     setStartDateSpan,
     setEndDateSpan,
     searchDate,
+    isSingleDate,
+    setIsSingleDate,
   } = props;
-
-  const [isSingleRange, setIsSingleDate] = useState(false);
 
   // handlers
 
   const searchDateHandler = (value) => {
     setSearchDate(value);
-    if (isSingleRange) {
+    if (isSingleDate) {
       setStartDateSpan(dateConverter(new Date(value)));
       setEndDateSpan(null);
     } else {
@@ -62,14 +59,25 @@ function Calender(props) {
       )[0];
 
       if (!myElement) {
-        return; // If the element is not found, skip to the next iteration
+        return;
       }
 
       myElement.textContent = "";
-      myElement.style.backgroundImage = `url('./${item}.svg')`;
-      myElement.style.backgroundSize = "contain";
-      myElement.style.backgroundRepeat = "no-repeat";
-      myElement.style.backgroundPosition = "center";
+
+      const imageElement = document.createElement("img");
+      import(`../../assets/icons/${item}.svg`)
+        .then((icon) => {
+          imageElement.src = icon.default;
+        })
+        .catch((error) => {
+          console.error(`Error loading icon: ${error}`);
+        });
+
+      imageElement.style.width = "100%";
+      imageElement.style.height = "100%";
+      imageElement.style.objectFit = "contain";
+
+      myElement.appendChild(imageElement);
     });
   }, []);
 
@@ -87,7 +95,7 @@ function Calender(props) {
               type="checkbox"
               id="single-date-control"
               style={{ height: "24px", width: "24px" }}
-              checked={isSingleRange}
+              checked={isSingleDate}
               onChange={(e) => handleDateSelectionTypeChange(e)}
             />
             <span></span>
@@ -102,7 +110,7 @@ function Calender(props) {
       <Calendar
         onChange={searchDateHandler}
         value={searchDate}
-        selectRange={!isSingleRange}
+        selectRange={!isSingleDate}
         className="react-calendar-wrapper"
         locale={locale}
       />

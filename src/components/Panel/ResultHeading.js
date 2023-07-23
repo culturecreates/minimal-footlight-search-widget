@@ -1,16 +1,20 @@
 import React from "react";
 import { DateFormatter } from "../Date/DateFormatter";
+import { useTranslation } from "react-i18next";
 
 function ResultHeading(props) {
   const { searchDate = null, locale, tabSelected } = props;
+
+  const { t } = useTranslation();
+
   let headingText = "";
 
-  if (searchDate === null ) {
-    headingText = locale === "fr" ? "Prochainement" : "Upcoming";
-  } else if (searchDate!==null && tabSelected !== "Organizations") {
+  if (searchDate === null) {
+    headingText = t("resultHeader.next");
+  } else if (searchDate !== null && tabSelected !== "Organizations") {
     headingText = <DateFormatter date={searchDate} locale={locale} />;
   } else {
-    headingText = locale === "fr" ? "Aujourd’hui" : "Today";
+    headingText = t("resultHeader.today");
   }
 
   return <div className="result-header">{headingText}</div>;

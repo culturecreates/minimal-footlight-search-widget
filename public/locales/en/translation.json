@@ -15,5 +15,9 @@
     "noItems":"No results found",
     "seeAll":"See all results"
   },
-  "placeHolder":"Search"
+  "placeHolder":"Search",
+  "resultHeader":{
+    "next":"next",
+    "today":"today"
+  }
 }

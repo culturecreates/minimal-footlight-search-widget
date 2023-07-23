@@ -11,9 +11,13 @@
     "rangeSelectLabel": "Rechercher dans une période",
     "eraseButtonLabel": "Effacer"
   },
-  "footer":{
-    "noItems":"Aucun résultat trouvé",
-    "seeAll":"Voir tous les résultats"
+  "footer": {
+    "noItems": "Aucun résultat trouvé",
+    "seeAll": "Voir tous les résultats"
   },
-  "placeHolder":"Recherche"
+  "placeHolder": "Recherche",
+  "resultHeader": {
+    "next": "Prochainement",
+    "today": "Aujourd'hui"
+  }
 }

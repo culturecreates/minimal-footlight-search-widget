@@ -7,7 +7,7 @@ import CalendarIcon from "./assets/icons/Calendar.svg";
 import CloseIcon from "./assets/icons/Close.svg";
 import { useSize } from "./helpers/hooks";
 import { displayDate } from "./helpers/helper";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -61,7 +61,7 @@ function App(props) {
   const [screenType, setScreenType] = useState();
   const [isSingleDate, setIsSingleDate] = useState(false);
   const [placeHolderText, setPlaceHoldertext] = useState(
-    locale === "en" ? "Search" : "Recherche"
+    t("placeHolder")
   );
 
   // Refs
@@ -180,7 +180,7 @@ function App(props) {
   };
   const textBlurHandler = () => {
     setTextFocus(false);
-    setPlaceHoldertext(locale === "en" ? "Search" : "Recherche");
+    setPlaceHoldertext(t("placeHolder"));
   };
   const textChangeHandler = (event) => {
     setSearchString(event.target.value);
@@ -203,8 +203,8 @@ function App(props) {
   // Effects
 
   useEffect(() => {
-    i18n.changeLanguage(locale)
-  }, [i18n, locale])
+    i18n.changeLanguage(locale);
+  }, [i18n, locale]);
 
   useEffect(() => {
     // debounce search while typing

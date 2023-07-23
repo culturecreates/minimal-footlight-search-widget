@@ -1,7 +1,11 @@
 import "./SearchFooter.css";
+import { useTranslation } from "react-i18next";
 
 const SearchFooter = (props) => {
-  const { count, locale, onSubmit } = props;
+  const { count, onSubmit } = props;
+
+  const { t } = useTranslation();
+
   let msg;
   const style =
     count <= 0
@@ -13,16 +17,16 @@ const SearchFooter = (props) => {
         };
 
   if (count > 0) {
-    msg = locale === "en" ? "VIEW ALL" : "voir tous les résultats";
+    msg = t('footer.seeAll');
   } else {
-    msg = locale === "en" ? "NO RESULTS" : "PAS DE RESULTATS";
+    msg = t('footer.noItems');
   }
 
   return (
     <div
       className="footer-submit"
       onClick={count > 0 ? onSubmit : undefined}
-      style={style} // Fixed this line
+      style={style} 
     >
       <div>
         {msg}

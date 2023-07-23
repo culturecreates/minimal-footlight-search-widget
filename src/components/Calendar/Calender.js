@@ -6,6 +6,7 @@ import nextButton from "../../assets/icons/next-button.svg";
 import next2Button from "../../assets/icons/next2-button.svg";
 import prev2Button from "../../assets/icons/prev2-button.svg";
 import "./calendar.css";
+import { useTranslation } from "react-i18next";
 
 function Calender(props) {
   const {
@@ -17,6 +18,9 @@ function Calender(props) {
     isSingleDate,
     setIsSingleDate,
   } = props;
+
+  const { t } = useTranslation();
+
 
   // handlers
 
@@ -70,12 +74,12 @@ function Calender(props) {
               onChange={(e) => handleDateSelectionTypeChange(e)}
             />
             <span></span>
-            {locale === "en" ? "Single date" : "Rechercher à une date précise"}
+            {t('datepicker.rangeSelectLabel')}
           </label>
         </div>
 
         <button onClick={handleDateErase}>
-          {locale === "en" ? "Erase" : "Effacer"}
+          {t('datepicker.eraseButtonLabel')}
         </button>
       </div>
       <Calendar

@@ -1,0 +1,19 @@
+{
+  "noResult": {
+    "message": "Aucun {{tabSelected}} disponible"
+  },
+  "tabs": {
+    "1": "Événements",
+    "2": "Ateliers",
+    "3": "Organisations"
+  },
+  "datepicker": {
+    "rangeSelectLabel": "Rechercher dans une période",
+    "eraseButtonLabel": "Effacer"
+  },
+  "footer":{
+    "noItems":"Aucun résultat trouvé",
+    "seeAll":"Voir tous les résultats"
+  },
+  "placeHolder":"Recherche"
+}

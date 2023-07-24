@@ -101,8 +101,8 @@ function App(props) {
         if (startDate) {
           url += `&start-date-range=${startDate}`;
         }
-        if (endDate || isSingleDate) {
-          url += `&end-date-range=${isSingleDate ? startDate : endDate}`; // For single date filter then send end date the same as start date.
+        if (endDate || !isSingleDate) {
+          url += `&end-date-range=${!isSingleDate ? startDate : endDate}`; // For single date filter then send end date the same as start date.
         }
       }
 

@@ -26,7 +26,7 @@ function Calender(props) {
 
   const searchDateHandler = (value) => {
     setSearchDate(value);
-    if (isSingleDate) {
+    if (!isSingleDate) {
       setStartDateSpan(dateConverter(new Date(value)));
       setEndDateSpan(null);
     } else {
@@ -85,7 +85,7 @@ function Calender(props) {
       <Calendar
         onChange={searchDateHandler}
         value={searchDate}
-        selectRange={!isSingleDate}
+        selectRange={isSingleDate}
         className="react-calendar-wrapper"
         locale={locale}
         prevLabel={<img src={prevButton} alt=""></img>}

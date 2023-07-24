@@ -60,9 +60,7 @@ function App(props) {
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
   const [isSingleDate, setIsSingleDate] = useState(false);
-  const [placeHolderText, setPlaceHoldertext] = useState(
-    t("placeHolder")
-  );
+  const [placeHolderText, setPlaceHoldertext] = useState(t("placeHolder"));
 
   // Refs
   const textInputRef = useRef(null);
@@ -99,11 +97,13 @@ function App(props) {
       if (q) {
         url += `&query=${q}`;
       }
-      if (startDate) {
-        url += `&start-date-range=${startDate}`;
-      }
-      if (endDate) {
-        url += `&end-date-range=${endDate}`;
+      if (tabSelected !== "Organizations") {
+        if (startDate) {
+          url += `&start-date-range=${startDate}`;
+        }
+        if (endDate || isSingleDate) {
+          url += `&end-date-range=${isSingleDate ? startDate : endDate}`; // For single date filter then send end date the same as start date.
+        }
       }
 
       try {
@@ -149,7 +149,7 @@ function App(props) {
       }
       setIsLoading(false);
     },
-    [apiUrl, tabSelected]
+    [apiUrl, isSingleDate, tabSelected]
   );
 
   const submitHandler = (event) => {

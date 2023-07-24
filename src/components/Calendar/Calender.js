@@ -43,8 +43,8 @@ function Calender(props) {
   const handleDateErase = () => {
     if (searchDate !== null) {
       setSearchDate(null);
-      setStartDateSpan(null);
-      setEndDateSpan(null);
+      setStartDateSpan("");
+      setEndDateSpan("");
     }
   };
 

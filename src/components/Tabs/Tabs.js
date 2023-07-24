@@ -25,19 +25,19 @@ const Tabs = (props) => {
         onClick={clickEventsTabHandler}
         className={tabSelected === "Events" ? "selected" : undefined}
       >
-        {t("tabs.1")}
+        {t("tabs.Events")}
       </li>
       <li
         onClick={clickAteliersTabHandler}
         className={tabSelected === "Ateliers" ? "selected" : undefined}
       >
-        {t("tabs.2")}
+        {t("tabs.Ateliers")}
       </li>
       <li
         onClick={clickOrganizationsTabHandler}
         className={tabSelected === "Organizations" ? "selected" : undefined}
       >
-        {t("tabs.3")}
+        {t("tabs.Organizations")}
       </li>
     </ul>
   );

@@ -2,22 +2,23 @@
   "noResult": {
     "message": "No {{tabSelected}} are available"
   },
-  "tabs":{
-    "1":"Events",
-    "2":"Workshops",
-    "3":"Organizations"
+  "tabs": {
+    "Events": "Events",
+    "Ateliers": "Workshops",
+    "Organizations": "Organizations"
   },
-  "datepicker":{
-    "rangeSelectLabel":"Search a date range",
-    "eraseButtonLabel":"Clear"
+  "datepicker": {
+    "rangeSelectLabel": "Search a date range",
+    "eraseButtonLabel": "Clear"
   },
-  "footer":{
-    "noItems":"No results found",
-    "seeAll":"See all results"
+  "footer": {
+    "noItems": "No results found",
+    "seeAll": "See all results"
   },
-  "placeHolder":"Search",
-  "resultHeader":{
-    "next":"next",
-    "today":"today"
-  }
+  "placeHolder": "Search",
+  "resultHeader": {
+    "next": "next",
+    "today": "today"
+  },
+  "error": "An error occured."
 }

@@ -3,9 +3,9 @@
     "message": "Aucun {{tabSelected}} disponible"
   },
   "tabs": {
-    "1": "Événements",
-    "2": "Ateliers",
-    "3": "Organisations"
+    "Events": "Événements",
+    "Ateliers": "Ateliers",
+    "Organizations": "Organisations"
   },
   "datepicker": {
     "rangeSelectLabel": "Rechercher dans une période",
@@ -19,5 +19,6 @@
   "resultHeader": {
     "next": "Prochainement",
     "today": "Aujourd'hui"
-  }
+  },
+  "error":"Une erreur est survenue."
 }

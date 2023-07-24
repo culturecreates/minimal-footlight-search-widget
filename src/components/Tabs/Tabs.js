@@ -1,14 +1,13 @@
+import { useTranslation } from "react-i18next";
 import "./Tabs.css";
 
 const Tabs = (props) => {
   const {
-    // setSearchDate,
-    // setStartDateSpan,
-    // setEndDateSpan,
     tabSelected,
-    locale,
     onChangeTab,
   } = props;
+
+  const { t } = useTranslation();
 
   const clickEventsTabHandler = () => {
     onChangeTab("Events");
@@ -26,19 +25,19 @@ const Tabs = (props) => {
         onClick={clickEventsTabHandler}
         className={tabSelected === "Events" ? "selected" : undefined}
       >
-        {locale === "en" ? "Events" : "Événements"}
+        {t("tabs.Events")}
       </li>
       <li
         onClick={clickAteliersTabHandler}
         className={tabSelected === "Ateliers" ? "selected" : undefined}
       >
-        {locale === "en" ? "Workshops" : "Ateliers"}
+        {t("tabs.Ateliers")}
       </li>
       <li
         onClick={clickOrganizationsTabHandler}
         className={tabSelected === "Organizations" ? "selected" : undefined}
       >
-        {locale === "en" ? "Organizations" : "Organisations"}
+        {t("tabs.Organizations")}
       </li>
     </ul>
   );

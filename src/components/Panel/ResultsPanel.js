@@ -7,6 +7,7 @@ import Calender from "../Calendar/Calender";
 import NoContent from "../Noresult/NoContent";
 import Loader from "../Loader";
 import ResultHeading from "./ResultHeading";
+import { useTranslation } from "react-i18next";
 
 const ResultsPanel = (props) => {
   const {
@@ -27,13 +28,14 @@ const ResultsPanel = (props) => {
     panelOnDisplay,
     screenType,
     setIsSingleDate,
-    isSingleDate
+    isSingleDate,
   } = props;
+
   const [showPanel] = useState(true);
 
+  const { t } = useTranslation();
+
   let content;
-  const loadingText =
-    widgetProps.locale === "fr" ? <p>TÉLÉCHARGEMENT...</p> : <p>LOADING...</p>;
 
   if (events.length > 0 && totalCount > 0) {
     content = (
@@ -54,10 +56,7 @@ const ResultsPanel = (props) => {
       </div>
     );
   } else {
-    const message =
-      locale === "fr"
-        ? `Aucun ${tabSelected} disponible`
-        : `No ${tabSelected} found `;
+    const message = t("noResult.message", { tabSelected: t(`tabs.${tabSelected}`) });
 
     content = (
       <NoContent
@@ -70,16 +69,11 @@ const ResultsPanel = (props) => {
   }
 
   if (error) {
-    content =
-      widgetProps.locale === "fr" ? (
-        <p>Une erreur est survenue.</p>
-      ) : (
-        <p>An error occured.</p>
-      );
+    content = <p>{t("error")}</p>;
   }
 
   if (isLoading) {
-    content = <Loader text={loadingText} />;
+    content = <Loader />;
   }
 
   const changeTabHandler = (clickedTab) => {

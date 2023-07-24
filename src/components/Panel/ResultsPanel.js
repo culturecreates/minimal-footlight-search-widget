@@ -64,6 +64,7 @@ const ResultsPanel = (props) => {
         date={searchDate}
         locale={locale}
         isLoading={isLoading}
+        tabSelected={tabSelected}
       />
     );
   }

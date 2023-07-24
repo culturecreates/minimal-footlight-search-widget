@@ -17,7 +17,11 @@ function ResultHeading(props) {
     headingText = t("resultHeader.today");
   }
 
-  return <div className="result-header">{headingText}</div>;
+  return (
+    <div className="result-header">
+      {tabSelected !== "Organizations" ? headingText : ""}
+    </div>
+  );
 }
 
 export default React.memo(ResultHeading, (prevProps, nextProps) => {

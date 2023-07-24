@@ -3,18 +3,20 @@ import "./noContent.css";
 import { DateFormatter } from "../Date/DateFormatter";
 
 function NoContent(props) {
-  const { message, date, locale } = props;
+  const { message, date, locale, tabSelected } = props;
   return (
     <div className="no-content-wrapper">
-      <div>{message}</div>
-      <div>
-        <DateFormatter
-          date={date}
-          locale={locale}
-          monthFormat="long"
-          yearFormat="numeric"
-        />
-      </div>
+      <div className="message-container">{message}</div>
+      {tabSelected !== "Organizations" && (
+        <div className="date-container">
+          <DateFormatter
+            date={date}
+            locale={locale}
+            monthFormat="long"
+            yearFormat="numeric"
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -40,7 +40,7 @@ function App(props) {
   };
 
   // constants built using other constants
-  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?page=1&limit=15`;
+  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?page=1&limit=5`;
   const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=5&sort=name.fr&concept=63d167da016e830064fbb03b`;
   const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=5`;
 
@@ -94,6 +94,7 @@ function App(props) {
       setPanelOnDisplay("result");
       setError(false);
       let url = apiUrl;
+
       if (q) {
         url += `&query=${q}`;
       }
@@ -102,7 +103,7 @@ function App(props) {
           url += `&start-date-range=${startDate}`;
         }
         if (endDate) {
-          url += `&end-date-range=${!isSingleDate ? startDate : endDate}`; // For single date filter then send end date the same as start date.
+          url += `&end-date-range=${endDate}`; // For single date filter then send end date the same as start date.
         }
       }
 
@@ -142,6 +143,7 @@ function App(props) {
               "",
           };
         });
+
         setEvents(transformedEvents);
         setTotalCount(data.meta?.totalCount || 0);
       } catch {
@@ -149,12 +151,16 @@ function App(props) {
       }
       setIsLoading(false);
     },
-    [apiUrl, isSingleDate, tabSelected]
+    [apiUrl, tabSelected]
   );
 
   const submitHandler = (event) => {
     event.preventDefault();
     const searchParams = new URLSearchParams();
+
+    if (tabSelected !== "Organizations") {
+      searchParams.append("limit", 100);
+    }
     if (searchString !== "") {
       searchParams.append("query", searchString);
     }
@@ -163,6 +169,9 @@ function App(props) {
     }
     if (endDateSpan) {
       searchParams.append("end-date-range", endDateSpan);
+    }
+    if (tabSelected === "Ateliers") {
+      searchParams.append("type", "64776b93fbeda20064d2332f");
     }
     let searchUrl = eventSearchUrl;
     if (tabSelected === "Organizations") {

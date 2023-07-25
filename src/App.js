@@ -50,7 +50,7 @@ function App(props) {
   const [error, setError] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [searchString, setSearchString] = useState("");
-  const [searchDate, setSearchDate] = useState();
+  const [searchDate, setSearchDate] = useState(new Date());
   const [startDateSpan, setStartDateSpan] = useState("");
   const [endDateSpan, setEndDateSpan] = useState("");
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
@@ -101,7 +101,7 @@ function App(props) {
         if (startDate) {
           url += `&start-date-range=${startDate}`;
         }
-        if (endDate || !isSingleDate) {
+        if (endDate) {
           url += `&end-date-range=${!isSingleDate ? startDate : endDate}`; // For single date filter then send end date the same as start date.
         }
       }

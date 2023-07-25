@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Calendar from "react-calendar";
 import { dateConverter } from "../../helpers/helper";
 import prevButton from "../../assets/icons/prev-button.svg";
@@ -21,6 +21,8 @@ function Calender(props) {
 
   const { t } = useTranslation();
 
+  const [activeStartDate, setActiveStartDate] = useState();
+  const [view, setView] = useState("month");
 
   // handlers
 
@@ -42,18 +44,35 @@ function Calender(props) {
 
   const handleDateErase = () => {
     if (searchDate !== null) {
-      setSearchDate(null);
+      setSearchDate(new Date());
       setStartDateSpan("");
       setEndDateSpan("");
+      setActiveStartDate(new Date());
+      setView("month");
     }
   };
 
   const handleDateSelectionTypeChange = (e) => {
+    setSearchDate(new Date());
     setIsSingleDate(e.target.checked);
-
-    setSearchDate(null);
     setStartDateSpan(null);
     setEndDateSpan(null);
+    setView("month");
+    setActiveStartDate(new Date());
+  };
+
+  const drillDownHandler = (activeStartDate, view) => {
+    setView(view);
+    setActiveStartDate(activeStartDate);
+  };
+
+  const drillUpHandler = (activeStartDate, view) => {
+    setView(view);
+    setActiveStartDate(activeStartDate);
+  };
+
+  const handleNavigation = (activeStartDate) => {
+    setActiveStartDate(activeStartDate);
   };
 
   return (
@@ -74,17 +93,29 @@ function Calender(props) {
               onChange={(e) => handleDateSelectionTypeChange(e)}
             />
             <span></span>
-            {t('datepicker.rangeSelectLabel')}
+            {t("datepicker.rangeSelectLabel")}
           </label>
         </div>
 
         <button onClick={handleDateErase}>
-          {t('datepicker.eraseButtonLabel')}
+          {t("datepicker.eraseButtonLabel")}
         </button>
       </div>
       <Calendar
         onChange={searchDateHandler}
         value={searchDate}
+        activeStartDate={activeStartDate}
+        onDrillDown={({ activeStartDate, view }) =>
+          drillDownHandler(activeStartDate, view)
+        }
+        onDrillUp={({ activeStartDate, view }) =>
+          drillUpHandler(activeStartDate, view)
+        }
+        onActiveStartDateChange={({ action, activeStartDate, value, view }) =>
+          handleNavigation(activeStartDate)
+        }
+        goToRangeStartOnSelect={true}
+        view={view}
         selectRange={isSingleDate}
         className="react-calendar-wrapper"
         locale={locale}

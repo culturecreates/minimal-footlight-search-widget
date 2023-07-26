@@ -89,7 +89,7 @@ function App(props) {
   };
 
   const fetchDataHandler = useCallback(
-    async (q, startDate, endDate) => {
+    async (q, startDate, endDate, locale) => {
       setIsLoading(true);
       setPanelOnDisplay("result");
       setError(false);
@@ -121,26 +121,43 @@ function App(props) {
               {};
           }
 
+          // Fallback to English and then French if the locale-specific name is not available
+          const title =
+            eventData.name?.[locale] ||
+            eventData.name?.en ||
+            eventData.name?.fr ||
+            "";
+
+          const addressLocality =
+            place.address?.addressLocality?.[locale] ||
+            place.address?.addressLocality?.en ||
+            place.address?.addressLocality?.fr ||
+            "";
+
+          const streetAddress =
+            place.address?.streetAddress?.[locale] ||
+            place.address?.streetAddress?.en ||
+            place.address?.streetAddress?.fr ||
+            "";
+          
           return {
             id: eventData.id,
-            title: eventData.name.fr || eventData.name.en,
+            title: title,
             ...(tabSelected !== "Organizations"
               ? {
                   startDate:
-                    eventData.startDate || eventData.startDateTime || "",
+                    eventData.subEventDetails.upcomingSubEventCount === 0
+                      ? eventData.startDate || eventData.startDateTime || ""
+                      : eventData.subEventDetails
+                          .nextUpcomingSubEventDateTime || "",
                   endDate: eventData.endDate || eventData.endDateTime || "",
                 }
               : {}),
             image: eventData.image?.thumbnail || "",
-            place: place.name?.fr || place.name?.en || "",
-            city:
-              place.address?.addressLocality?.fr ||
-              place.address?.addressLocality?.en ||
-              "",
-            streetAddress:
-              place.address?.streetAddress?.fr ||
-              place.address?.streetAddress?.en ||
-              "",
+            place:
+              place.name?.[locale] || place.name?.en || place.name?.fr || "",
+            city: addressLocality,
+            streetAddress: streetAddress,
           };
         });
 
@@ -218,12 +235,20 @@ function App(props) {
   useEffect(() => {
     // debounce search while typing
     const identifier = setTimeout(() => {
-      fetchDataHandler(searchString, startDateSpan, endDateSpan);
+      fetchDataHandler(searchString, startDateSpan, endDateSpan, locale);
     }, 500);
     return () => {
       clearTimeout(identifier);
     };
-  }, [searchString, startDateSpan, endDateSpan, fetchDataHandler, apiUrl]);
+  }, [
+    searchString,
+    startDateSpan,
+    endDateSpan,
+    fetchDataHandler,
+    apiUrl,
+    locale,
+    searchDate
+  ]);
 
   useEffect(() => {
     // show results panel

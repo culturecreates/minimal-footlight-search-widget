@@ -62,9 +62,12 @@ function Calender(props) {
     if (e.target.checked && !Array.isArray(searchDate)) {
       setCalendarKey((prevState) => prevState + 1); // So reset button can reset date when in the middle of selection.
       setSearchDate(null);
+    } else if (e.target.checked) {
+      setSearchDate(null);
+    } else {
+      setSearchDate(new Date());
     }
-
-    setSearchDate(new Date());
+    // setSearchDate(new Date());
     setIsSingleDate(e.target.checked);
     setStartDateSpan(null);
     setEndDateSpan(null);

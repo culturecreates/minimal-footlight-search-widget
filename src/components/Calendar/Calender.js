@@ -23,6 +23,7 @@ function Calender(props) {
 
   const [activeStartDate, setActiveStartDate] = useState();
   const [view, setView] = useState("month");
+  const [calendarKey, setCalendarKey] = useState(1);  // Added to forcefully reset the selected date during range selection.
 
   // handlers
 
@@ -43,6 +44,9 @@ function Calender(props) {
   };
 
   const handleDateErase = () => {
+    if (isSingleDate && !Array.isArray(searchDate)) {
+      setCalendarKey((prevState) => prevState+1); // So reset button can reset date when in the middle of selection.
+    }
     if (searchDate !== null) {
       setSearchDate(new Date());
       setStartDateSpan("");
@@ -53,6 +57,10 @@ function Calender(props) {
   };
 
   const handleDateSelectionTypeChange = (e) => {
+    if (e.target.checked && !Array.isArray(searchDate)) {
+      setCalendarKey((prevState) => prevState+1); // So reset button can reset date when in the middle of selection.
+    }
+
     setSearchDate(new Date());
     setIsSingleDate(e.target.checked);
     setStartDateSpan(null);
@@ -102,6 +110,7 @@ function Calender(props) {
         </button>
       </div>
       <Calendar
+        key={calendarKey}
         onChange={searchDateHandler}
         value={searchDate}
         activeStartDate={activeStartDate}

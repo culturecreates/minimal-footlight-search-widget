@@ -52,7 +52,6 @@ function Calender(props) {
       setSearchDate(null);
       setStartDateSpan("");
     } else if (dateConverter(searchDate) !== dateConverter(new Date())) {
-      console.log("c", searchDate);
       setSearchDate(new Date());
       setStartDateSpan(dateConverter(new Date()));
     }

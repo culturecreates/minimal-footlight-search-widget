@@ -47,12 +47,16 @@ function Calender(props) {
     if (isSingleDate && !Array.isArray(searchDate)) {
       setCalendarKey((prevState) => prevState + 1); // So reset button can reset date when in the middle of selection.
       setSearchDate(null);
+      setStartDateSpan("");
     } else if (isSingleDate) {
       setSearchDate(null);
-    } else {
+      setStartDateSpan("");
+    } else if (dateConverter(searchDate) !== dateConverter(new Date())) {
+      console.log("c", searchDate);
       setSearchDate(new Date());
+      setStartDateSpan(dateConverter(new Date()));
     }
-    setStartDateSpan("");
+
     setEndDateSpan("");
     setActiveStartDate(new Date());
     setView("month");
@@ -62,10 +66,13 @@ function Calender(props) {
     if (e.target.checked && !Array.isArray(searchDate)) {
       setCalendarKey((prevState) => prevState + 1); // So reset button can reset date when in the middle of selection.
       setSearchDate(null);
+      setStartDateSpan("");
     } else if (e.target.checked) {
       setSearchDate(null);
+      setStartDateSpan("");
     } else {
       setSearchDate(new Date());
+      setStartDateSpan(new Date());
     }
     // setSearchDate(new Date());
     setIsSingleDate(e.target.checked);

@@ -50,7 +50,6 @@ function App(props) {
   const [error, setError] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [searchString, setSearchString] = useState("");
-  const [searchDate, setSearchDate] = useState(new Date());
   const [startDateSpan, setStartDateSpan] = useState("");
   const [endDateSpan, setEndDateSpan] = useState("");
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
@@ -60,6 +59,7 @@ function App(props) {
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
   const [isSingleDate, setIsSingleDate] = useState(false);
+  const [searchDate, setSearchDate] = useState();
   const [placeHolderText, setPlaceHoldertext] = useState(t("placeHolder"));
 
   // Refs
@@ -254,13 +254,13 @@ function App(props) {
   }, [showResults, refFootlightSearchWidget]);
 
   useEffect(() => {
-    // set viw type accoring to screen size
+    // set view type accoring to screen size
     const isWide = width < 650;
     setScreenType(isWide ? "mobile" : "desktop");
   }, [width]);
 
   useEffect(() => {
-    // set viw type accoring to screen size
+    // set view type accoring to screen size
     const monthFormat = "short";
     const yearFormat = "2-digit";
     let text = "";
@@ -276,7 +276,11 @@ function App(props) {
       }
     }
     setPlaceHoldertext(text);
-  }, [locale, screenType, searchDate, isLoading]);
+  }, [locale, screenType, searchDate, isLoading, isSingleDate]);
+
+  useEffect(() => {
+    setSearchDate(!isSingleDate ? new Date() : null);
+  }, [isSingleDate]);
 
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>

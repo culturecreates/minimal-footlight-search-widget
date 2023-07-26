@@ -23,7 +23,7 @@ function Calender(props) {
 
   const [activeStartDate, setActiveStartDate] = useState();
   const [view, setView] = useState("month");
-  const [calendarKey, setCalendarKey] = useState(1);  // Added to forcefully reset the selected date during range selection.
+  const [calendarKey, setCalendarKey] = useState(1); // Added to forcefully reset the selected date during range selection.
 
   // handlers
 
@@ -45,23 +45,35 @@ function Calender(props) {
 
   const handleDateErase = () => {
     if (isSingleDate && !Array.isArray(searchDate)) {
-      setCalendarKey((prevState) => prevState+1); // So reset button can reset date when in the middle of selection.
-    }
-    if (searchDate !== null) {
-      setSearchDate(new Date());
+      setCalendarKey((prevState) => prevState + 1); // So reset button can reset date when in the middle of selection.
+      setSearchDate(null);
       setStartDateSpan("");
-      setEndDateSpan("");
-      setActiveStartDate(new Date());
-      setView("month");
+    } else if (isSingleDate) {
+      setSearchDate(null);
+      setStartDateSpan("");
+    } else if (dateConverter(searchDate) !== dateConverter(new Date())) {
+      setSearchDate(new Date());
+      setStartDateSpan(dateConverter(new Date()));
     }
+
+    setEndDateSpan("");
+    setActiveStartDate(new Date());
+    setView("month");
   };
 
   const handleDateSelectionTypeChange = (e) => {
     if (e.target.checked && !Array.isArray(searchDate)) {
-      setCalendarKey((prevState) => prevState+1); // So reset button can reset date when in the middle of selection.
+      setCalendarKey((prevState) => prevState + 1); // So reset button can reset date when in the middle of selection.
+      setSearchDate(null);
+      setStartDateSpan("");
+    } else if (e.target.checked) {
+      setSearchDate(null);
+      setStartDateSpan("");
+    } else {
+      setSearchDate(new Date());
+      setStartDateSpan(new Date());
     }
-
-    setSearchDate(new Date());
+    // setSearchDate(new Date());
     setIsSingleDate(e.target.checked);
     setStartDateSpan(null);
     setEndDateSpan(null);

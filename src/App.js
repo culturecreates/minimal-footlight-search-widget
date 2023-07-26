@@ -50,7 +50,6 @@ function App(props) {
   const [error, setError] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [searchString, setSearchString] = useState("");
-  const [searchDate, setSearchDate] = useState(new Date());
   const [startDateSpan, setStartDateSpan] = useState("");
   const [endDateSpan, setEndDateSpan] = useState("");
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
@@ -60,6 +59,7 @@ function App(props) {
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
   const [isSingleDate, setIsSingleDate] = useState(false);
+  const [searchDate, setSearchDate] = useState();
   const [placeHolderText, setPlaceHoldertext] = useState(t("placeHolder"));
 
   // Refs
@@ -89,7 +89,7 @@ function App(props) {
   };
 
   const fetchDataHandler = useCallback(
-    async (q, startDate, endDate) => {
+    async (q, startDate, endDate, locale) => {
       setIsLoading(true);
       setPanelOnDisplay("result");
       setError(false);
@@ -121,26 +121,43 @@ function App(props) {
               {};
           }
 
+          // Fallback to English and then French if the locale-specific name is not available
+          const title =
+            eventData.name?.[locale] ||
+            eventData.name?.en ||
+            eventData.name?.fr ||
+            "";
+
+          const addressLocality =
+            place.address?.addressLocality?.[locale] ||
+            place.address?.addressLocality?.en ||
+            place.address?.addressLocality?.fr ||
+            "";
+
+          const streetAddress =
+            place.address?.streetAddress?.[locale] ||
+            place.address?.streetAddress?.en ||
+            place.address?.streetAddress?.fr ||
+            "";
+          
           return {
             id: eventData.id,
-            title: eventData.name.fr || eventData.name.en,
+            title: title,
             ...(tabSelected !== "Organizations"
               ? {
                   startDate:
-                    eventData.startDate || eventData.startDateTime || "",
+                    eventData.subEventDetails.upcomingSubEventCount === 0
+                      ? eventData.startDate || eventData.startDateTime || ""
+                      : eventData.subEventDetails
+                          .nextUpcomingSubEventDateTime || "",
                   endDate: eventData.endDate || eventData.endDateTime || "",
                 }
               : {}),
             image: eventData.image?.thumbnail || "",
-            place: place.name?.fr || place.name?.en || "",
-            city:
-              place.address?.addressLocality?.fr ||
-              place.address?.addressLocality?.en ||
-              "",
-            streetAddress:
-              place.address?.streetAddress?.fr ||
-              place.address?.streetAddress?.en ||
-              "",
+            place:
+              place.name?.[locale] || place.name?.en || place.name?.fr || "",
+            city: addressLocality,
+            streetAddress: streetAddress,
           };
         });
 
@@ -218,12 +235,20 @@ function App(props) {
   useEffect(() => {
     // debounce search while typing
     const identifier = setTimeout(() => {
-      fetchDataHandler(searchString, startDateSpan, endDateSpan);
+      fetchDataHandler(searchString, startDateSpan, endDateSpan, locale);
     }, 500);
     return () => {
       clearTimeout(identifier);
     };
-  }, [searchString, startDateSpan, endDateSpan, fetchDataHandler, apiUrl]);
+  }, [
+    searchString,
+    startDateSpan,
+    endDateSpan,
+    fetchDataHandler,
+    apiUrl,
+    locale,
+    searchDate
+  ]);
 
   useEffect(() => {
     // show results panel
@@ -254,13 +279,13 @@ function App(props) {
   }, [showResults, refFootlightSearchWidget]);
 
   useEffect(() => {
-    // set viw type accoring to screen size
+    // set view type accoring to screen size
     const isWide = width < 650;
     setScreenType(isWide ? "mobile" : "desktop");
   }, [width]);
 
   useEffect(() => {
-    // set viw type accoring to screen size
+    // set view type accoring to screen size
     const monthFormat = "short";
     const yearFormat = "2-digit";
     let text = "";
@@ -276,7 +301,11 @@ function App(props) {
       }
     }
     setPlaceHoldertext(text);
-  }, [locale, screenType, searchDate, isLoading]);
+  }, [locale, screenType, searchDate, isLoading, isSingleDate]);
+
+  useEffect(() => {
+    setSearchDate(!isSingleDate ? new Date() : null);
+  }, [isSingleDate]);
 
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>

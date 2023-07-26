@@ -35,16 +35,4 @@ export const dateConverter = (date) => {
   return formattedDate;
 };
 
-export const iconContainerClassNames = [
-  "prev2-button",
-  "prev-button",
-  "next-button",
-  "next2-button",
-];
 
-// export const iconContainerClassNames = {
-//   prevButton: "prev2-button",
-//   prev2Button: "prev-button",
-//   nextButton: "next-button",
-//   next2Button: "next2-button",
-// };

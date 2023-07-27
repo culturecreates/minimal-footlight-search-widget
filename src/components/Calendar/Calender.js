@@ -51,8 +51,8 @@ function Calender(props) {
     } else if (isSingleDate) {
       setSearchDate(null);
       setStartDateSpan("");
-    } else if (dateConverter(searchDate) !== dateConverter(new Date())) {
-      setSearchDate(new Date());
+    } else {
+      setSearchDate(null);
       setStartDateSpan(dateConverter(new Date()));
     }
 

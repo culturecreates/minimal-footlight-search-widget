@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import ResultsPanel from "./components/ResultsPanel";
-import Calendar from "react-calendar";
-import { Popover } from "react-tiny-popover";
+import ResultsPanel from "./components/Panel/ResultsPanel";
 import "./App.css";
 import "react-calendar/dist/Calendar.css";
-import calendarIcon from "./assets/icons/Calendar.svg";
-import moment from "moment/moment";
-import DisplayDate from "./components/DisplayDate";
+import { DateFormatter } from "./components/Date/DateFormatter";
+import CalendarIcon from "./assets/icons/Calendar.svg";
+import CloseIcon from "./assets/icons/Close.svg";
+import { useSize } from "./helpers/hooks";
+import { displayDate } from "./helpers/helper";
+import { useTranslation } from "react-i18next";
 
 function App(props) {
   // ALL props passed in from HTML widget
+
+  const { t, i18n } = useTranslation();
+
   const api = props.api || "api.footlight.io";
   const calendar = props.calendar || "tout-culture";
   const eventUrl =
@@ -36,9 +40,9 @@ function App(props) {
   };
 
   // constants built using other constants
-  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?page=1&limit=15`;
+  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?page=1&limit=5`;
   const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=5&sort=name.fr&concept=63d167da016e830064fbb03b`;
-  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=63e00d658097540065660ef7&page=1&limit=5`;
+  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=5`;
 
   // States
   const [events, setEvents] = useState([]);
@@ -46,20 +50,25 @@ function App(props) {
   const [error, setError] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [searchString, setSearchString] = useState("");
-  const [searchDate, setSearchDate] = useState();
   const [startDateSpan, setStartDateSpan] = useState("");
   const [endDateSpan, setEndDateSpan] = useState("");
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
   const [showResults, setShowResults] = useState(false);
   const [searchFieldFocus, setTextFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [isSingleRange, setIsSingleDate] = useState(false);
+  const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
+  const [screenType, setScreenType] = useState();
+  const [isSingleDate, setIsSingleDate] = useState(false);
+  const [searchDate, setSearchDate] = useState();
+  const [placeHolderText, setPlaceHoldertext] = useState(t("placeHolder"));
 
   // Refs
   const textInputRef = useRef(null);
   const refFootlightSearchWidget = useRef(null);
   const refPopover = useRef(null);
+
+  // value hooks
+  const width = useSize();
 
   // Handlers
   const changeTabHandler = (clickedTab) => {
@@ -80,18 +89,22 @@ function App(props) {
   };
 
   const fetchDataHandler = useCallback(
-    async (q, startDate, endDate) => {
+    async (q, startDate, endDate, locale) => {
       setIsLoading(true);
+      setPanelOnDisplay("result");
       setError(false);
       let url = apiUrl;
+
       if (q) {
         url += `&query=${q}`;
       }
-      if (startDate) {
-        url += `&start-date-range=${startDate}`;
-      }
-      if (endDate) {
-        url += `&end-date-range=${endDate}`;
+      if (tabSelected !== "Organizations") {
+        if (startDate) {
+          url += `&start-date-range=${startDate}`;
+        }
+        if (endDate) {
+          url += `&end-date-range=${endDate}`; // For single date filter then send end date the same as start date.
+        }
       }
 
       try {
@@ -108,23 +121,46 @@ function App(props) {
               {};
           }
 
+          // Fallback to English and then French if the locale-specific name is not available
+          const title =
+            eventData.name?.[locale] ||
+            eventData.name?.en ||
+            eventData.name?.fr ||
+            "";
+
+          const addressLocality =
+            place.address?.addressLocality?.[locale] ||
+            place.address?.addressLocality?.en ||
+            place.address?.addressLocality?.fr ||
+            "";
+
+          const streetAddress =
+            place.address?.streetAddress?.[locale] ||
+            place.address?.streetAddress?.en ||
+            place.address?.streetAddress?.fr ||
+            "";
+
           return {
             id: eventData.id,
-            title: eventData.name.fr || eventData.name.en,
-            startDate: eventData.startDate || eventData.startDateTime || "",
-            endDate: eventData.endDate || eventData.endDateTime || "",
+            title: title,
+            ...(tabSelected !== "Organizations"
+              ? {
+                  startDate:
+                    eventData.subEventDetails.upcomingSubEventCount === 0
+                      ? eventData.startDate || eventData.startDateTime || ""
+                      : eventData.subEventDetails
+                          .nextUpcomingSubEventDateTime || "",
+                  endDate: eventData.endDate || eventData.endDateTime || "",
+                }
+              : {}),
             image: eventData.image?.thumbnail || "",
-            place: place.name?.fr || place.name?.en || "",
-            city:
-              place.address?.addressLocality?.fr ||
-              place.address?.addressLocality?.en ||
-              "",
-            streetAddress: 
-            place.address?.streetAddress?.fr ||
-            place.address?.streetAddress?.en ||
-            ""
+            place:
+              place.name?.[locale] || place.name?.en || place.name?.fr || "",
+            city: addressLocality,
+            streetAddress: streetAddress,
           };
         });
+
         setEvents(transformedEvents);
         setTotalCount(data.meta?.totalCount || 0);
       } catch {
@@ -132,12 +168,16 @@ function App(props) {
       }
       setIsLoading(false);
     },
-    [apiUrl]
+    [apiUrl, tabSelected]
   );
 
   const submitHandler = (event) => {
     event.preventDefault();
     const searchParams = new URLSearchParams();
+
+    if (tabSelected !== "Organizations") {
+      searchParams.append("limit", 100);
+    }
     if (searchString !== "") {
       searchParams.append("query", searchString);
     }
@@ -146,6 +186,9 @@ function App(props) {
     }
     if (endDateSpan) {
       searchParams.append("end-date-range", endDateSpan);
+    }
+    if (tabSelected === "Ateliers") {
+      searchParams.append("type", "64776b93fbeda20064d2332f");
     }
     let searchUrl = eventSearchUrl;
     if (tabSelected === "Organizations") {
@@ -159,44 +202,60 @@ function App(props) {
 
   const textFocusHandler = () => {
     setTextFocus(true);
+    setPlaceHoldertext("");
   };
   const textBlurHandler = () => {
     setTextFocus(false);
+    setPlaceHoldertext(t("placeHolder"));
   };
   const textChangeHandler = (event) => {
     setSearchString(event.target.value);
   };
 
-  const searchDateHandler = (value) => {
-    setSearchDate(value);
-    setStartDateSpan(moment(value[0] ?? value).format("YYYY-MM-DD"));
-    if (value[0]) {
-      setEndDateSpan(moment(value[1]).format("YYYY-MM-DD"));
-    } else {
-      setEndDateSpan(null);
+  const onCloseHandler = () => {
+    if (panelOnDisplay === "result") {
+      setShowResults(false);
+      setTextFocus(false);
+    } else if (panelOnDisplay === "datepicker") {
+      setPanelOnDisplay("result");
     }
-    setIsPopoverOpen(!isPopoverOpen);
-    textInputRef.current.focus();
+  };
+
+  const datePickerDisplayHandler = (panel = "result") => {
     setTextFocus(true);
+    setPanelOnDisplay(panel);
   };
 
   // Effects
+
+  useEffect(() => {
+    i18n.changeLanguage(locale);
+  }, [i18n, locale]);
+
   useEffect(() => {
     // debounce search while typing
     const identifier = setTimeout(() => {
-      fetchDataHandler(searchString, startDateSpan, endDateSpan);
+      fetchDataHandler(searchString, startDateSpan, endDateSpan, locale);
     }, 500);
     return () => {
       clearTimeout(identifier);
     };
-  }, [searchString, startDateSpan, endDateSpan, fetchDataHandler, apiUrl]);
+  }, [
+    searchString,
+    startDateSpan,
+    endDateSpan,
+    fetchDataHandler,
+    apiUrl,
+    locale,
+    searchDate,
+  ]);
 
   useEffect(() => {
     // show results panel
-    if (searchFieldFocus === true || isPopoverOpen === true) {
+    if (searchFieldFocus === true) {
       setShowResults(true);
     }
-  }, [showResults, searchFieldFocus, isPopoverOpen]);
+  }, [showResults, searchFieldFocus]);
 
   useEffect(() => {
     // click outside to hide -- move to results panel component and popover component
@@ -209,7 +268,6 @@ function App(props) {
           (refPopover.current && !refPopover.current.contains(event.target)) ||
           !refPopover.current
         ) {
-          setIsPopoverOpen(false);
           setShowResults(false);
         }
       }
@@ -218,125 +276,123 @@ function App(props) {
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [isPopoverOpen, showResults, refFootlightSearchWidget]);
+  }, [showResults, refFootlightSearchWidget]);
+
+  useEffect(() => {
+    // set view type accoring to screen size
+    const isWide = width < 650;
+    setScreenType(isWide ? "mobile" : "desktop");
+  }, [width]);
+
+  useEffect(() => {
+    // set view type accoring to screen size
+    const monthFormat = "short";
+    const yearFormat = "2-digit";
+    let text = "";
+    if (searchDate && screenType === "mobile") {
+      if (Array.isArray(searchDate)) {
+        // for date range selection
+        const dateArray = searchDate.map((dateItem) => {
+          return displayDate(dateItem, locale, monthFormat, yearFormat);
+        });
+        text = dateArray.join(" - ");
+      } else {
+        text = displayDate(searchDate, locale, monthFormat, yearFormat);
+      }
+    }
+    setPlaceHoldertext(text);
+  }, [locale, screenType, searchDate, isLoading, isSingleDate]);
+
+  useEffect(() => {
+    setSearchDate(!isSingleDate ? new Date() : null);
+  }, [isSingleDate]);
 
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-          backgroundColor: "#ffffff",
-          borderBottom: "1px solid #000000",
-        }}
-      >
+      <div className="input-container">
         <form onSubmit={submitHandler} autoComplete="off">
-          <input type="submit"></input>
-          <input
-            type="text"
-            placeholder={locale === "en" ? "Search" : "Recherche"}
-            onChange={textChangeHandler}
-            onFocus={textFocusHandler}
-            onBlur={textBlurHandler}
-            ref={textInputRef}
-          />
-        </form>
-        {tabSelected !== "Organizations" && (
-          <div
-            className="topDateDiv"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              cursor: "pointer",
-            }}
-          >
-            <span
-              style={{ whiteSpace: "nowrap" }}
-              onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-            >
-              {(searchDate || searchDate?.length > 0) && (
-                <>
-                  <DisplayDate date={startDateSpan} />
-                  &nbsp;
-                  {searchDate?.length > 0 && <>-&nbsp;</>}
-                  {searchDate?.length > 0 && <DisplayDate date={endDateSpan} />}
-                </>
-              )}
-            </span>
-            <Popover
-              isOpen={isPopoverOpen}
-              // onClickOutside={() => setIsPopoverOpen(false)}
-              id="react-calendar-checkbox-container"
-              align="end"
-              positions={["bottom"]} // preferred positions by priority
-              content={
-                <div
-                  ref={refPopover}
-                  style={{
-                    background: "#ffffff",
-                    boxShadow: " 0px 19px 20px 4px rgba(0, 0, 0, 0.1)",
+          <div className="input-searchbar">
+            <input type="submit"></input>
+            {panelOnDisplay === "datepicker" &&
+              screenType === "mobile" &&
+              tabSelected !== "Organizations" && (
+                <input
+                  type="datepicker-icon"
+                  onClick={() => {
+                    datePickerDisplayHandler("result");
                   }}
-                >
-                  <Calendar
-                    onChange={searchDateHandler}
-                    value={searchDate}
-                    selectRange={!isSingleRange}
-                    className="react-calendar-wrapper"
-                    locale={locale}
-                  />
+                ></input>
+              )}
+            <input
+              type="text"
+              placeholder={placeHolderText}
+              onChange={textChangeHandler}
+              onFocus={textFocusHandler}
+              onBlur={textBlurHandler}
+              ref={textInputRef}
+            />
+          </div>
+          {screenType === "mobile" && (
+            <>
+              {!(panelOnDisplay === "datepicker" && screenType === "mobile") &&
+                tabSelected !== "Organizations" && (
                   <div
-                    style={{
-                      height: "48px",
-                      width: "auto",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      paddingLeft: "12px",
-                      background: "rgba(255, 246, 73, 0.16)",
-                      borderTop: "1px solid #545454",
+                    className="icon-container"
+                    onClick={() => {
+                      datePickerDisplayHandler("datepicker");
                     }}
                   >
-                    <input
-                      type="checkbox"
-                      style={{ height: "24px", width: "24px" }}
-                      checked={isSingleRange}
-                      onChange={(e) => setIsSingleDate(e.target.checked)}
-                    />
-                    <label>{locale === "en" ? "Single date" : "Rechercher à une date précise"}</label>
+                    <img src={CalendarIcon} alt="calendar"></img>
                   </div>
-                </div>
-              }
-            >
+                )}
               <div
-                onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-                id="calendar-icon-id"
+                className="icon-container"
+                style={{ marginRight: "5px" }}
+                onClick={() => {
+                  onCloseHandler();
+                }}
               >
-                <span style={{ cursor: "pointer" }}>
-                  <img
-                    src={calendarIcon}
-                    alt="icon date picker"
-                    style={{ width: "25px", height: "25px" }}
-                  />
-                </span>
+                <img src={CloseIcon} alt="calendar"></img>
               </div>
-            </Popover>
-          </div>
-        )}
+            </>
+          )}
+        </form>
+        {tabSelected !== "Organizations" &&
+          screenType !== "mobile" &&
+          showResults && (
+            <div className="topDateDiv">
+              <DateFormatter date={searchDate} locale={locale} />
+            </div>
+          )}
       </div>
-      {showResults && (
-        <ResultsPanel
-          error={error}
-          events={events}
-          isLoading={isLoading}
-          totalCount={totalCount}
-          widgetProps={widgetProps}
-          onChangeTab={changeTabHandler}
-          tabSelected={tabSelected}
-          onSubmit={submitHandler}
-        />
-      )}
+      <div className="panel-anchor">
+        <div className="panel-float">
+          {showResults && (
+            <>
+              <ResultsPanel
+                error={error}
+                events={events}
+                isLoading={isLoading}
+                totalCount={totalCount}
+                widgetProps={widgetProps}
+                onChangeTab={changeTabHandler}
+                tabSelected={tabSelected}
+                onSubmit={submitHandler}
+                locale={locale}
+                setSearchDate={setSearchDate}
+                setStartDateSpan={setStartDateSpan}
+                setEndDateSpan={setEndDateSpan}
+                searchDate={searchDate}
+                setIsLoading={setIsLoading}
+                panelOnDisplay={panelOnDisplay}
+                screenType={screenType}
+                setIsSingleDate={setIsSingleDate}
+                isSingleDate={isSingleDate}
+              />
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

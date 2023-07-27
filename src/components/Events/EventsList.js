@@ -1,34 +1,34 @@
 import React from "react";
-
 import Event from "./Event";
-import Organization from "./Organization";
+import Organization from "../Organization/Organization";
 import "./EventsList.css";
 
 const EventsList = (props) => {
-  let tabChoice = props.tabSelected;
-
+  const { tabSelected, events, widgetProps } = props;
+  let tabChoice = tabSelected;
+  
   return (
     <ul className="events-list">
       {tabChoice === "Organizations" &&
-        props.events
+        events
           .slice(0, 5)
           .map((event) => (
             <Organization
               key={event.id}
               event={event}
-              eventUrl={props.widgetProps.orgUrl}
-              locale={props.widgetProps.locale}
+              eventUrl={widgetProps.orgUrl}
+              locale={widgetProps.locale}
             />
           ))}
       {tabChoice !== "Organizations" &&
-        props.events
-          .slice(0, 5)
+        events
+          .slice(0, 4)
           .map((event) => (
             <Event
               key={event.id}
               event={event}
-              eventUrl={props.widgetProps.eventUrl}
-              locale={props.widgetProps.locale}
+              eventUrl={widgetProps.eventUrl}
+              locale={widgetProps.locale}
             />
           ))}
     </ul>

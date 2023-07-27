@@ -1,0 +1,17 @@
+.footlightSearchWidget .events-list {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-inline: auto;
+}
+
+.footlightSearchWidget .tabs-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 40px;
+}

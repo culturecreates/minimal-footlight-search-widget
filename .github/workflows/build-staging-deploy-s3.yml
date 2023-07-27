@@ -9,7 +9,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
       AWS_REGION: ca-central-1 
-      WEBHOSTING_BUCKET_NAME: staging-minimal-footlight-search-widget
+      WEBHOSTING_BUCKET_NAME: staging.minimal-footlight-search-widget
     runs-on: ubuntu-22.04
     container:
       image: sleavely/node-awscli:14.x
@@ -18,5 +18,4 @@ jobs:
     - run: npm install
     - run: npm run build
     - run: npm run build:widget
-    - run: aws s3 sync ./build s3://${{env.WEBHOSTING_BUCKET_NAME}}/v2/ --acl public-read
-    - run: aws s3 sync ./dist s3://${{env.WEBHOSTING_BUCKET_NAME}}/v2/dist/ --acl public-read --delete --cache-control max-age=3600
+    - run: aws s3 sync ./build s3://${{env.WEBHOSTING_BUCKET_NAME}}/v2/ --acl public-read --delete --cache-control max-age=3600

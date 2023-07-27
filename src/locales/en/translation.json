@@ -1,0 +1,24 @@
+{
+  "noResult": {
+    "message": "No {{tabSelected}} are available"
+  },
+  "tabs": {
+    "Events": "Events",
+    "Ateliers": "Workshops",
+    "Organizations": "Organizations"
+  },
+  "datepicker": {
+    "rangeSelectLabel": "Search a date range",
+    "eraseButtonLabel": "Clear"
+  },
+  "footer": {
+    "noItems": "No results found",
+    "seeAll": "See all results"
+  },
+  "placeHolder": "Search",
+  "resultHeader": {
+    "next": "next",
+    "today": "today"
+  },
+  "error": "An error occured."
+}

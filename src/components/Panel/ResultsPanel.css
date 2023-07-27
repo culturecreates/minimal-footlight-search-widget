@@ -1,0 +1,101 @@
+.footlightSearchWidget .panel-anchor {
+  position: relative;
+  margin: 0rem auto;
+  width: 100%;
+}
+
+.footlightSearchWidget .panel-float {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.footlightSearchWidget .panel-result {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: normal;
+  background: white;
+  width: 100%;
+  max-height: 42rem;
+}
+
+.footlightSearchWidget .panel-content {
+  display: flex;
+  justify-content: space-between;
+  max-height: 550px;
+  min-height: 450px;
+}
+
+.footlightSearchWidget .panel-content .result-container{
+  flex-grow: 1;
+  display: flex;
+}
+
+.footlightSearchWidget .react-calendar {
+  max-width: 100%;
+  width: auto;
+}
+.footlightSearchWidget .panel-content .content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.footlightSearchWidget .panel-content .content > div:last-child {
+  flex-grow: 1;
+}
+
+/* Custom datepicker styles */
+
+.footlightSearchWidget .react-calendar__tile {
+  padding: 24px 0px 24.8px;
+}
+
+.footlightSearchWidget .react-calendar__tile--now {
+  background: none;
+}
+
+.footlightSearchWidget .react-calendar__tile:enabled:hover {
+  background: var(--primary-flash-yellow);
+}
+
+.footlightSearchWidget .react-calendar__tile--now:enabled:hover {
+  background: var(--primary-flash-yellow);
+}
+
+.footlightSearchWidget .react-calendar__tile--now > abbr {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footlightSearchWidget .panel-content .result-header {
+  padding: 32px 30px 20px;
+  display: flex;
+  justify-content: flex-start;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.footlightSearchWidget .panel-content .calendar-container{
+  max-width: 40%;
+}
+
+.footlightSearchWidget .panel-content .calendar-container{
+  width: 60%;
+}
+
+
+@media screen and (max-width: 650px) {
+  .footlightSearchWidget .panel-content .content {
+    width: 100%;
+  }
+  .footlightSearchWidget .panel-content > div{
+    width: 100%;
+    max-width: 100%;
+  }
+}

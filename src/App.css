@@ -1,3 +1,22 @@
+:root {
+  --primary-light-grey: #D6D6D6;
+  --primary-dark-grey:#707070;
+  --primary-flash-yellow: #FFF649;
+  --primary-ultra-light-grey: #F5F5F5;
+  --primary-light-yellow: #f2eb9f;
+  --primary-medium-grey: #B8B8B8;
+  --primary-black: #000000;
+  --primary-white: #ffffff;
+}
+
+body {
+  margin: 0;
+}
+
+html {
+  font-family: TT Commons;
+}
+
 .footlightSearchWidget {
   display: flex;
   flex-direction: column;
@@ -5,12 +24,12 @@
 
 .footlightSearchWidget form {
   display: flex;
-  width: 80%;
+  flex-grow: 1;
 }
 
 .footlightSearchWidget input[type="submit"] {
   cursor: pointer;
-  background: url("/public/search-icon.svg") no-repeat left 10px center;
+  background: url("./assets/icons/search-icon.svg") no-repeat left 10px center;
   background-color: white;
   border: none;
   box-shadow: none;
@@ -22,18 +41,18 @@
 }
 
 .footlightSearchWidget input[type="text"] {
-  width: 80%;
   border: none;
   outline: none;
   box-shadow: none;
-  text-transform: uppercase; 
+  text-transform: uppercase;
   font-size: 24px;
   box-sizing: border-box;
+  flex-grow: 1;
 }
 
 .footlightSearchWidget input[type="date"] {
   width: 300px;
-  justify-content: end;
+  justify-content: flex-end;
   border: none;
   outline: none;
   box-shadow: none;
@@ -59,7 +78,7 @@
 
 .react-calendar-wrapper .react-calendar__tile--rangeEnd,
 .react-calendar-wrapper .react-calendar__tile--rangeStart {
-  background: #fff649 !important;
+  background: var(--primary-flash-yellow) !important;
 }
 
 .react-calendar-wrapper .react-calendar__navigation__label {
@@ -74,9 +93,142 @@
 .react-calendar-wrapper .react-calendar__tile--active:enabled:hover,
 .react-calendar-wrapper .react-calendar__tile--active:enabled:focus,
 .react-calendar-wrapper .react-calendar__tile--hasActive {
-  background: #fff649;
+  background: var(--primary-light-yellow);
 }
 
 .react-calendar-wrapper .react-calendar__tile--active {
-  background: #f2eb9f;
+  background: var(--primary-light-yellow);
+}
+
+.footlightSearchWidget .loader {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: grid;
+  place-content: center;
+}
+
+.footlightSearchWidget > .input-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background: var(--primary-white);
+  margin-bottom: 5px;
+}
+
+.footlightSearchWidget .topDateDiv {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  padding: 0 11px;
+}
+
+.footlightSearchWidget .formatted-date{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footlightSearchWidget .formatted-date img{
+  width: 7px;
+  margin-left: 1px;
+  height: 1px;
+  margin-top: 1px;
+}
+
+.footlightSearchWidget .input-searchbar {
+  display: flex;
+  flex-grow: 1;
+}
+
+.footlightSearchWidget .loader > p {
+  width: 4em;
+  height: 4em;
+  border: 0.5em solid rgba(0, 0, 0, 0.1);
+  border-left-color: var(--primary-black);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .footlightSearchWidget input[type="text"] {
+    height: 40px;
+    width: 100%;
+    font-size: 20px;
+  }
+
+  .footlightSearchWidget input[type="submit"] {
+    margin-left: -5px;
+    height: 40px;
+    width: 40px;
+  }
+  
+  .footlightSearchWidget .input-container {
+    height: 80px;
+    align-items: center;
+    margin-bottom: 0px;
+    border-bottom: 1px solid var(--primary-medium-grey, #000);
+    /* background: var(
+      --primary-ultra-light-grey,
+      linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.96) 0%,
+        rgba(255, 255, 255, 0.96) 100%
+      ),
+      #000
+    ); */
+  }
+
+  .footlightSearchWidget .input-searchbar {
+    display: flex;
+    border-bottom: 1px solid black;
+    flex-grow: 1;
+    align-items: flex-end;
+    margin: 10px 0;
+    max-width: 80%;
+  }
+  .footlightSearchWidget .icon-container {
+    height: 28px;
+    width: 28px;
+    margin: 16px 0 0 20px;
+  }
+  .footlightSearchWidget form {
+    margin: 0 20px;
+    justify-content: space-between;
+  }
+
+  .footlightSearchWidget input[type="datepicker-icon"] {
+    cursor: pointer;
+    background: url("./assets/icons/Calendar.svg") no-repeat left 10px center;
+    background-color: white;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    text-indent: 100px;
+    width: 45px;
+    height: 40px;
+    box-sizing: border-box;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .footlightSearchWidget .icon-container {
+    height: 23px;
+    width: 23px;
+    margin: 21px 0 0 20px;
+  }
+
+  .footlightSearchWidget input[type="text"] {
+    height: 40px;
+    width: 100%;
+    font-size: 16px;
+  }
 }

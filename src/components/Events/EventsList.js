@@ -6,6 +6,7 @@ import "./EventsList.css";
 const EventsList = (props) => {
   const { tabSelected, events, widgetProps } = props;
   let tabChoice = tabSelected;
+  
   return (
     <ul className="events-list">
       {tabChoice === "Organizations" &&

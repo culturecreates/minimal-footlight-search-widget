@@ -20,7 +20,7 @@ const Event = (props) => {
         <div className="place">
           {event.streetAddress&&<img src={placeImg} alt="place"></img>}
           {event.streetAddress}
-          {/* {event.city && ", " + event.city} */}
+          {event.city && ", " + event.city}
         </div>
       </div>
     </div>

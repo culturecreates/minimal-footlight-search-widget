@@ -139,7 +139,7 @@ function App(props) {
             place.address?.streetAddress?.en ||
             place.address?.streetAddress?.fr ||
             "";
-          
+
           return {
             id: eventData.id,
             title: title,
@@ -247,7 +247,7 @@ function App(props) {
     fetchDataHandler,
     apiUrl,
     locale,
-    searchDate
+    searchDate,
   ]);
 
   useEffect(() => {
@@ -357,11 +357,13 @@ function App(props) {
             </>
           )}
         </form>
-        {tabSelected !== "Organizations" && screenType !== "mobile" && (
-          <div className="topDateDiv">
-            <DateFormatter date={searchDate} locale={locale} />
-          </div>
-        )}
+        {tabSelected !== "Organizations" &&
+          screenType !== "mobile" &&
+          showResults && (
+            <div className="topDateDiv">
+              <DateFormatter date={searchDate} locale={locale} />
+            </div>
+          )}
       </div>
       <div className="panel-anchor">
         <div className="panel-float">

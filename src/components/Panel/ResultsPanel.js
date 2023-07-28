@@ -56,7 +56,7 @@ const ResultsPanel = (props) => {
       </div>
     );
   } else {
-    const message = t("noResult.message", { tabSelected: t(`tabs.${tabSelected}`) });
+    const message = t(`noResult.${tabSelected}`);
 
     content = (
       <NoContent
@@ -89,9 +89,6 @@ const ResultsPanel = (props) => {
             onChangeTab={changeTabHandler}
             tabSelected={tabSelected}
             locale={widgetProps.locale}
-            // setSearchDate={setSearchDate}
-            // setStartDateSpan={setStartDateSpan}
-            // setEndDateSpan={setEndDateSpan}
           />
           <div className="panel-content">
             <div className="result-container">{content}</div>

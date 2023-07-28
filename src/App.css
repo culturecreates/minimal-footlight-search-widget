@@ -27,7 +27,7 @@ html {
   flex-grow: 1;
 }
 
-.footlightSearchWidget input[type="submit"] {
+.footlightSearchWidget .search-bar-icon {
   cursor: pointer;
   background: url("./assets/icons/search-icon.svg") no-repeat left 10px center;
   background-color: white;
@@ -165,7 +165,7 @@ html {
     font-size: 20px;
   }
 
-  .footlightSearchWidget input[type="submit"] {
+  .footlightSearchWidget .search-bar-icon {
     margin-left: -5px;
     height: 40px;
     width: 40px;

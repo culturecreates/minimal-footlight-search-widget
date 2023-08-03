@@ -68,7 +68,7 @@ function App(props) {
   const refPopover = useRef(null);
 
   // value hooks
-  const width = useSize();
+  const width = useSize(refFootlightSearchWidget);
 
   // Handlers
   const changeTabHandler = (clickedTab) => {
@@ -236,7 +236,7 @@ function App(props) {
     // debounce search while typing
     const identifier = setTimeout(() => {
       fetchDataHandler(searchString, startDateSpan, endDateSpan, locale);
-    }, 500);
+    }, 700);
     return () => {
       clearTimeout(identifier);
     };

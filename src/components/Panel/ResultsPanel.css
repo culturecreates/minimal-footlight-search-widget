@@ -83,6 +83,7 @@
 
 .footlightSearchWidget .panel-content .calendar-container{
   max-width: 40%;
+  border-left: 1px solid var(--primary-light-grey, #000);
 }
 
 .footlightSearchWidget .panel-content .calendar-container{

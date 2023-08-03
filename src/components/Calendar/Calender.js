@@ -85,8 +85,7 @@ function Calender(props) {
   return (
     <div
       style={{
-        minHeight: "500px",
-        borderLeft: "1px solid var(--primary-light-grey, #000)",
+        minHeight: "500px"
       }}
     >
       <div className="calendar-control">

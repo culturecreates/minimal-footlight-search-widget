@@ -112,6 +112,7 @@
   .react-calendar-wrapper
   .react-calendar__navigation__label {
   font-size: 20px;
+  text-transform: capitalize;
 }
 
 .footlightSearchWidget .react-calendar__year-view .react-calendar__tile,

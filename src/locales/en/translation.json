@@ -1,6 +1,8 @@
 {
   "noResult": {
-    "message": "No {{tabSelected}} are available"
+    "Events": "No Events are available",
+    "Ateliers": "No Workshops are available",
+    "Organizations": "No Organizations are available"
   },
   "tabs": {
     "Events": "Events",

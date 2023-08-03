@@ -30,15 +30,16 @@ function Calender(props) {
   const searchDateHandler = (value) => {
     setSearchDate(value);
     if (!isSingleDate) {
-      setStartDateSpan(dateConverter(new Date(value)));
-      setEndDateSpan(null);
+      const selectedDate =dateConverter(new Date(value))
+      setStartDateSpan(selectedDate);
+      setEndDateSpan(selectedDate);
     } else {
       if (value[0] !== null) {
         setStartDateSpan(dateConverter(new Date(value[0])));
         setEndDateSpan(dateConverter(new Date(value[1])));
       } else {
-        setStartDateSpan(null);
-        setEndDateSpan(null);
+        setStartDateSpan("");
+        setEndDateSpan("");
       }
     }
   };
@@ -46,16 +47,9 @@ function Calender(props) {
   const handleDateErase = () => {
     if (isSingleDate && !Array.isArray(searchDate)) {
       setCalendarKey((prevState) => prevState + 1); // So reset button can reset date when in the middle of selection.
-      setSearchDate(null);
-      setStartDateSpan("");
-    } else if (isSingleDate) {
-      setSearchDate(null);
-      setStartDateSpan("");
-    } else {
-      setSearchDate(null);
-      setStartDateSpan(dateConverter(new Date()));
     }
-
+    setSearchDate(null);
+    setStartDateSpan("");
     setEndDateSpan("");
     setActiveStartDate(new Date());
     setView("month");
@@ -64,19 +58,12 @@ function Calender(props) {
   const handleDateSelectionTypeChange = (e) => {
     if (e.target.checked && !Array.isArray(searchDate)) {
       setCalendarKey((prevState) => prevState + 1); // So reset button can reset date when in the middle of selection.
-      setSearchDate(null);
-      setStartDateSpan("");
-    } else if (e.target.checked) {
-      setSearchDate(null);
-      setStartDateSpan("");
-    } else {
-      setSearchDate(new Date());
-      setStartDateSpan(new Date());
     }
-    // setSearchDate(new Date());
+    setSearchDate(null);
+    setStartDateSpan("");
     setIsSingleDate(e.target.checked);
-    setStartDateSpan(null);
-    setEndDateSpan(null);
+    setStartDateSpan("");
+    setEndDateSpan("");
     setView("month");
     setActiveStartDate(new Date());
   };
@@ -98,8 +85,7 @@ function Calender(props) {
   return (
     <div
       style={{
-        minHeight: "500px",
-        borderLeft: "1px solid var(--primary-light-grey, #000)",
+        minHeight: "500px"
       }}
     >
       <div className="calendar-control">

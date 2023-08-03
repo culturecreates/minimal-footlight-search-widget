@@ -59,7 +59,7 @@ function App(props) {
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
   const [isSingleDate, setIsSingleDate] = useState(false);
-  const [searchDate, setSearchDate] = useState();
+  const [searchDate, setSearchDate] = useState(null);
   const [placeHolderText, setPlaceHoldertext] = useState(t("placeHolder"));
 
   // Refs
@@ -68,7 +68,7 @@ function App(props) {
   const refPopover = useRef(null);
 
   // value hooks
-  const width = useSize();
+  const width = useSize(refFootlightSearchWidget);
 
   // Handlers
   const changeTabHandler = (clickedTab) => {
@@ -236,7 +236,7 @@ function App(props) {
     // debounce search while typing
     const identifier = setTimeout(() => {
       fetchDataHandler(searchString, startDateSpan, endDateSpan, locale);
-    }, 500);
+    }, 700);
     return () => {
       clearTimeout(identifier);
     };
@@ -304,7 +304,8 @@ function App(props) {
   }, [locale, screenType, searchDate, isLoading, isSingleDate]);
 
   useEffect(() => {
-    setSearchDate(!isSingleDate ? new Date() : null);
+    setSearchDate(null);
+    
   }, [isSingleDate]);
 
   return (
@@ -312,7 +313,7 @@ function App(props) {
       <div className="input-container">
         <form onSubmit={submitHandler} autoComplete="off">
           <div className="input-searchbar">
-            <input type="submit"></input>
+            <input className="search-bar-icon" ></input>
             {panelOnDisplay === "datepicker" &&
               screenType === "mobile" &&
               tabSelected !== "Organizations" && (

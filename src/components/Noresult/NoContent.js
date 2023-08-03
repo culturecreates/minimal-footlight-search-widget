@@ -8,7 +8,7 @@ function NoContent(props) {
     <div className="no-content-wrapper">
       <div className="message-container">{message}</div>
       {tabSelected !== "Organizations" && (
-        <div className="date-container">
+        <div className="date-container" data-testid="date-container">
           <DateFormatter
             date={date}
             locale={locale}

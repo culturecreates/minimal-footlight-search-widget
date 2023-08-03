@@ -27,6 +27,7 @@ const SearchFooter = (props) => {
       className="footer-submit"
       onClick={count > 0 ? onSubmit : undefined}
       style={style} 
+      data-testid="footer"
     >
       <div>
         {msg}

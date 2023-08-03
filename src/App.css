@@ -1,10 +1,10 @@
 :root {
-  --primary-light-grey: #D6D6D6;
-  --primary-dark-grey:#707070;
-  --primary-flash-yellow: #FFF649;
-  --primary-ultra-light-grey: #F5F5F5;
+  --primary-light-grey: #d6d6d6;
+  --primary-dark-grey: #707070;
+  --primary-flash-yellow: #fff649;
+  --primary-ultra-light-grey: #f5f5f5;
   --primary-light-yellow: #f2eb9f;
-  --primary-medium-grey: #B8B8B8;
+  --primary-medium-grey: #b8b8b8;
   --primary-black: #000000;
   --primary-white: #ffffff;
 }
@@ -25,12 +25,13 @@ html {
 .footlightSearchWidget form {
   display: flex;
   flex-grow: 1;
+  width: auto !important;
 }
 
 .footlightSearchWidget .search-bar-icon {
   cursor: pointer;
-  background: url("./assets/icons/search-icon.svg") no-repeat left 10px center;
-  background-color: white;
+  background: var(--primary-ultra-light-grey, #f5f5f5)
+    url("./assets/icons/search-icon.svg") no-repeat left 10px center;
   border: none;
   box-shadow: none;
   outline: none;
@@ -48,6 +49,7 @@ html {
   font-size: 24px;
   box-sizing: border-box;
   flex-grow: 1;
+  background: var(--primary-ultra-light-grey, #f5f5f5);
 }
 
 .footlightSearchWidget input[type="date"] {
@@ -88,6 +90,15 @@ html {
 .react-calendar-wrapper .react-calendar__month-view__weekdays__weekday > abbr {
   font-weight: normal;
   text-decoration: none;
+  font-weight: 400;
+  color: var(--primary-dark-grey, #707070);
+  text-align: center;
+  font-size: 12px;
+}
+
+.react-calendar-wrapper
+  .react-calendar__month-view__days__day--neighboringMonth {
+  color: var(--primary-medium-grey, #b8b8b8);
 }
 
 .react-calendar-wrapper .react-calendar__tile--active:enabled:hover,
@@ -114,6 +125,8 @@ html {
   width: 100%;
   background: var(--primary-white);
   margin-bottom: 5px;
+  border-bottom: 1px solid var(--primary-medium-grey, #b8b8b8);
+  background: var(--primary-ultra-light-grey, #f5f5f5);
 }
 
 .footlightSearchWidget .topDateDiv {
@@ -125,13 +138,13 @@ html {
   padding: 0 11px;
 }
 
-.footlightSearchWidget .formatted-date{
+.footlightSearchWidget .formatted-date {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.footlightSearchWidget .formatted-date img{
+.footlightSearchWidget .formatted-date img {
   width: 7px;
   margin-left: 1px;
   height: 1px;
@@ -169,22 +182,17 @@ html {
     margin-left: -5px;
     height: 40px;
     width: 40px;
+    background: var(--primary-ultra-light-grey, #f5f5f5)
+    url("./assets/icons/search-icon.svg") no-repeat left 10px center;
   }
-  
+
   .footlightSearchWidget .input-container {
     height: 80px;
     align-items: center;
     margin-bottom: 0px;
     border-bottom: 1px solid var(--primary-medium-grey, #000);
-    /* background: var(
-      --primary-ultra-light-grey,
-      linear-gradient(
-        0deg,
-        rgba(255, 255, 255, 0.96) 0%,
-        rgba(255, 255, 255, 0.96) 100%
-      ),
-      #000
-    ); */
+    border-bottom: 1px solid var(--primary-medium-grey, #b8b8b8);
+    background: var(--primary-ultra-light-grey, #f5f5f5);
   }
 
   .footlightSearchWidget .input-searchbar {
@@ -194,6 +202,7 @@ html {
     align-items: flex-end;
     margin: 10px 0;
     max-width: 80%;
+    position: relative;
   }
   .footlightSearchWidget .icon-container {
     height: 28px;
@@ -207,8 +216,8 @@ html {
 
   .footlightSearchWidget input[type="datepicker-icon"] {
     cursor: pointer;
-    background: url("./assets/icons/Calendar.svg") no-repeat left 10px center;
-    background-color: white;
+    background: var(--primary-ultra-light-grey, #f5f5f5)
+      url("./assets/icons/Calendar.svg") no-repeat left 10px center;
     border: none;
     box-shadow: none;
     outline: none;

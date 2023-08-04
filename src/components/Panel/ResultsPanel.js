@@ -37,7 +37,9 @@ const ResultsPanel = (props) => {
 
   let content;
 
-  if (events.length > 0 && totalCount > 0) {
+  if (isLoading) {
+    content = <Loader />;
+  } else if (events.length > 0 && totalCount > 0) {
     content = (
       <div className="content">
         <ResultHeading
@@ -71,10 +73,6 @@ const ResultsPanel = (props) => {
 
   if (error) {
     content = <p>{t("error")}</p>;
-  }
-
-  if (isLoading) {
-    content = <Loader />;
   }
 
   const changeTabHandler = (clickedTab) => {

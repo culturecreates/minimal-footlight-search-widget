@@ -9,6 +9,10 @@
   --primary-white: #ffffff;
 }
 
+.footlightSearchWidget *{
+  box-sizing: border-box  !important;
+}
+
 body {
   margin: 0;
 }

@@ -40,9 +40,9 @@ function App(props) {
   };
 
   // constants built using other constants
-  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?page=1&limit=5`;
-  const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=5&sort=name.fr&concept=63d167da016e830064fbb03b`;
-  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=5`;
+  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?exclude-type=64776b93fbeda20064d2332f&page=1&limit=10`;
+  const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=10&sort=name.fr&concept=63d167da016e830064fbb03b`;
+  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=10`;
 
   // States
   const [events, setEvents] = useState([]);
@@ -72,12 +72,13 @@ function App(props) {
 
   // Handlers
   const changeTabHandler = (clickedTab) => {
-    // set focus on text input to keep results panel open
-    textInputRef.current.focus();
-    setTextFocus(true);
     if (tabSelected !== clickedTab) {
       setIsLoading(true);
     }
+    // set focus on text input to keep results panel open
+    textInputRef.current.focus();
+    setTextFocus(true);
+    setEvents([]);
     setTabSelected(clickedTab);
     if (clickedTab === "Organizations") {
       setApiUrl(apiOrganizationsUrl);
@@ -89,12 +90,11 @@ function App(props) {
   };
 
   const fetchDataHandler = useCallback(
-    async (q, startDate, endDate, locale) => {
-      setIsLoading(true);
+    async (q, startDate, endDate, locale, signal) => {
       setPanelOnDisplay("result");
+      setIsLoading(true);
       setError(false);
       let url = apiUrl;
-
       if (q) {
         url += `&query=${q}`;
       }
@@ -108,7 +108,7 @@ function App(props) {
       }
 
       try {
-        const response = await fetch(url);
+        const response = await fetch(url, { signal });
         const data = await response.json();
         console.log(data);
 
@@ -164,7 +164,9 @@ function App(props) {
         setEvents(transformedEvents);
         setTotalCount(data.meta?.totalCount || 0);
       } catch {
-        setError(true);
+        if (!signal.aborted) {
+          setError(true);
+        }
       }
       setIsLoading(false);
     },
@@ -234,11 +236,22 @@ function App(props) {
 
   useEffect(() => {
     // debounce search while typing
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+    setIsLoading(true);
+
     const identifier = setTimeout(() => {
-      fetchDataHandler(searchString, startDateSpan, endDateSpan, locale);
+      fetchDataHandler(
+        searchString,
+        startDateSpan,
+        endDateSpan,
+        locale,
+        signal
+      );
     }, 700);
     return () => {
       clearTimeout(identifier);
+      abortController.abort();
     };
   }, [
     searchString,
@@ -305,7 +318,6 @@ function App(props) {
 
   useEffect(() => {
     setSearchDate(null);
-    
   }, [isSingleDate]);
 
   return (
@@ -313,7 +325,7 @@ function App(props) {
       <div className="input-container">
         <form onSubmit={submitHandler} autoComplete="off">
           <div className="input-searchbar">
-            <input className="search-bar-icon" ></input>
+            <input className="search-bar-icon"></input>
             {panelOnDisplay === "datepicker" &&
               screenType === "mobile" &&
               tabSelected !== "Organizations" && (

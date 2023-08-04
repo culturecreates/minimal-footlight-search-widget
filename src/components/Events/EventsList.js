@@ -11,7 +11,7 @@ const EventsList = (props) => {
     <ul className="events-list">
       {tabChoice === "Organizations" &&
         events
-          .slice(0, 5)
+          .slice(0, 9)
           .map((event) => (
             <Organization
               key={event.id}
@@ -22,7 +22,7 @@ const EventsList = (props) => {
           ))}
       {tabChoice !== "Organizations" &&
         events
-          .slice(0, 4)
+          .slice(0, 9)
           .map((event) => (
             <Event
               key={event.id}

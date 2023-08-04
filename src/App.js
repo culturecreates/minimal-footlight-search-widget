@@ -40,9 +40,9 @@ function App(props) {
   };
 
   // constants built using other constants
-  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?exclude-type=64776b93fbeda20064d2332f&page=1&limit=5`;
-  const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=5&sort=name.fr&concept=63d167da016e830064fbb03b`;
-  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=5`;
+  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?exclude-type=64776b93fbeda20064d2332f&page=1&limit=10`;
+  const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=10&sort=name.fr&concept=63d167da016e830064fbb03b`;
+  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=10`;
 
   // States
   const [events, setEvents] = useState([]);

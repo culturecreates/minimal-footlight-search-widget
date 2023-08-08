@@ -129,7 +129,7 @@ html {
   width: 100%;
   background: var(--primary-white);
   margin-bottom: 5px;
-  border-bottom: 1px solid var(--primary-medium-grey, #b8b8b8);
+  /* border-bottom: 1px solid var(--primary-medium-grey, #b8b8b8); */
   background: var(--primary-ultra-light-grey, #f5f5f5);
 }
 
@@ -191,30 +191,30 @@ html {
   }
 
   .footlightSearchWidget .input-container {
-    height: 80px;
+    /* height: 80px; */
     align-items: center;
     margin-bottom: 0px;
-    border-bottom: 1px solid var(--primary-medium-grey, #000);
-    border-bottom: 1px solid var(--primary-medium-grey, #b8b8b8);
+    /* border-bottom: 1px solid var(--primary-medium-grey, #000); */
+    /* border-bottom: 1px solid var(--primary-medium-grey, #b8b8b8); */
     background: var(--primary-ultra-light-grey, #f5f5f5);
   }
 
   .footlightSearchWidget .input-searchbar {
     display: flex;
-    border-bottom: 1px solid black;
+    /* border-bottom: 1px solid black; */
     flex-grow: 1;
     align-items: flex-end;
-    margin: 10px 0;
+    /* margin: 10px 0; */
     /* max-width: 80%; */
     position: relative;
   }
   .footlightSearchWidget .icon-container {
     height: 28px;
     width: 28px;
-    margin: 16px 0 0 20px;
+    margin: 16px 0 7px 20px;
   }
   .footlightSearchWidget form {
-    margin: 0 20px;
+    /* margin: 0 20px; */
     justify-content: space-between;
   }
 
@@ -234,9 +234,9 @@ html {
 
 @media screen and (max-width: 375px) {
   .footlightSearchWidget .icon-container {
-    height: 23px;
+    height: 25px;
     width: 23px;
-    margin: 21px 0 0 20px;
+    margin: 21px 0 7px 20px;
   }
 
   .footlightSearchWidget input[type="text"] {
@@ -244,19 +244,29 @@ html {
     width: 100%;
     font-size: 16px;
   }
+
+  .footlightSearchWidget .search-bar-icon {
+    margin-left: -5px;
+    margin-bottom: 2px;
+    height: 37px;
+    width: 37px;
+    margin-right: 2px;
+  }
 }
 
 @media screen and (min-width: 2300px) {
-  .footlightSearchWidget input[type="text"]{
+  .footlightSearchWidget input[type="text"] {
     font-size: 26px;
   }
   .footlightSearchWidget input[type="date"] {
     font-size: 26px;
   }
-  .react-calendar-wrapper .react-calendar__month-view__weekdays__weekday > abbr{
+  .react-calendar-wrapper
+    .react-calendar__month-view__weekdays__weekday
+    > abbr {
     font-size: 18px;
   }
-  .react-calendar-wrapper .react-calendar__navigation__label{
+  .react-calendar-wrapper .react-calendar__navigation__label {
     font-size: 24px;
   }
   .react-calendar-wrapper .react-calendar__tile {
@@ -264,4 +274,3 @@ html {
     padding: 27px 0px 27px;
   }
 }
-

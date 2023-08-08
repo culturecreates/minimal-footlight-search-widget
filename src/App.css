@@ -175,7 +175,7 @@ html {
   }
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 767px) {
   .footlightSearchWidget input[type="text"] {
     height: 40px;
     /* width: 100%; */
@@ -211,7 +211,7 @@ html {
   .footlightSearchWidget .icon-container {
     height: 28px;
     width: 28px;
-    margin: 16px 0 7px 20px;
+    margin: 16px 0 7px 8px;
   }
   .footlightSearchWidget form {
     /* margin: 0 20px; */
@@ -221,7 +221,9 @@ html {
   .footlightSearchWidget .datepicker-icon {
     cursor: pointer;
     background: var(--primary-ultra-light-grey, #f5f5f5)
-      url("./assets/icons/Calendar.svg") no-repeat left 10px center;
+      url("./assets/icons/Calendar.svg") no-repeat left 3px;
+
+    background-position-y: center;
     border: none;
     box-shadow: none;
     outline: none;
@@ -235,7 +237,7 @@ html {
 @media screen and (max-width: 375px) {
   .footlightSearchWidget .icon-container {
     height: 25px;
-    width: 23px;
+    width: 40px;
     margin: 21px 0 7px 20px;
   }
 

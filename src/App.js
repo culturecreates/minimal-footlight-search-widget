@@ -293,7 +293,7 @@ function App(props) {
 
   useEffect(() => {
     // set view type accoring to screen size
-    const isWide = width < 650;
+    const isWide = width < 768;
     setScreenType(isWide ? "mobile" : "desktop");
   }, [width]);
 
@@ -360,7 +360,7 @@ function App(props) {
                 )}
               <div
                 className="icon-container"
-                style={{ marginRight: "5px", width: "25px" }}
+                style={{ marginRight: "5px" }}
                 onClick={() => {
                   onCloseHandler();
                 }}

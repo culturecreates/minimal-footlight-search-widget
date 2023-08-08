@@ -68,7 +68,7 @@ function App(props) {
   const refPopover = useRef(null);
 
   // value hooks
-  const width = useSize(refFootlightSearchWidget);
+  const width = useSize();
 
   // Handlers
   const changeTabHandler = (clickedTab) => {

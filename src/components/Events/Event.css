@@ -116,6 +116,10 @@
   .footlightSearchWidget .container:hover {
     background: none;
   }
+  .footlightSearchWidget .icon-container img {
+    object-fit: contain;
+    width: auto;
+  }
 }
 @media screen and (min-width: 2300px) {
   .footlightSearchWidget .date {

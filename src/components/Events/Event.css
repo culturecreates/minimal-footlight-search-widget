@@ -99,16 +99,16 @@
 
 @media screen and (max-width: 767px) {
   .footlightSearchWidget .title {
-    font-size: 15px;
+    font-size: 18px;
     line-height: 19px;
   }
 
   .footlightSearchWidget .place {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .footlightSearchWidget .date {
-    font-size: 12px;
+    font-size: 14px;
   }
   .footlightSearchWidget .container:hover {
     background: none;

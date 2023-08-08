@@ -1,10 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
-import './i18n';
+import { createRoot } from "react-dom/client";
+import "./i18n";
 import App from "./App";
 
 const widget = document.getElementById("minimal-footlight-search-widget");
-const root = ReactDOM.createRoot(widget);
+
+const root = createRoot(widget);
 root.render(
   <App
     api={widget.dataset.api}

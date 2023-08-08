@@ -97,7 +97,7 @@
   overflow: hidden; */
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 767px) {
   .footlightSearchWidget .title {
     font-size: 15px;
     line-height: 19px;
@@ -110,9 +110,6 @@
   .footlightSearchWidget .date {
     font-size: 12px;
   }
-}
-
-@media screen and (max-width: 650px) {
   .footlightSearchWidget .container:hover {
     background: none;
   }
@@ -121,6 +118,7 @@
     width: auto;
   }
 }
+
 @media screen and (min-width: 2300px) {
   .footlightSearchWidget .date {
     font-size: 16px;

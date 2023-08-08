@@ -1,23 +1,23 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useLayoutEffect, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-export const useSize = (targetRef) => {
-  const getDimensions = () => {
-    return targetRef.current ? targetRef.current.offsetWidth : 0;
-  };
+export const useSize = () => {
+  const [size, setSize] = useState(window.innerWidth);
 
-  const [dimensions, setDimensions] = useState(getDimensions);
   const handleResize = () => {
-    setDimensions(getDimensions());
+    setSize(window.innerWidth);
   };
 
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  },[]);
-
-  useLayoutEffect(() => {
     handleResize();
-  },[]);
-  return dimensions;
+
+    // Event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return size;
 };

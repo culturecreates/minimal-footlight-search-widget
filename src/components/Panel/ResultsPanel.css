@@ -115,6 +115,7 @@
 
 @media screen and (max-width: 800px) {
   .footlightSearchWidget .panel-float{
-    min-width: none !important;
+    min-width: 0;
+    top:0;
   }
 }

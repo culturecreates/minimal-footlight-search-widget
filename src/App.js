@@ -329,12 +329,12 @@ function App(props) {
             {panelOnDisplay === "datepicker" &&
               screenType === "mobile" &&
               tabSelected !== "Organizations" && (
-                <input
-                  type="datepicker-icon"
+                <div
+                  className="datepicker-icon"
                   onClick={() => {
                     datePickerDisplayHandler("result");
                   }}
-                ></input>
+                ></div>
               )}
             <input
               type="text"
@@ -360,7 +360,7 @@ function App(props) {
                 )}
               <div
                 className="icon-container"
-                style={{ marginRight: "5px" }}
+                style={{ marginRight: "5px", width: "25px" }}
                 onClick={() => {
                   onCloseHandler();
                 }}

@@ -1,8 +1,8 @@
 {
   "noResult": {
     "Events": "No events at the moment",
-    "Ateliers": "No Workshops at the moment",
-    "Organizations": "No Organizations are available"
+    "Ateliers": "No workshops at the moment",
+    "Organizations": "No organizations are available"
   },
   "tabs": {
     "Events": "Events",

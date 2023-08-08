@@ -24,5 +24,5 @@ export const DateFormatter = (props) => {
       text = displayDate(date, locale, monthFormat, yearFormat);
     }
   }
-  return <div className="formatted-date">{text}</div>;
+  return <div className="formatted-date" data-testid="formatted-date">{text}</div>;
 };

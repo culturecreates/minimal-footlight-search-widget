@@ -177,3 +177,16 @@
     margin: 1em 0;
   }
 }
+
+
+@media screen and (min-width: 2300px) {
+  .footlightSearchWidget .react-calendar__year-view .react-calendar__tile{
+    font-size: 21px;
+  }
+  .footlightSearchWidget .react-calendar__decade-view .react-calendar__tile {
+    font-size: 21px;
+  }
+  .footlightSearchWidget .react-calendar__century-view .react-calendar__tile{
+    font-size: 21px;
+  }
+}

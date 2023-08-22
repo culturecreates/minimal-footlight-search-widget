@@ -325,7 +325,7 @@ function App(props) {
       <div className="input-container">
         <form onSubmit={submitHandler} autoComplete="off">
           <div className="input-searchbar">
-            <input className="search-bar-icon"></input>
+            <div className="search-bar-icon"></div>
             {panelOnDisplay === "datepicker" &&
               screenType === "mobile" &&
               tabSelected !== "Organizations" && (
@@ -337,7 +337,9 @@ function App(props) {
                 ></div>
               )}
             <input
+              className="search-textfield"
               type="text"
+              size={1}
               placeholder={placeHolderText}
               onChange={textChangeHandler}
               onFocus={textFocusHandler}

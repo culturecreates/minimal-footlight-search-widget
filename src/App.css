@@ -181,6 +181,7 @@ html {
     height: 40px;
     width: 100%;
     font-size: 20px !important;
+    padding: 0px 7px 0px 0px;
   }
 
   .footlightSearchWidget .search-bar-icon {
@@ -189,6 +190,7 @@ html {
     width: 40px;
     background: var(--primary-ultra-light-grey, #f5f5f5)
       url("./assets/icons/search-icon.svg") no-repeat left 10px center;
+    margin-right: 2px;
   }
 
   .footlightSearchWidget .input-container {

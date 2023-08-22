@@ -3,8 +3,6 @@
   "version": "1.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/react": "^9.4.1",
-    "@testing-library/user-event": "^7.2.1",
     "i18next": "^23.2.11",
     "react": "^18.0.0",
     "react-calendar": "^4.0.0",
@@ -14,6 +12,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^14.0.0",
     "parcel": "^2.8.3",
     "react-test-renderer": "^18.2.0"
   },

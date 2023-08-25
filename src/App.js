@@ -74,18 +74,18 @@ function App(props) {
   const changeTabHandler = (clickedTab) => {
     if (tabSelected !== clickedTab) {
       setIsLoading(true);
-    }
-    // set focus on text input to keep results panel open
-    textInputRef.current.focus();
-    setTextFocus(true);
-    setEvents([]);
-    setTabSelected(clickedTab);
-    if (clickedTab === "Organizations") {
-      setApiUrl(apiOrganizationsUrl);
-    } else if (clickedTab === "Ateliers") {
-      setApiUrl(apiAteliersUrl);
-    } else {
-      setApiUrl(apiEventsUrl);
+      // set focus on text input to keep results panel open
+      textInputRef.current.focus();
+      setTextFocus(true);
+      setEvents([]);
+      setTabSelected(clickedTab);
+      if (clickedTab === "Organizations") {
+        setApiUrl(apiOrganizationsUrl);
+      } else if (clickedTab === "Ateliers") {
+        setApiUrl(apiAteliersUrl);
+      } else {
+        setApiUrl(apiEventsUrl);
+      }
     }
   };
 

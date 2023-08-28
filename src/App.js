@@ -192,9 +192,13 @@ function App(props) {
     if (tabSelected === "Ateliers") {
       searchParams.append("type", "64776b93fbeda20064d2332f");
     }
+    if (tabSelected === "Events") {
+      searchParams.append("exclude-type", "64776b93fbeda20064d2332f");
+    }
     let searchUrl = eventSearchUrl;
     if (tabSelected === "Organizations") {
       searchUrl = orgSearchUrl;
+      searchParams.append("concept", "63d167da016e830064fbb03b");
     }
     setSearchString(""); // otherwise backbutton will restore results panel but no text will be in search bar.
     let url = searchUrl + "?" + searchParams.toString();

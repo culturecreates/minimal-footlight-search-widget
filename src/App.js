@@ -74,18 +74,18 @@ function App(props) {
   const changeTabHandler = (clickedTab) => {
     if (tabSelected !== clickedTab) {
       setIsLoading(true);
-    }
-    // set focus on text input to keep results panel open
-    textInputRef.current.focus();
-    setTextFocus(true);
-    setEvents([]);
-    setTabSelected(clickedTab);
-    if (clickedTab === "Organizations") {
-      setApiUrl(apiOrganizationsUrl);
-    } else if (clickedTab === "Ateliers") {
-      setApiUrl(apiAteliersUrl);
-    } else {
-      setApiUrl(apiEventsUrl);
+      // set focus on text input to keep results panel open
+      textInputRef.current.focus();
+      setTextFocus(true);
+      setEvents([]);
+      setTabSelected(clickedTab);
+      if (clickedTab === "Organizations") {
+        setApiUrl(apiOrganizationsUrl);
+      } else if (clickedTab === "Ateliers") {
+        setApiUrl(apiAteliersUrl);
+      } else {
+        setApiUrl(apiEventsUrl);
+      }
     }
   };
 
@@ -192,9 +192,13 @@ function App(props) {
     if (tabSelected === "Ateliers") {
       searchParams.append("type", "64776b93fbeda20064d2332f");
     }
+    if (tabSelected === "Events") {
+      searchParams.append("exclude-type", "64776b93fbeda20064d2332f");
+    }
     let searchUrl = eventSearchUrl;
     if (tabSelected === "Organizations") {
       searchUrl = orgSearchUrl;
+      searchParams.append("concept", "63d167da016e830064fbb03b");
     }
     setSearchString(""); // otherwise backbutton will restore results panel but no text will be in search bar.
     let url = searchUrl + "?" + searchParams.toString();

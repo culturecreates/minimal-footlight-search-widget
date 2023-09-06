@@ -147,9 +147,11 @@ function App(props) {
               ? {
                   startDate:
                     eventData.subEventDetails.upcomingSubEventCount === 0
-                      ? eventData.startDate || eventData.startDateTime || ""
+                      ? eventData?.startDate || eventData?.startDateTime || ""
                       : eventData.subEventDetails
-                          .nextUpcomingSubEventDateTime || "",
+                          ?.nextUpcomingSubEventDateTime ||
+                        eventData.subEventDetails?.nextUpcomingSubEventDate ||
+                        "",
                   endDate: eventData.endDate || eventData.endDateTime || "",
                 }
               : {}),

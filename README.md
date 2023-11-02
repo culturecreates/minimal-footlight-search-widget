@@ -30,6 +30,6 @@ Add this div to your webpage body
 - **data-org-url** is the url on your website for organization details. The UUID of the organization is added to the end of this URL. If this parameter is not present then the widget UI will not display the Organization tab.
 - **data-search-orgs-url** is the url to display organization search results.  The search query is added to the end of this URL.
 - **data-search-panel** is to control how the search panel is displayed. Options are "inline" or "float". The default is "float".
-- **data-search-filter** is the name value pair(s) for filtering ALL events. Example: "&region=1234&concept=4567&price-type=free"
+- **data-search-events-filter** is the name value pair(s) for filtering ALL events. Example: "&region=1234&concept=4567&price-type=free"
   
   

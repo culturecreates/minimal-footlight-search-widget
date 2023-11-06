@@ -15,18 +15,21 @@ Add this div to your webpage body
      data-calendar="" 
      data-locale="fr"
      data-event-url="" 
-     data-org-url="" 
      data-search-events-url="" 
-     data-search-orgs-url=""
      >
 </div>
 ```
 ### Parameters
+- **data-api** is the api domain to call.
 - **data-calendar** is the id of your calendar. 
 - **data-locale** is the language of "fr" or "en".
 - **data-event-url** is the url on your website for event details. The UUID of the event is added to the end of this URL.   
-- **data-org-url** is the url on your website for organization details. The UUID of the organization is added to the end of this URL.     
 - **data-search-events-url** is the url to display event seach results. The search query is added to the end of this URL. 
+
+### Optional Parameters
+- **data-org-url** is the url on your website for organization details. The UUID of the organization is added to the end of this URL. If this parameter is not present then the widget UI will not display the Organization tab.
 - **data-search-orgs-url** is the url to display organization search results.  The search query is added to the end of this URL.
+- **data-search-panel** is to control how the search panel is displayed. Options are "inline" or "float". The default is "float".
+- **data-search-events-filter** is the name value pair(s) for filtering ALL events. Example: "&region=1234&concept=4567&price-type=free"
   
   

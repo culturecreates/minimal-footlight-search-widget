@@ -237,7 +237,9 @@ function App(props) {
 
   const onCloseHandler = () => {
     if (panelOnDisplay === "result") {
-      setShowResults(false);
+      if (searchPanelState !== "float") {
+        setShowResults(false);
+      }
       setTextFocus(false);
     } else if (panelOnDisplay === "datepicker") {
       setPanelOnDisplay("result");
@@ -302,7 +304,9 @@ function App(props) {
           (refPopover.current && !refPopover.current.contains(event.target)) ||
           !refPopover.current
         ) {
-          setShowResults(false);
+          if (searchPanelState !== "float") {
+            setShowResults(false);
+          }
         }
       }
     };
@@ -310,7 +314,7 @@ function App(props) {
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [showResults, refFootlightSearchWidget]);
+  }, [showResults, refFootlightSearchWidget, searchPanelState]);
 
   useEffect(() => {
     // set view type accoring to screen size

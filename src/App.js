@@ -8,41 +8,56 @@ import CloseIcon from "./assets/icons/Close.svg";
 import { useSize } from "./helpers/hooks";
 import { displayDate } from "./helpers/helper";
 import { useTranslation } from "react-i18next";
+import { Tabs } from "./constants/tabs";
+import { getAvailableTabs } from "./helpers/getAvailableTabs";
 
 function App(props) {
   // ALL props passed in from HTML widget
 
   const { t, i18n } = useTranslation();
 
-  const api = props.api || "api.footlight.io";
-  const calendar = props.calendar || "tout-culture";
-  const eventUrl =
-    props.eventUrl ||
-    "http://demo.tout-culture.s3-website.ca-central-1.amazonaws.com/events/event-details.html?eventId=";
-  const orgUrl =
-    props.orgUrl ||
-    "https://toutculture.stagingminimalmtl.com/organismes-detail/?organize=";
-  const eventSearchUrl =
-    props.searchEventsUrl ||
-    "https://toutculture.stagingminimalmtl.com/evenements/";
-  const orgSearchUrl =
-    props.searchOrgsUrl ||
-    "https://toutculture.stagingminimalmtl.com/organismes/";
-  const locale = props.locale || "fr";
+  // const api = props.api || "api.footlight.io";
+  // const calendar = props.calendar || "tout-culture";
+  // const eventUrl = props.eventUrl;
+  // // ||"http://demo.tout-culture.s3-website.ca-central-1.amazonaws.com/events/event-details.html?eventId=";
+  // const orgUrl = props.orgUrl;
+  // // ||"https://toutculture.stagingminimalmtl.com/organismes-detail/?organize=";
+  // const eventSearchUrl = props.searchEventsUrl;
+  // // ||"https://toutculture.stagingminimalmtl.com/evenements/";
+  // const orgSearchUrl = props.searchOrgsUrl;
+  // // ||"https://toutculture.stagingminimalmtl.com/organismes/";
+  // const locale = props.locale || "fr";
+
+  const {
+    api = "api.footlight.io",
+    calendar = "tout-culture",
+    eventUrl,
+    orgUrl,
+    searchEventsUrl: eventSearchUrl,
+    searchOrgsUrl: orgSearchUrl,
+    locale = "fr",
+    searchEventsFilter,
+    searchPanelState,
+  } = props;
 
   // object to pass HTML widget props to children components
   const widgetProps = {
-    eventUrl: eventUrl,
-    orgUrl: orgUrl,
-    eventSearchUrl: eventSearchUrl,
-    orgSearchUrl: orgSearchUrl,
-    locale: locale,
+    ...(eventUrl && { eventUrl }),
+    ...(orgUrl && { orgUrl }),
+    ...(eventSearchUrl && { eventSearchUrl }),
+    ...(orgSearchUrl && { orgSearchUrl }),
+    locale,
+    ...(searchEventsFilter && { searchEventsFilter }),
+    searchPanelState,
   };
 
   // constants built using other constants
-  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?exclude-type=64776b93fbeda20064d2332f&page=1&limit=10`;
-  const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=10&sort=name.fr&concept=63d167da016e830064fbb03b`;
-  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=10`;
+  const apiEventsUrl = eventSearchUrl;
+  const apiOrganizationsUrl = orgSearchUrl;
+  let apiAteliersUrl = "";
+  if (searchEventsFilter) {
+    apiAteliersUrl = `https://${api}/calendars/${calendar}/events?${searchEventsFilter}&page=1&limit=10`;
+  }
 
   // States
   const [events, setEvents] = useState([]);
@@ -61,6 +76,7 @@ function App(props) {
   const [isSingleDate, setIsSingleDate] = useState(false);
   const [searchDate, setSearchDate] = useState(null);
   const [placeHolderText, setPlaceHoldertext] = useState(t("placeHolder"));
+  const [availableTabs, setAvailableTabs] = useState([]);
 
   // Refs
   const textInputRef = useRef(null);
@@ -79,11 +95,11 @@ function App(props) {
       setTextFocus(true);
       setEvents([]);
       setTabSelected(clickedTab);
-      if (clickedTab === "Organizations") {
+      if (clickedTab === Tabs.ORGANIZATIONS) {
         setApiUrl(apiOrganizationsUrl);
-      } else if (clickedTab === "Ateliers") {
+      } else if (clickedTab === Tabs.WORKSHOPS) {
         setApiUrl(apiAteliersUrl);
-      } else {
+      } else if (clickedTab === Tabs.EVENTS) {
         setApiUrl(apiEventsUrl);
       }
     }
@@ -110,7 +126,6 @@ function App(props) {
       try {
         const response = await fetch(url, { signal });
         const data = await response.json();
-        console.log(data);
 
         const transformedEvents = await data.data.map((eventData) => {
           let place = eventData.location || {};
@@ -326,6 +341,16 @@ function App(props) {
     setSearchDate(null);
   }, [isSingleDate]);
 
+  useEffect(() => {
+    setAvailableTabs(
+      getAvailableTabs({
+        apiAteliersUrl,
+        apiOrganizationsUrl,
+        apiEventsUrl,
+      })
+    );
+  }, [apiEventsUrl, apiOrganizationsUrl, apiAteliersUrl]);
+
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>
       <div className="input-container">
@@ -400,6 +425,7 @@ function App(props) {
                 tabSelected={tabSelected}
                 onSubmit={submitHandler}
                 locale={locale}
+                availableTabs={availableTabs}
                 setSearchDate={setSearchDate}
                 setStartDateSpan={setStartDateSpan}
                 setEndDateSpan={setEndDateSpan}

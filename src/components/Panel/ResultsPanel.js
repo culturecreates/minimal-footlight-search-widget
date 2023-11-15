@@ -26,6 +26,7 @@ const ResultsPanel = (props) => {
     searchDate,
     setIsLoading,
     panelOnDisplay,
+    availableTabs,
     screenType,
     setIsSingleDate,
     isSingleDate,
@@ -87,6 +88,7 @@ const ResultsPanel = (props) => {
             onChangeTab={changeTabHandler}
             tabSelected={tabSelected}
             locale={widgetProps.locale}
+            availableTabs={availableTabs}
           />
           <div className="panel-content">
             <div className="result-container">{content}</div>
@@ -121,6 +123,7 @@ const ResultsPanel = (props) => {
                 onChangeTab={changeTabHandler}
                 tabSelected={tabSelected}
                 locale={widgetProps.locale}
+                availableTabs={availableTabs}
               />
             )}
             <div className="panel-content">

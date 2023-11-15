@@ -1,44 +1,48 @@
 import { useTranslation } from "react-i18next";
+import { Tabs as TABS } from "../../constants/tabs";
 import "./Tabs.css";
 
 const Tabs = (props) => {
-  const {
-    tabSelected,
-    onChangeTab,
-  } = props;
-
+  const { tabSelected, onChangeTab, availableTabs } = props;
   const { t } = useTranslation();
 
-  const clickEventsTabHandler = () => {
-    onChangeTab("Events");
-  };
-  const clickAteliersTabHandler = () => {
-    onChangeTab("Ateliers");
-  };
-  const clickOrganizationsTabHandler = () => {
-    onChangeTab("Organizations");
+  const tabClickHandler = (tab) => {
+    onChangeTab(tab);
   };
 
   return (
     <ul className="tabs-list">
-      <li
-        onClick={clickEventsTabHandler}
-        className={tabSelected === "Events" ? "selected" : undefined}
-      >
-        {t("tabs.Events")}
-      </li>
-      <li
-        onClick={clickAteliersTabHandler}
-        className={tabSelected === "Ateliers" ? "selected" : undefined}
-      >
-        {t("tabs.Ateliers")}
-      </li>
-      <li
-        onClick={clickOrganizationsTabHandler}
-        className={tabSelected === "Organizations" ? "selected" : undefined}
-      >
-        {t("tabs.Organizations")}
-      </li>
+      {availableTabs && availableTabs.includes(TABS.EVENTS) && (
+        <li
+          key={TABS.EVENTS}
+          onClick={() => tabClickHandler(TABS.EVENTS)}
+          className={tabSelected === TABS.EVENTS ? "selected" : undefined}
+        >
+          {t("tabs.Events")}
+        </li>
+      )}
+
+      {availableTabs && availableTabs.includes(TABS.WORKSHOPS) && (
+        <li
+          key={TABS.WORKSHOPS}
+          onClick={() => tabClickHandler(TABS.WORKSHOPS)}
+          className={tabSelected === TABS.WORKSHOPS ? "selected" : undefined}
+        >
+          {t("tabs.Ateliers")}
+        </li>
+      )}
+
+      {availableTabs && availableTabs.includes(TABS.ORGANIZATIONS) && (
+        <li
+          key={TABS.ORGANIZATIONS}
+          onClick={() => tabClickHandler(TABS.ORGANIZATIONS)}
+          className={
+            tabSelected === TABS.ORGANIZATIONS ? "selected" : undefined
+          }
+        >
+          {t("tabs.Organizations")}
+        </li>
+      )}
     </ul>
   );
 };

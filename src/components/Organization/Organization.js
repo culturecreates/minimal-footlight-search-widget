@@ -5,7 +5,7 @@ import placeImg from "../../assets/icons/Pin.svg";
 const Event = (props) => {
   const { eventUrl, event } = props;
   const clickEventHandler = (e) => {
-    window.location.href = eventUrl + e.currentTarget.id;
+    window.open(eventUrl + e.currentTarget.id, "_blank");
   };
 
   return (

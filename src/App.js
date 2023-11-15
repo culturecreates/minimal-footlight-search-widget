@@ -36,7 +36,7 @@ function App(props) {
     searchEventsUrl: eventSearchUrl,
     searchOrgsUrl: orgSearchUrl,
     locale = "fr",
-    searchEventsFilter,
+    searchEventsFilter = "type=64776b93fbeda20064d2332f",
     searchPanelState,
   } = props;
 
@@ -52,12 +52,9 @@ function App(props) {
   };
 
   // constants built using other constants
-  const apiEventsUrl = eventSearchUrl;
-  const apiOrganizationsUrl = orgSearchUrl;
-  let apiAteliersUrl = "";
-  if (searchEventsFilter) {
-    apiAteliersUrl = `https://${api}/calendars/${calendar}/events?${searchEventsFilter}&page=1&limit=10`;
-  }
+  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?exclude-type=64776b93fbeda20064d2332f&page=1&limit=10`;
+  const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=10&sort=name.fr&concept=63d167da016e830064fbb03b`;
+  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=10`;
 
   // States
   const [events, setEvents] = useState([]);
@@ -68,7 +65,7 @@ function App(props) {
   const [startDateSpan, setStartDateSpan] = useState("");
   const [endDateSpan, setEndDateSpan] = useState("");
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
-  const [showResults, setShowResults] = useState(false);
+  const [showResults, setShowResults] = useState(searchPanelState === "float");
   const [searchFieldFocus, setTextFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
@@ -219,8 +216,7 @@ function App(props) {
     }
     setSearchString(""); // otherwise backbutton will restore results panel but no text will be in search bar.
     let url = searchUrl + "?" + searchParams.toString();
-    window.location.href = url;
-    console.log("FORM SUBMIT: " + url);
+    window.open(url, "_blank");
   };
 
   const textFocusHandler = () => {
@@ -348,12 +344,12 @@ function App(props) {
   useEffect(() => {
     setAvailableTabs(
       getAvailableTabs({
-        apiAteliersUrl,
-        apiOrganizationsUrl,
-        apiEventsUrl,
+        eventSearchUrl,
+        orgSearchUrl,
+        searchEventsFilter,
       })
     );
-  }, [apiEventsUrl, apiOrganizationsUrl, apiAteliersUrl]);
+  }, [eventSearchUrl, orgSearchUrl, searchEventsFilter]);
 
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>

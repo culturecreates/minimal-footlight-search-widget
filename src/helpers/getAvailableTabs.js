@@ -1,19 +1,19 @@
 import { Tabs } from "../constants/tabs";
 
 export const getAvailableTabs = ({
-  apiAteliersUrl,
-  apiOrganizationsUrl,
-  apiEventsUrl,
+  eventSearchUrl,
+  orgSearchUrl,
+  searchEventsFilter,
 }) => {
   let tabs = [];
-  if (apiEventsUrl) {
+  if (eventSearchUrl) {
     tabs.push(Tabs.EVENTS);
   }
-  if (apiAteliersUrl !== "") {
+  if (searchEventsFilter !== "") {
     tabs.push(Tabs.WORKSHOPS);
   }
-  if (apiOrganizationsUrl) {
+  if (orgSearchUrl) {
     tabs.push(Tabs.ORGANIZATIONS);
   }
-  return tabs
+  return tabs;
 };

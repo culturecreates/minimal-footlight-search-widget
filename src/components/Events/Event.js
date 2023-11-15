@@ -5,7 +5,7 @@ import "./Event.css";
 const Event = (props) => {
   const { event, eventUrl, locale } = props;
   const clickEventHandler = (e) => {
-    window.location.href = eventUrl + e.currentTarget.id;
+    window.open(eventUrl + e.currentTarget.id, "_blank");
   };
 
   const dateTimeOptions = {

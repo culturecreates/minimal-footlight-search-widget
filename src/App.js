@@ -56,12 +56,15 @@ function App(props) {
   const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=10&sort=name.fr&concept=63d167da016e830064fbb03b`;
   const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=10`;
 
+  const query = sessionStorage.getItem("widgetSearchQuery");
+  // const date = sessionStorage.getItem("widgetSearchDate");
+
   // States
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
-  const [searchString, setSearchString] = useState("");
+  const [searchString, setSearchString] = useState(query ? query : "");
   const [startDateSpan, setStartDateSpan] = useState("");
   const [endDateSpan, setEndDateSpan] = useState("");
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
@@ -70,8 +73,8 @@ function App(props) {
   const [tabSelected, setTabSelected] = useState("Events");
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
-  const [isSingleDate, setIsSingleDate] = useState(false);
-  const [searchDate, setSearchDate] = useState(null);
+  const [isSingleDate, setIsSingleDate] = useState();
+  const [searchDate, setSearchDate] = useState();
   const [placeHolderText, setPlaceHoldertext] = useState(t("placeHolder"));
   const [availableTabs, setAvailableTabs] = useState([]);
 
@@ -108,6 +111,7 @@ function App(props) {
       setIsLoading(true);
       setError(false);
       let url = apiUrl;
+      sessionStorage.setItem("widgetSearchQuery", q);
       if (q) {
         url += `&query=${q}`;
       }
@@ -253,6 +257,10 @@ function App(props) {
     i18n.changeLanguage(locale);
   }, [i18n, locale]);
 
+  // useEffect(() => {
+  //   sessionStorage.setItem("widgetSearchDate", searchDate);
+  // }, [searchDate]);
+
   useEffect(() => {
     // debounce search while typing
     const abortController = new AbortController();
@@ -337,9 +345,9 @@ function App(props) {
     setPlaceHoldertext(text);
   }, [locale, screenType, searchDate, isLoading, isSingleDate]);
 
-  useEffect(() => {
-    setSearchDate(null);
-  }, [isSingleDate]);
+  // useEffect(() => {
+  //   setSearchDate(null);
+  // }, [isSingleDate]);
 
   useEffect(() => {
     setAvailableTabs(
@@ -376,6 +384,7 @@ function App(props) {
               onFocus={textFocusHandler}
               onBlur={textBlurHandler}
               ref={textInputRef}
+              value={searchString}
             />
           </div>
           {screenType === "mobile" && (

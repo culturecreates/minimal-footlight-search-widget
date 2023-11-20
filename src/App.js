@@ -57,7 +57,7 @@ function App(props) {
   const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=10`;
 
   const query = sessionStorage.getItem("widgetSearchQuery");
-  // const date = sessionStorage.getItem("widgetSearchDate");
+  const date = sessionStorage.getItem("widgetSearchDate");
 
   // States
   const [events, setEvents] = useState([]);
@@ -74,7 +74,9 @@ function App(props) {
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
   const [isSingleDate, setIsSingleDate] = useState();
-  const [searchDate, setSearchDate] = useState();
+  const [searchDate, setSearchDate] = useState(
+    typeof date === "string" ? date : null
+  );
   const [placeHolderText, setPlaceHoldertext] = useState(t("placeHolder"));
   const [availableTabs, setAvailableTabs] = useState([]);
 
@@ -257,9 +259,9 @@ function App(props) {
     i18n.changeLanguage(locale);
   }, [i18n, locale]);
 
-  // useEffect(() => {
-  //   sessionStorage.setItem("widgetSearchDate", searchDate);
-  // }, [searchDate]);
+  useEffect(() => {
+    sessionStorage.setItem("widgetSearchDate", searchDate);
+  }, [searchDate]);
 
   useEffect(() => {
     // debounce search while typing

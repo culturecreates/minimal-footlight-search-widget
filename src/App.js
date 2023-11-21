@@ -376,12 +376,14 @@ function App(props) {
   }, [eventSearchUrl, orgSearchUrl, searchEventsFilter]);
 
   useEffect(() => {
-    if (date?.includes(",")) {
-      date = date.split(",");
+    let savedDate = date
+    if (savedDate?.includes(",")) {
+      savedDate = savedDate?.split(",");
     }
-    if (date !== null && date !== "null") {
-      searchDateHandler(date);
+    if (savedDate !== null && savedDate !== "null") {
+      searchDateHandler(savedDate);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

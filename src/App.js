@@ -73,7 +73,7 @@ function App(props) {
   const [tabSelected, setTabSelected] = useState("Events");
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
-  const [isSingleDate, setIsSingleDate] = useState(date.includes(",")); //Array.isArray(date)
+  const [isSingleDate, setIsSingleDate] = useState(date?.includes(",")); //Array.isArray(date)
   const [searchDate, setSearchDate] = useState(null); //  typeof date === "string" || Array.isArray(date) ? date : null
 
   const [placeHolderText, setPlaceHoldertext] = useState(t("placeHolder"));
@@ -277,25 +277,23 @@ function App(props) {
 
   useEffect(() => {
     // debounce search while typing
-    if (startDateSpan) {
-      const abortController = new AbortController();
-      const signal = abortController.signal;
-      setIsLoading(true);
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+    setIsLoading(true);
 
-      const identifier = setTimeout(() => {
-        fetchDataHandler(
-          searchString,
-          startDateSpan,
-          endDateSpan,
-          locale,
-          signal
-        );
-      }, 700);
-      return () => {
-        clearTimeout(identifier);
-        abortController.abort();
-      };
-    }
+    const identifier = setTimeout(() => {
+      fetchDataHandler(
+        searchString,
+        startDateSpan,
+        endDateSpan,
+        locale,
+        signal
+      );
+    }, 700);
+    return () => {
+      clearTimeout(identifier);
+      abortController.abort();
+    };
   }, [
     searchString,
     startDateSpan,
@@ -376,15 +374,19 @@ function App(props) {
   }, [eventSearchUrl, orgSearchUrl, searchEventsFilter]);
 
   useEffect(() => {
-    let savedDate = date
+    let savedDate = date;
     if (savedDate?.includes(",")) {
       savedDate = savedDate?.split(",");
     }
     if (savedDate !== null && savedDate !== "null") {
       searchDateHandler(savedDate);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    console.log(searchDate);
+  }, [searchDate]);
 
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>

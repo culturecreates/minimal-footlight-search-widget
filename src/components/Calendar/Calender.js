@@ -50,6 +50,7 @@ function Calender(props) {
       setCalendarKey((prevState) => prevState + 1); // So reset button can reset date when in the middle of selection.
     }
     setSearchDate(null);
+    sessionStorage.setItem("widgetSearchDate", null);
     setStartDateSpan("");
     setEndDateSpan("");
     setActiveStartDate(new Date());
@@ -61,6 +62,7 @@ function Calender(props) {
       setCalendarKey((prevState) => prevState + 1); // So reset button can reset date when in the middle of selection.
     }
     setSearchDate(null);
+    sessionStorage.setItem("widgetSearchDate", null);
     setStartDateSpan("");
     setIsSingleDate(e.target.checked);
     setStartDateSpan("");

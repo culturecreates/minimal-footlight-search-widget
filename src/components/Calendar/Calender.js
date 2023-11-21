@@ -28,9 +28,10 @@ function Calender(props) {
   // handlers
 
   const searchDateHandler = (value) => {
+    sessionStorage.setItem("widgetSearchDate", value);
     setSearchDate(value);
     if (!isSingleDate) {
-      const selectedDate =dateConverter(new Date(value))
+      const selectedDate = dateConverter(new Date(value));
       setStartDateSpan(selectedDate);
       setEndDateSpan(selectedDate);
     } else {
@@ -85,7 +86,7 @@ function Calender(props) {
   return (
     <div
       style={{
-        minHeight: "500px"
+        minHeight: "500px",
       }}
     >
       <div className="calendar-control">
@@ -110,6 +111,7 @@ function Calender(props) {
       <Calendar
         key={calendarKey}
         onChange={searchDateHandler}
+        defaultValue={searchDate}
         value={searchDate}
         activeStartDate={activeStartDate}
         onDrillDown={({ activeStartDate, view }) =>

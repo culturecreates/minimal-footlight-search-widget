@@ -6,7 +6,7 @@ import { DateFormatter } from "./components/Date/DateFormatter";
 import CalendarIcon from "./assets/icons/Calendar.svg";
 import CloseIcon from "./assets/icons/Close.svg";
 import { useSize } from "./helpers/hooks";
-import { displayDate } from "./helpers/helper";
+import { dateConverter, displayDate } from "./helpers/helper";
 import { useTranslation } from "react-i18next";
 import { Tabs } from "./constants/tabs";
 import { getAvailableTabs } from "./helpers/getAvailableTabs";
@@ -57,7 +57,7 @@ function App(props) {
   const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=10`;
 
   const query = sessionStorage.getItem("widgetSearchQuery");
-  const date = sessionStorage.getItem("widgetSearchDate");
+  let date = sessionStorage.getItem("widgetSearchDate");
 
   // States
   const [events, setEvents] = useState([]);
@@ -73,10 +73,9 @@ function App(props) {
   const [tabSelected, setTabSelected] = useState("Events");
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
-  const [isSingleDate, setIsSingleDate] = useState();
-  const [searchDate, setSearchDate] = useState(
-    typeof date === "string" ? date : null
-  );
+  const [isSingleDate, setIsSingleDate] = useState(date.includes(",")); //Array.isArray(date)
+  const [searchDate, setSearchDate] = useState(null); //  typeof date === "string" || Array.isArray(date) ? date : null
+
   const [placeHolderText, setPlaceHoldertext] = useState(t("placeHolder"));
   const [availableTabs, setAvailableTabs] = useState([]);
 
@@ -193,6 +192,23 @@ function App(props) {
     [apiUrl, tabSelected]
   );
 
+  const searchDateHandler = (value) => {
+    setSearchDate(value);
+    if (!Array.isArray(value)) {
+      const selectedDate = dateConverter(new Date(value));
+      setStartDateSpan(selectedDate);
+      setEndDateSpan(selectedDate);
+    } else {
+      if (value[0] !== null) {
+        setStartDateSpan(dateConverter(new Date(value[0])));
+        setEndDateSpan(dateConverter(new Date(value[1])));
+      } else {
+        setStartDateSpan("");
+        setEndDateSpan("");
+      }
+    }
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
     const searchParams = new URLSearchParams();
@@ -260,28 +276,26 @@ function App(props) {
   }, [i18n, locale]);
 
   useEffect(() => {
-    sessionStorage.setItem("widgetSearchDate", searchDate);
-  }, [searchDate]);
-
-  useEffect(() => {
     // debounce search while typing
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-    setIsLoading(true);
+    if (startDateSpan) {
+      const abortController = new AbortController();
+      const signal = abortController.signal;
+      setIsLoading(true);
 
-    const identifier = setTimeout(() => {
-      fetchDataHandler(
-        searchString,
-        startDateSpan,
-        endDateSpan,
-        locale,
-        signal
-      );
-    }, 700);
-    return () => {
-      clearTimeout(identifier);
-      abortController.abort();
-    };
+      const identifier = setTimeout(() => {
+        fetchDataHandler(
+          searchString,
+          startDateSpan,
+          endDateSpan,
+          locale,
+          signal
+        );
+      }, 700);
+      return () => {
+        clearTimeout(identifier);
+        abortController.abort();
+      };
+    }
   }, [
     searchString,
     startDateSpan,
@@ -347,9 +361,9 @@ function App(props) {
     setPlaceHoldertext(text);
   }, [locale, screenType, searchDate, isLoading, isSingleDate]);
 
-  // useEffect(() => {
-  //   setSearchDate(null);
-  // }, [isSingleDate]);
+  useEffect(() => {
+    setSearchDate(null);
+  }, [isSingleDate]);
 
   useEffect(() => {
     setAvailableTabs(
@@ -360,6 +374,15 @@ function App(props) {
       })
     );
   }, [eventSearchUrl, orgSearchUrl, searchEventsFilter]);
+
+  useEffect(() => {
+    if (date?.includes(",")) {
+      date = date.split(",");
+    }
+    if (date !== null && date !== "null") {
+      searchDateHandler(date);
+    }
+  }, []);
 
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>

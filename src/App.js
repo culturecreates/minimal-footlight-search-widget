@@ -387,10 +387,6 @@ function App(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    console.log(searchDate);
-  }, [searchDate]);
-
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>
       <div className="input-container">

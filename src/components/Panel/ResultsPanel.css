@@ -31,11 +31,14 @@
   justify-content: space-between;
   max-height: 550px;
   min-height: 450px;
+  height: 550px;
 }
 
 .footlightSearchWidget .panel-content .result-container {
-  flex-grow: 1;
+  /* flex-grow: 1; */
   display: flex;
+  max-width: 58%;
+  width: 58%;
 }
 
 .footlightSearchWidget .react-calendar {
@@ -88,6 +91,7 @@
 }
 
 .footlightSearchWidget .panel-content .calendar-container {
+  width: 42%;
   max-width: 42%;
   border-left: 1px solid var(--primary-light-grey, #000);
 }
@@ -110,9 +114,8 @@
     width: 100%;
     max-width: 100%;
   }
-  .footlightSearchWidget .panel-float{
+  .footlightSearchWidget .panel-float {
     min-width: 0;
-    top:0;
+    top: 0;
   }
 }
-

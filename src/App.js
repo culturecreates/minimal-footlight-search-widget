@@ -282,13 +282,15 @@ function App(props) {
     setIsLoading(true);
 
     const identifier = setTimeout(() => {
-      fetchDataHandler(
-        searchString,
-        startDateSpan,
-        endDateSpan,
-        locale,
-        signal
-      );
+      if (showResults) {
+        fetchDataHandler(
+          searchString,
+          startDateSpan,
+          endDateSpan,
+          locale,
+          signal
+        );
+      }
     }, 700);
     return () => {
       clearTimeout(identifier);
@@ -299,6 +301,7 @@ function App(props) {
     startDateSpan,
     endDateSpan,
     fetchDataHandler,
+    showResults,
     apiUrl,
     locale,
     searchDate,

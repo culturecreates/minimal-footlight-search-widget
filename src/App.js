@@ -35,8 +35,9 @@ function App(props) {
     orgUrl,
     searchEventsUrl: eventSearchUrl,
     searchOrgsUrl: orgSearchUrl,
-    locale = "fr",
-    searchEventsFilter = "type=64776b93fbeda20064d2332f",
+    locale,
+    searchEventsFilter,
+    searchWorkshopFilter,
     searchPanelState,
   } = props;
 
@@ -48,13 +49,14 @@ function App(props) {
     ...(orgSearchUrl && { orgSearchUrl }),
     locale,
     ...(searchEventsFilter && { searchEventsFilter }),
+    ...(searchWorkshopFilter && { searchWorkshopFilter }),
     searchPanelState,
   };
 
   // constants built using other constants
-  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?exclude-type=64776b93fbeda20064d2332f&page=1&limit=10`;
+  const apiEventsUrl = `https://${api}/calendars/${calendar}/events?${searchEventsFilter}&page=1&limit=9`;
   const apiOrganizationsUrl = `https://${api}/calendars/${calendar}/organizations?page=1&limit=10&sort=name.fr&concept=63d167da016e830064fbb03b`;
-  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?type=64776b93fbeda20064d2332f&page=1&limit=10`;
+  const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?${searchWorkshopFilter}&page=1&limit=9`;
 
   const query = sessionStorage.getItem("widgetSearchQuery");
   let date = sessionStorage.getItem("widgetSearchDate");
@@ -68,7 +70,7 @@ function App(props) {
   const [startDateSpan, setStartDateSpan] = useState("");
   const [endDateSpan, setEndDateSpan] = useState("");
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
-  const [showResults, setShowResults] = useState(searchPanelState === "float");
+  const [showResults, setShowResults] = useState(searchPanelState !== "float");
   const [searchFieldFocus, setTextFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState("Events");
   const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
@@ -225,19 +227,23 @@ function App(props) {
     if (endDateSpan) {
       searchParams.append("end-date-range", endDateSpan);
     }
-    if (tabSelected === "Ateliers") {
-      searchParams.append("type", "64776b93fbeda20064d2332f");
-    }
-    if (tabSelected === "Events") {
-      searchParams.append("exclude-type", "64776b93fbeda20064d2332f");
-    }
+
     let searchUrl = eventSearchUrl;
+
     if (tabSelected === "Organizations") {
       searchUrl = orgSearchUrl;
       searchParams.append("concept", "63d167da016e830064fbb03b");
     }
     setSearchString(""); // otherwise backbutton will restore results panel but no text will be in search bar.
     let url = searchUrl + "?" + searchParams.toString();
+
+    if (tabSelected === "Ateliers") {
+      url = url + "&" + searchWorkshopFilter;
+    }
+    if (tabSelected === "Events") {
+      url = url + "&" + searchEventsFilter;
+    }
+
     window.open(url, "_blank");
   };
 
@@ -255,7 +261,7 @@ function App(props) {
 
   const onCloseHandler = () => {
     if (panelOnDisplay === "result") {
-      if (searchPanelState !== "float") {
+      if (searchPanelState === "float") {
         setShowResults(false);
       }
       setTextFocus(false);
@@ -325,7 +331,7 @@ function App(props) {
           (refPopover.current && !refPopover.current.contains(event.target)) ||
           !refPopover.current
         ) {
-          if (searchPanelState !== "float") {
+          if (searchPanelState === "float") {
             setShowResults(false);
           }
         }
@@ -371,10 +377,10 @@ function App(props) {
       getAvailableTabs({
         eventSearchUrl,
         orgSearchUrl,
-        searchEventsFilter,
+        searchWorkshopFilter,
       })
     );
-  }, [eventSearchUrl, orgSearchUrl, searchEventsFilter]);
+  }, [eventSearchUrl, orgSearchUrl, searchWorkshopFilter]);
 
   useEffect(() => {
     let savedDate = date;

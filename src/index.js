@@ -17,5 +17,6 @@ root.render(
     locale={widget.dataset.locale}
     searchPanelState={widget.dataset.searchPanel}
     searchEventsFilter={widget.dataset.searchEventsFilter}
+    searchWorkshopFilter={widget.dataset.searchWorkshopFilter}
   />
 );

@@ -38,7 +38,7 @@ function App(props) {
     locale,
     searchEventsFilter,
     searchWorkshopFilter,
-    searchPanelState,
+    searchPanelState = "float",
   } = props;
 
   // object to pass HTML widget props to children components

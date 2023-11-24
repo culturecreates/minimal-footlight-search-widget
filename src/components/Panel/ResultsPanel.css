@@ -35,10 +35,10 @@
 }
 
 .footlightSearchWidget .panel-content .result-container {
-  /* flex-grow: 1; */
+  flex-grow: 1;
   display: flex;
-  max-width: 58%;
-  width: 58%;
+  /* max-width: 58%; */
+  /* width: 58%; */
 }
 
 .footlightSearchWidget .react-calendar {

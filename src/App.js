@@ -10,6 +10,9 @@ import { dateConverter, displayDate } from "./helpers/helper";
 import { useTranslation } from "react-i18next";
 import { Tabs } from "./constants/tabs";
 import { getAvailableTabs } from "./helpers/getAvailableTabs";
+import { transformData } from "./helpers/transformData";
+import { debounce } from "./helpers/debounce";
+import { clearDataHandler } from "./helpers/clearDataHandler";
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -63,6 +66,9 @@ function App(props) {
 
   // States
   const [events, setEvents] = useState([]);
+  const [workshop, setWorkshops] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
@@ -99,100 +105,61 @@ function App(props) {
       setEvents([]);
       setTabSelected(clickedTab);
       if (clickedTab === Tabs.ORGANIZATIONS) {
+        setWorkshops([]);
+        setEvents([]);
         setApiUrl(apiOrganizationsUrl);
       } else if (clickedTab === Tabs.WORKSHOPS) {
+        setEvents([]);
+        setOrganizations([]);
         setApiUrl(apiAteliersUrl);
       } else if (clickedTab === Tabs.EVENTS) {
+        setWorkshops([]);
+        setOrganizations([]);
         setApiUrl(apiEventsUrl);
       }
     }
   };
 
-  const fetchDataHandler = useCallback(
-    async (q, startDate, endDate, locale, signal) => {
-      setPanelOnDisplay("result");
-      setIsLoading(true);
-      setError(false);
-      let url = apiUrl;
-      sessionStorage.setItem("widgetSearchQuery", q);
-      if (q) {
-        url += `&query=${q}`;
+  const fetchDataHandler = async (q, startDate, endDate, locale) => {
+    setIsLoading(true);
+    setError(false);
+    let url = apiUrl;
+    if (q) {
+      url += `&query=${q}`;
+    }
+    if (tabSelected !== "Organizations") {
+      if (startDate) {
+        url += `&start-date-range=${startDate}`;
       }
-      if (tabSelected !== "Organizations") {
-        if (startDate) {
-          url += `&start-date-range=${startDate}`;
-        }
-        if (endDate) {
-          url += `&end-date-range=${endDate}`; // For single date filter then send end date the same as start date.
-        }
+      if (endDate) {
+        url += `&end-date-range=${endDate}`; // For single date filter then send end date the same as start date.
+      }
+    }
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (tabSelected === Tabs.EVENTS) {
+        setEvents(transformData({ data, locale, tabSelected }));
+      } else if (tabSelected === Tabs.WORKSHOPS) {
+        setWorkshops(transformData({ data, locale, tabSelected }));
+      } else {
+        setOrganizations(transformData({ data, locale, tabSelected }));
       }
 
-      try {
-        const response = await fetch(url, { signal });
-        const data = await response.json();
-
-        const transformedEvents = await data.data.map((eventData) => {
-          let place = eventData.location || {};
-          // If place is an array then extract first object of type 'Place'
-          if (Array.isArray(place)) {
-            place =
-              eventData.location.filter((place) => place.type === "Place")[0] ||
-              {};
-          }
-
-          // Fallback to English and then French if the locale-specific name is not available
-          const title =
-            eventData.name?.[locale] ||
-            eventData.name?.en ||
-            eventData.name?.fr ||
-            "";
-
-          const addressLocality =
-            place.address?.addressLocality?.[locale] ||
-            place.address?.addressLocality?.en ||
-            place.address?.addressLocality?.fr ||
-            "";
-
-          const streetAddress =
-            place.address?.streetAddress?.[locale] ||
-            place.address?.streetAddress?.en ||
-            place.address?.streetAddress?.fr ||
-            "";
-
-          return {
-            id: eventData.id,
-            title: title,
-            ...(tabSelected !== "Organizations"
-              ? {
-                  startDate:
-                    eventData.subEventDetails.upcomingSubEventCount === 0
-                      ? eventData?.startDate || eventData?.startDateTime || ""
-                      : eventData.subEventDetails
-                          ?.nextUpcomingSubEventDateTime ||
-                        eventData.subEventDetails?.nextUpcomingSubEventDate ||
-                        "",
-                  endDate: eventData.endDate || eventData.endDateTime || "",
-                }
-              : {}),
-            image: eventData.image?.thumbnail || "",
-            place:
-              place.name?.[locale] || place.name?.en || place.name?.fr || "",
-            city: addressLocality,
-            streetAddress: streetAddress,
-          };
-        });
-
-        setEvents(transformedEvents);
-        setTotalCount(data.meta?.totalCount || 0);
-      } catch {
-        if (!signal.aborted) {
-          setError(true);
-        }
-      }
-      setIsLoading(false);
-    },
-    [apiUrl, tabSelected]
-  );
+      setTotalCount(data.meta?.totalCount || 0);
+    } catch (e) {
+      console.log(e);
+      // if (!signal.aborted) {
+      //   setError(true);
+      // }
+    }
+    setIsLoading(false);
+  };
+  const debounceSearchPlace = useCallback(debounce(fetchDataHandler, 700), [
+    apiUrl,
+  ]);
 
   const searchDateHandler = (value) => {
     setSearchDate(value);
@@ -257,6 +224,8 @@ function App(props) {
   };
   const textChangeHandler = (event) => {
     setSearchString(event.target.value);
+    sessionStorage.setItem("widgetSearchQuery", event.target.value);
+    debounceSearchPlace(event.target.value, startDateSpan, endDateSpan, locale);
   };
 
   const onCloseHandler = () => {
@@ -281,37 +250,38 @@ function App(props) {
     i18n.changeLanguage(locale);
   }, [i18n, locale]);
 
+  // useEffect(() => {
+  //   // debounce search while typing
+  //   const abortController = new AbortController();
+  //   const signal = abortController.signal;
+  //   setIsLoading(true);
+
+  //   const identifier = setTimeout(() => {
+  //     if (showResults) {
+  //       fetchDataHandler(
+  //         searchString,
+  //         startDateSpan,
+  //         endDateSpan,
+  //         locale,
+  //         signal
+  //       );
+  //     }
+  //   }, 700);
+  //   return () => {
+  //     clearTimeout(identifier);
+  //     abortController.abort();
+  //   };
+  // }, [searchString]);
+
   useEffect(() => {
     // debounce search while typing
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-    setIsLoading(true);
-
-    const identifier = setTimeout(() => {
-      if (showResults) {
-        fetchDataHandler(
-          searchString,
-          startDateSpan,
-          endDateSpan,
-          locale,
-          signal
-        );
-      }
-    }, 700);
-    return () => {
-      clearTimeout(identifier);
-      abortController.abort();
-    };
-  }, [
-    searchString,
-    startDateSpan,
-    endDateSpan,
-    fetchDataHandler,
-    showResults,
-    apiUrl,
-    locale,
-    searchDate,
-  ]);
+    // const abortController = new AbortController();
+    // const signal = abortController.signal;
+    if (showResults) {
+      setIsLoading(true);
+      fetchDataHandler(searchString, startDateSpan, endDateSpan, locale);
+    }
+  }, [startDateSpan, endDateSpan, showResults, apiUrl, locale, searchDate]);
 
   useEffect(() => {
     // show results panel
@@ -461,6 +431,8 @@ function App(props) {
               <ResultsPanel
                 error={error}
                 events={events}
+                workshop={workshop}
+                organizations={organizations}
                 isLoading={isLoading}
                 totalCount={totalCount}
                 widgetProps={widgetProps}

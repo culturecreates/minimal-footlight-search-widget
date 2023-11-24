@@ -15,6 +15,8 @@ const ResultsPanel = (props) => {
     setStartDateSpan,
     setEndDateSpan,
     locale,
+    workshop,
+    organizations,
     tabSelected,
     widgetProps,
     events,
@@ -40,7 +42,10 @@ const ResultsPanel = (props) => {
 
   if (isLoading) {
     content = <Loader />;
-  } else if (events.length > 0 && totalCount > 0) {
+  } else if (
+    (events.length > 0 || workshop.length > 0 || organizations.length > 0) &&
+    totalCount > 0
+  ) {
     content = (
       <div className="content">
         <ResultHeading
@@ -54,6 +59,8 @@ const ResultsPanel = (props) => {
             tabSelected={tabSelected}
             widgetProps={widgetProps}
             events={events}
+            workshop={workshop}
+            organizations={organizations}
           />
         </div>
       </div>

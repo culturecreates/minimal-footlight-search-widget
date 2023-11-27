@@ -10,14 +10,12 @@ function ResultHeading(props) {
     tabSelected,
     totalCountEvents,
     totalCountWorkshops,
-    totalCountOrganizations,
   } = props;
 
   const tabFlag =
     tabSelected !== Tabs.ORGANIZATIONS &&
-    totalCountEvents !== 0 &&
-    totalCountWorkshops !== 0 &&
-    totalCountOrganizations !== 0;
+    ((tabSelected === Tabs.EVENTS && totalCountEvents !== 0) ||
+      (tabSelected === Tabs.WORKSHOPS && totalCountWorkshops !== 0));
 
   const { t } = useTranslation();
 

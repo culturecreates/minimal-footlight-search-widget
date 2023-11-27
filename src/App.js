@@ -159,6 +159,7 @@ function App(props) {
     setIsLoading(false);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceSearchPlace = useCallback(debounce(fetchDataHandler, 700), [
     apiUrl,
   ]);
@@ -258,6 +259,7 @@ function App(props) {
       setIsLoading(true);
       fetchDataHandler(searchString, startDateSpan, endDateSpan, locale);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDateSpan, endDateSpan, showResults, apiUrl, locale, searchDate]);
 
   useEffect(() => {

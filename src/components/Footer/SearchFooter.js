@@ -14,7 +14,9 @@ const SearchFooter = (props) => {
 
   const { t } = useTranslation();
 
-  let msg, count;
+  let count;
+  let msg = t("footer.seeAll");
+  
   const style =
     count <= 0
       ? {
@@ -24,20 +26,18 @@ const SearchFooter = (props) => {
           background: "var(--primary-flash-yellow, #fff649)",
         };
 
-  if (count > 0) {
-    msg = t("footer.seeAll");
-  } else {
-    msg = t("footer.noItems");
-  }
-
   if (isLoading) {
     count = "-";
   } else if (tabSelected === Tabs.ORGANIZATIONS) {
     count = totalCountOrganizations;
+    msg =
+      totalCountOrganizations > 0 ? t("footer.seeAll") : t("footer.noItems");
   } else if (tabSelected === Tabs.WORKSHOPS) {
     count = totalCountWorkshops;
+    msg = totalCountWorkshops > 0 ? t("footer.seeAll") : t("footer.noItems");
   } else {
     count = totalCountEvents;
+    msg = totalCountEvents > 0 ? t("footer.seeAll") : t("footer.noItems");
   }
 
   return (

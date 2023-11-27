@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import EventsList from "../Events/EventsList";
 import SearchFooter from "../Footer/SearchFooter";
 import Tabs from "../Tabs/Tabs";
+import {Tabs as TABS} from "../../constants/tabs"
 import "./ResultsPanel.css";
 import Calender from "../Calendar/Calender";
-import NoContent from "../Noresult/NoContent";
 import Loader from "../Loader";
 import ResultHeading from "./ResultHeading";
 import { useTranslation } from "react-i18next";
+import { PANELS, SCREENS } from "../../constants/screenAndPanelTypes";
 
 const ResultsPanel = (props) => {
   const {
@@ -15,12 +16,18 @@ const ResultsPanel = (props) => {
     setStartDateSpan,
     setEndDateSpan,
     locale,
+    workshop,
+    organizations,
     tabSelected,
     widgetProps,
     events,
-    totalCount,
     onChangeTab,
     onSubmit,
+    setPanelOnDisplay,
+    setScreenType,
+    totalCountEvents,
+    totalCountWorkshops,
+    totalCountOrganizations,
     error,
     isLoading,
     searchDate,
@@ -40,7 +47,7 @@ const ResultsPanel = (props) => {
 
   if (isLoading) {
     content = <Loader />;
-  } else if (events.length > 0 && totalCount > 0) {
+  } else {
     content = (
       <div className="content">
         <ResultHeading
@@ -48,27 +55,24 @@ const ResultsPanel = (props) => {
           locale={locale}
           isLoading={isLoading}
           tabSelected={tabSelected}
+          totalCountEvents={totalCountEvents}
+          totalCountWorkshops={totalCountWorkshops}
+          totalCountOrganizations={totalCountOrganizations}
         />
         <div>
           <EventsList
             tabSelected={tabSelected}
             widgetProps={widgetProps}
             events={events}
+            workshop={workshop}
+            organizations={organizations}
+            date={searchDate}
+            locale={locale}
+            searchDate={searchDate}
+            isLoading={isLoading}
           />
         </div>
       </div>
-    );
-  } else {
-    const message = t(`noResult.${tabSelected}`);
-
-    content = (
-      <NoContent
-        message={message}
-        date={searchDate}
-        locale={locale}
-        isLoading={isLoading}
-        tabSelected={tabSelected}
-      />
     );
   }
 
@@ -82,7 +86,7 @@ const ResultsPanel = (props) => {
 
   return (
     <>
-      {showPanel && screenType === "desktop" ? ( // for desktop and tablet view
+      {showPanel && screenType === SCREENS.DESKTOP ? ( // for desktop and tablet view
         <div className="panel-result">
           <Tabs
             onChangeTab={changeTabHandler}
@@ -93,7 +97,7 @@ const ResultsPanel = (props) => {
           <div className="panel-content">
             <div className="result-container">{content}</div>
 
-            {tabSelected !== "Organizations" && (
+            {tabSelected !== TABS.ORGANIZATIONS && (
               <div className="calendar-container">
                 <Calender
                   locale={locale}
@@ -101,6 +105,8 @@ const ResultsPanel = (props) => {
                   setStartDateSpan={setStartDateSpan}
                   setEndDateSpan={setEndDateSpan}
                   searchDate={searchDate}
+                  setPanelOnDisplay={setPanelOnDisplay}
+                  setScreenType={setScreenType}
                   setIsLoading={setIsLoading}
                   isSingleDate={isSingleDate}
                   setIsSingleDate={setIsSingleDate}
@@ -109,16 +115,20 @@ const ResultsPanel = (props) => {
             )}
           </div>
           <SearchFooter
-            count={totalCount}
             locale={widgetProps.locale}
+            tabSelected={tabSelected}
+            isLoading={isLoading}
             onSubmit={onSubmit}
+            totalCountEvents={totalCountEvents}
+            totalCountWorkshops={totalCountWorkshops}
+            totalCountOrganizations={totalCountOrganizations}
           />
         </div>
       ) : (
         // for mobile view
         <>
           <div className="panel-result">
-            {panelOnDisplay !== "datepicker" && (
+            {panelOnDisplay !== PANELS.DATEPICKER && (
               <Tabs
                 onChangeTab={changeTabHandler}
                 tabSelected={tabSelected}
@@ -127,15 +137,17 @@ const ResultsPanel = (props) => {
               />
             )}
             <div className="panel-content">
-              {panelOnDisplay !== "datepicker" ? (
+              {panelOnDisplay !== PANELS.DATEPICKER ? (
                 content
-              ) : tabSelected !== "Organizations" ? (
+              ) : tabSelected !== TABS.ORGANIZATIONS ? (
                 <Calender
                   locale={locale}
                   setSearchDate={setSearchDate}
                   setStartDateSpan={setStartDateSpan}
                   setEndDateSpan={setEndDateSpan}
                   searchDate={searchDate}
+                  setPanelOnDisplay={setPanelOnDisplay}
+                  setScreenType={setScreenType}
                   setIsLoading={setIsLoading}
                   screenType={screenType}
                   isSingleDate={isSingleDate}
@@ -146,9 +158,13 @@ const ResultsPanel = (props) => {
               )}
             </div>
             <SearchFooter
-              count={totalCount}
               locale={widgetProps.locale}
+              tabSelected={tabSelected}
+              isLoading={isLoading}
               onSubmit={onSubmit}
+              totalCountEvents={totalCountEvents}
+              totalCountWorkshops={totalCountWorkshops}
+              totalCountOrganizations={totalCountOrganizations}
             />
           </div>
         </>

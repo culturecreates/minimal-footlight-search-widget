@@ -10,6 +10,9 @@ import { dateConverter, displayDate } from "./helpers/helper";
 import { useTranslation } from "react-i18next";
 import { Tabs } from "./constants/tabs";
 import { getAvailableTabs } from "./helpers/getAvailableTabs";
+import { transformData } from "./helpers/transformData";
+import { debounce } from "./helpers/debounce";
+import { PANELS, SCREENS } from "./constants/screenAndPanelTypes";
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -63,17 +66,22 @@ function App(props) {
 
   // States
   const [events, setEvents] = useState([]);
+  const [workshop, setWorkshops] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [totalCount, setTotalCount] = useState(0);
+  const [totalCountEvents, setTotalCountEvents] = useState(0);
+  const [totalCountWorkshops, setTotalCountWorkshops] = useState(0);
+  const [totalCountOrganizations, setTotalCountOrganizations] = useState(0);
   const [searchString, setSearchString] = useState(query ? query : "");
   const [startDateSpan, setStartDateSpan] = useState("");
   const [endDateSpan, setEndDateSpan] = useState("");
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
   const [showResults, setShowResults] = useState(searchPanelState !== "float");
   const [searchFieldFocus, setTextFocus] = useState(false);
-  const [tabSelected, setTabSelected] = useState("Events");
-  const [panelOnDisplay, setPanelOnDisplay] = useState("result"); // controls which component to render in panel for mobile view. states = datepicker, results
+  const [tabSelected, setTabSelected] = useState(Tabs.EVENTS);
+  const [panelOnDisplay, setPanelOnDisplay] = useState(PANELS.RESULT); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
   const [isSingleDate, setIsSingleDate] = useState(date?.includes(",")); //Array.isArray(date)
   const [searchDate, setSearchDate] = useState(null); //  typeof date === "string" || Array.isArray(date) ? date : null
@@ -92,107 +100,68 @@ function App(props) {
   // Handlers
   const changeTabHandler = (clickedTab) => {
     if (tabSelected !== clickedTab) {
-      setIsLoading(true);
+      // setIsLoading(true);
       // set focus on text input to keep results panel open
       textInputRef.current.focus();
       setTextFocus(true);
       setEvents([]);
       setTabSelected(clickedTab);
       if (clickedTab === Tabs.ORGANIZATIONS) {
+        setWorkshops([]);
+        setEvents([]);
         setApiUrl(apiOrganizationsUrl);
       } else if (clickedTab === Tabs.WORKSHOPS) {
+        setEvents([]);
+        setOrganizations([]);
         setApiUrl(apiAteliersUrl);
       } else if (clickedTab === Tabs.EVENTS) {
+        setWorkshops([]);
+        setOrganizations([]);
         setApiUrl(apiEventsUrl);
       }
     }
   };
 
-  const fetchDataHandler = useCallback(
-    async (q, startDate, endDate, locale, signal) => {
-      setPanelOnDisplay("result");
-      setIsLoading(true);
-      setError(false);
-      let url = apiUrl;
-      sessionStorage.setItem("widgetSearchQuery", q);
-      if (q) {
-        url += `&query=${q}`;
+  const fetchDataHandler = async (q, startDate, endDate, locale) => {
+    setIsLoading(true);
+    setError(false);
+    let url = apiUrl;
+    if (q) {
+      url += `&query=${q}`;
+    }
+    if (tabSelected !== Tabs.ORGANIZATIONS) {
+      if (startDate) {
+        url += `&start-date-range=${startDate}`;
       }
-      if (tabSelected !== "Organizations") {
-        if (startDate) {
-          url += `&start-date-range=${startDate}`;
-        }
-        if (endDate) {
-          url += `&end-date-range=${endDate}`; // For single date filter then send end date the same as start date.
-        }
+      if (endDate) {
+        url += `&end-date-range=${endDate}`; // For single date filter then send end date the same as start date.
       }
+    }
 
-      try {
-        const response = await fetch(url, { signal });
-        const data = await response.json();
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
 
-        const transformedEvents = await data.data.map((eventData) => {
-          let place = eventData.location || {};
-          // If place is an array then extract first object of type 'Place'
-          if (Array.isArray(place)) {
-            place =
-              eventData.location.filter((place) => place.type === "Place")[0] ||
-              {};
-          }
-
-          // Fallback to English and then French if the locale-specific name is not available
-          const title =
-            eventData.name?.[locale] ||
-            eventData.name?.en ||
-            eventData.name?.fr ||
-            "";
-
-          const addressLocality =
-            place.address?.addressLocality?.[locale] ||
-            place.address?.addressLocality?.en ||
-            place.address?.addressLocality?.fr ||
-            "";
-
-          const streetAddress =
-            place.address?.streetAddress?.[locale] ||
-            place.address?.streetAddress?.en ||
-            place.address?.streetAddress?.fr ||
-            "";
-
-          return {
-            id: eventData.id,
-            title: title,
-            ...(tabSelected !== "Organizations"
-              ? {
-                  startDate:
-                    eventData.subEventDetails.upcomingSubEventCount === 0
-                      ? eventData?.startDate || eventData?.startDateTime || ""
-                      : eventData.subEventDetails
-                          ?.nextUpcomingSubEventDateTime ||
-                        eventData.subEventDetails?.nextUpcomingSubEventDate ||
-                        "",
-                  endDate: eventData.endDate || eventData.endDateTime || "",
-                }
-              : {}),
-            image: eventData.image?.thumbnail || "",
-            place:
-              place.name?.[locale] || place.name?.en || place.name?.fr || "",
-            city: addressLocality,
-            streetAddress: streetAddress,
-          };
-        });
-
-        setEvents(transformedEvents);
-        setTotalCount(data.meta?.totalCount || 0);
-      } catch {
-        if (!signal.aborted) {
-          setError(true);
-        }
+      if (tabSelected === Tabs.EVENTS) {
+        setEvents(transformData({ data, locale, tabSelected }));
+        setTotalCountEvents(data.meta?.totalCount || 0);
+      } else if (tabSelected === Tabs.WORKSHOPS) {
+        setWorkshops(transformData({ data, locale, tabSelected }));
+        setTotalCountWorkshops(data.meta?.totalCount || 0);
+      } else {
+        setOrganizations(transformData({ data, locale, tabSelected }));
+        setTotalCountOrganizations(data.meta?.totalCount || 0);
       }
-      setIsLoading(false);
-    },
-    [apiUrl, tabSelected]
-  );
+    } catch (e) {
+      console.log(e);
+      setError(true);
+    }
+    setIsLoading(false);
+  };
+
+  const debounceSearchPlace = useCallback(debounce(fetchDataHandler, 700), [
+    apiUrl,
+  ]);
 
   const searchDateHandler = (value) => {
     setSearchDate(value);
@@ -215,7 +184,7 @@ function App(props) {
     event.preventDefault();
     const searchParams = new URLSearchParams();
 
-    if (tabSelected !== "Organizations") {
+    if (tabSelected !== Tabs.ORGANIZATIONS) {
       searchParams.append("limit", 100);
     }
     if (searchString !== "") {
@@ -230,7 +199,7 @@ function App(props) {
 
     let searchUrl = eventSearchUrl;
 
-    if (tabSelected === "Organizations") {
+    if (tabSelected === Tabs.ORGANIZATIONS) {
       searchUrl = orgSearchUrl;
       searchParams.append("concept", "63d167da016e830064fbb03b");
     }
@@ -257,20 +226,22 @@ function App(props) {
   };
   const textChangeHandler = (event) => {
     setSearchString(event.target.value);
+    sessionStorage.setItem("widgetSearchQuery", event.target.value);
+    debounceSearchPlace(event.target.value, startDateSpan, endDateSpan, locale);
   };
 
   const onCloseHandler = () => {
-    if (panelOnDisplay === "result") {
+    if (panelOnDisplay === PANELS.RESULT) {
       if (searchPanelState === "float") {
         setShowResults(false);
       }
       setTextFocus(false);
-    } else if (panelOnDisplay === "datepicker") {
-      setPanelOnDisplay("result");
+    } else if (panelOnDisplay === PANELS.DATEPICKER) {
+      setPanelOnDisplay(PANELS.RESULT);
     }
   };
 
-  const datePickerDisplayHandler = (panel = "result") => {
+  const datePickerDisplayHandler = (panel = PANELS.RESULT) => {
     setTextFocus(true);
     setPanelOnDisplay(panel);
   };
@@ -283,35 +254,11 @@ function App(props) {
 
   useEffect(() => {
     // debounce search while typing
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-    setIsLoading(true);
-
-    const identifier = setTimeout(() => {
-      if (showResults) {
-        fetchDataHandler(
-          searchString,
-          startDateSpan,
-          endDateSpan,
-          locale,
-          signal
-        );
-      }
-    }, 700);
-    return () => {
-      clearTimeout(identifier);
-      abortController.abort();
-    };
-  }, [
-    searchString,
-    startDateSpan,
-    endDateSpan,
-    fetchDataHandler,
-    showResults,
-    apiUrl,
-    locale,
-    searchDate,
-  ]);
+    if (showResults) {
+      setIsLoading(true);
+      fetchDataHandler(searchString, startDateSpan, endDateSpan, locale);
+    }
+  }, [startDateSpan, endDateSpan, showResults, apiUrl, locale, searchDate]);
 
   useEffect(() => {
     // show results panel
@@ -346,7 +293,8 @@ function App(props) {
   useEffect(() => {
     // set view type accoring to screen size
     const isWide = width < 768;
-    setScreenType(isWide ? "mobile" : "desktop");
+    setScreenType(isWide ? SCREENS.MOBILE : SCREENS.DESKTOP);
+    datePickerDisplayHandler();
   }, [width]);
 
   useEffect(() => {
@@ -354,7 +302,7 @@ function App(props) {
     const monthFormat = "short";
     const yearFormat = "2-digit";
     let text = "";
-    if (searchDate && screenType === "mobile") {
+    if (searchDate && screenType === SCREENS.MOBILE) {
       if (Array.isArray(searchDate)) {
         // for date range selection
         const dateArray = searchDate.map((dateItem) => {
@@ -399,13 +347,13 @@ function App(props) {
         <form onSubmit={submitHandler} autoComplete="off">
           <div className="input-searchbar">
             <div className="search-bar-icon"></div>
-            {panelOnDisplay === "datepicker" &&
-              screenType === "mobile" &&
-              tabSelected !== "Organizations" && (
+            {panelOnDisplay === PANELS.DATEPICKER &&
+              screenType === SCREENS.MOBILE &&
+              tabSelected !== Tabs.ORGANIZATIONS && (
                 <div
                   className="datepicker-icon"
                   onClick={() => {
-                    datePickerDisplayHandler("result");
+                    datePickerDisplayHandler(PANELS.RESULT);
                   }}
                 ></div>
               )}
@@ -421,14 +369,17 @@ function App(props) {
               value={searchString}
             />
           </div>
-          {screenType === "mobile" && (
+          {screenType === SCREENS.MOBILE && (
             <>
-              {!(panelOnDisplay === "datepicker" && screenType === "mobile") &&
-                tabSelected !== "Organizations" && (
+              {!(
+                panelOnDisplay === PANELS.DATEPICKER &&
+                screenType === SCREENS.MOBILE
+              ) &&
+                tabSelected !== Tabs.ORGANIZATIONS && (
                   <div
                     className="icon-container"
                     onClick={() => {
-                      datePickerDisplayHandler("datepicker");
+                      datePickerDisplayHandler(PANELS.DATEPICKER);
                     }}
                   >
                     <img src={CalendarIcon} alt="calendar"></img>
@@ -446,8 +397,8 @@ function App(props) {
             </>
           )}
         </form>
-        {tabSelected !== "Organizations" &&
-          screenType !== "mobile" &&
+        {tabSelected !== Tabs.ORGANIZATIONS &&
+          screenType !== SCREENS.MOBILE &&
           showResults && (
             <div className="topDateDiv">
               <DateFormatter date={searchDate} locale={locale} />
@@ -461,12 +412,18 @@ function App(props) {
               <ResultsPanel
                 error={error}
                 events={events}
+                workshop={workshop}
+                organizations={organizations}
                 isLoading={isLoading}
-                totalCount={totalCount}
+                totalCountEvents={totalCountEvents}
+                totalCountWorkshops={totalCountWorkshops}
+                totalCountOrganizations={totalCountOrganizations}
                 widgetProps={widgetProps}
                 onChangeTab={changeTabHandler}
                 tabSelected={tabSelected}
                 onSubmit={submitHandler}
+                setPanelOnDisplay={setPanelOnDisplay}
+                setScreenType={setScreenType}
                 locale={locale}
                 availableTabs={availableTabs}
                 setSearchDate={setSearchDate}

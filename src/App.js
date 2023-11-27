@@ -39,8 +39,8 @@ function App(props) {
     searchEventsUrl: eventSearchUrl,
     searchOrgsUrl: orgSearchUrl,
     locale,
-    searchEventsFilter,
-    searchWorkshopFilter,
+    searchEventsFilter="exclude-type=64776b93fbeda20064d2332f",
+    searchWorkshopFilter="type=64776b93fbeda20064d2332f",
     searchPanelState = "float",
   } = props;
 

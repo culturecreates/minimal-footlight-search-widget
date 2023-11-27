@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import { dateConverter } from "../../helpers/helper";
 import prevButton from "../../assets/icons/prev-button.svg";
@@ -7,6 +7,7 @@ import next2Button from "../../assets/icons/next2-button.svg";
 import prev2Button from "../../assets/icons/prev2-button.svg";
 import "./calendar.css";
 import { useTranslation } from "react-i18next";
+import { PANELS } from "../../constants/screenAndPanelTypes";
 
 function Calender(props) {
   const {
@@ -17,6 +18,7 @@ function Calender(props) {
     searchDate,
     isSingleDate,
     setIsSingleDate,
+    setPanelOnDisplay,
   } = props;
 
   const { t } = useTranslation();
@@ -25,19 +27,45 @@ function Calender(props) {
   const [view, setView] = useState("month");
   const [calendarKey, setCalendarKey] = useState(1); // Added to forcefully reset the selected date during range selection.
 
+  useEffect(() => {
+    let savedDate = sessionStorage.getItem("widgetSearchDate");
+
+    if (savedDate?.includes(",")) {
+      savedDate = savedDate?.split(",");
+    }
+    if (savedDate !== null && savedDate !== "null") {
+      setSearchDate(savedDate);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // handlers
 
   const searchDateHandler = (value) => {
+    sessionStorage.setItem("widgetSearchDate", value);
     setSearchDate(value);
+    setPanelOnDisplay(PANELS.RESULT);
     if (!isSingleDate) {
-      const selectedDate =dateConverter(new Date(value))
+      const selectedDate = dateConverter(new Date(value));
       setStartDateSpan(selectedDate);
+      sessionStorage.setItem("widgetStartDate", selectedDate);
       setEndDateSpan(selectedDate);
+      sessionStorage.setItem("widgetEndDate", selectedDate);
     } else {
       if (value[0] !== null) {
         setStartDateSpan(dateConverter(new Date(value[0])));
         setEndDateSpan(dateConverter(new Date(value[1])));
+        sessionStorage.setItem(
+          "widgetStartDate",
+          dateConverter(new Date(value[0]))
+        );
+        sessionStorage.setItem(
+          "widgetEndDate",
+          dateConverter(new Date(value[1]))
+        );
       } else {
+        sessionStorage.setItem("widgetStartDate", "");
+        sessionStorage.setItem("widgetEndDate", "");
         setStartDateSpan("");
         setEndDateSpan("");
       }
@@ -48,7 +76,11 @@ function Calender(props) {
     if (isSingleDate && !Array.isArray(searchDate)) {
       setCalendarKey((prevState) => prevState + 1); // So reset button can reset date when in the middle of selection.
     }
+    setPanelOnDisplay(PANELS.RESULT);
     setSearchDate(null);
+    sessionStorage.setItem("widgetSearchDate", null);
+    sessionStorage.setItem("widgetStartDate", "");
+    sessionStorage.setItem("widgetEndDate", "");
     setStartDateSpan("");
     setEndDateSpan("");
     setActiveStartDate(new Date());
@@ -60,6 +92,9 @@ function Calender(props) {
       setCalendarKey((prevState) => prevState + 1); // So reset button can reset date when in the middle of selection.
     }
     setSearchDate(null);
+    sessionStorage.setItem("widgetSearchDate", null);
+    sessionStorage.setItem("widgetStartDate", "");
+    sessionStorage.setItem("widgetEndDate", "");
     setStartDateSpan("");
     setIsSingleDate(e.target.checked);
     setStartDateSpan("");
@@ -85,7 +120,7 @@ function Calender(props) {
   return (
     <div
       style={{
-        minHeight: "500px"
+        minHeight: "500px",
       }}
     >
       <div className="calendar-control">
@@ -110,6 +145,7 @@ function Calender(props) {
       <Calendar
         key={calendarKey}
         onChange={searchDateHandler}
+        defaultValue={searchDate}
         value={searchDate}
         activeStartDate={activeStartDate}
         onDrillDown={({ activeStartDate, view }) =>

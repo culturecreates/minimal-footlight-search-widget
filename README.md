@@ -4,8 +4,8 @@ Instructions for adding the HTML to display this search widget:
 
 Add script and CSS to head
 ```
-<script defer="defer" src="https://minimal-footlight-search-widget.s3.ca-central-1.amazonaws.com/v2/dist/index.js"></script>
-<link href="https://minimal-footlight-search-widget.s3.ca-central-1.amazonaws.com/v2/dist/index.css" rel="stylesheet">
+<script defer="defer" src="https://minimal-footlight-search-widget.s3.ca-central-1.amazonaws.com/v3/dist/index.js"></script>
+<link href="https://minimal-footlight-search-widget.s3.ca-central-1.amazonaws.com/v3/dist/index.css" rel="stylesheet">
 ```
 
 Add this div to your webpage body
@@ -33,3 +33,6 @@ Add this div to your webpage body
 - **data-search-events-filter** is the name value pair(s) for filtering ALL events. Example: "&region=1234&concept=4567&price-type=free"
   
   
+## Steps to create new version
+- Change S3 path in all workflows
+- Update readme example to use the latest version

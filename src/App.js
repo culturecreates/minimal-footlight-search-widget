@@ -6,7 +6,7 @@ import { DateFormatter } from "./components/Date/DateFormatter";
 import CalendarIcon from "./assets/icons/Calendar.svg";
 import CloseIcon from "./assets/icons/Close.svg";
 import { useSize } from "./helpers/hooks";
-import { dateConverter, displayDate } from "./helpers/helper";
+import { displayDate } from "./helpers/helper";
 import { useTranslation } from "react-i18next";
 import { Tabs } from "./constants/tabs";
 import { getAvailableTabs } from "./helpers/getAvailableTabs";
@@ -39,8 +39,8 @@ function App(props) {
     searchEventsUrl: eventSearchUrl,
     searchOrgsUrl: orgSearchUrl,
     locale,
-    searchEventsFilter="exclude-type=64776b93fbeda20064d2332f",
-    searchWorkshopFilter="type=64776b93fbeda20064d2332f",
+    searchEventsFilter = "exclude-type=64776b93fbeda20064d2332f",
+    searchWorkshopFilter = "type=64776b93fbeda20064d2332f",
     searchPanelState = "float",
   } = props;
 
@@ -62,7 +62,8 @@ function App(props) {
   const apiAteliersUrl = `https://${api}/calendars/${calendar}/events?${searchWorkshopFilter}&page=1&limit=9`;
 
   const query = sessionStorage.getItem("widgetSearchQuery");
-  let date = sessionStorage.getItem("widgetSearchDate");
+  const savedStartDate = sessionStorage.getItem("widgetStartDate");
+  const savedEndDate = sessionStorage.getItem("widgetEndDate");
 
   // States
   const [events, setEvents] = useState([]);
@@ -75,15 +76,17 @@ function App(props) {
   const [totalCountWorkshops, setTotalCountWorkshops] = useState(0);
   const [totalCountOrganizations, setTotalCountOrganizations] = useState(0);
   const [searchString, setSearchString] = useState(query ? query : "");
-  const [startDateSpan, setStartDateSpan] = useState("");
-  const [endDateSpan, setEndDateSpan] = useState("");
+  const [startDateSpan, setStartDateSpan] = useState(savedStartDate);
+  const [endDateSpan, setEndDateSpan] = useState(savedEndDate);
   const [apiUrl, setApiUrl] = useState(apiEventsUrl);
   const [showResults, setShowResults] = useState(searchPanelState !== "float");
   const [searchFieldFocus, setTextFocus] = useState(false);
   const [tabSelected, setTabSelected] = useState(Tabs.EVENTS);
   const [panelOnDisplay, setPanelOnDisplay] = useState(PANELS.RESULT); // controls which component to render in panel for mobile view. states = datepicker, results
   const [screenType, setScreenType] = useState();
-  const [isSingleDate, setIsSingleDate] = useState(date?.includes(",")); //Array.isArray(date)
+  const [isSingleDate, setIsSingleDate] = useState(
+    sessionStorage.getItem("widgetSearchDate")?.includes(",")
+  ); //Array.isArray(date)
   const [searchDate, setSearchDate] = useState(null); //  typeof date === "string" || Array.isArray(date) ? date : null
 
   const [placeHolderText, setPlaceHoldertext] = useState(t("placeHolder"));
@@ -164,22 +167,21 @@ function App(props) {
     apiUrl,
   ]);
 
-  const searchDateHandler = (value) => {
-    setSearchDate(value);
-    if (!Array.isArray(value)) {
-      const selectedDate = dateConverter(new Date(value));
-      setStartDateSpan(selectedDate);
-      setEndDateSpan(selectedDate);
-    } else {
-      if (value[0] !== null) {
-        setStartDateSpan(dateConverter(new Date(value[0])));
-        setEndDateSpan(dateConverter(new Date(value[1])));
-      } else {
-        setStartDateSpan("");
-        setEndDateSpan("");
-      }
-    }
-  };
+  // const searchDateHandler = (value) => {
+  //   if (!Array.isArray(value)) {
+  //     const selectedDate = dateConverter(new Date(value));
+  //     setStartDateSpan(selectedDate);
+  //     setEndDateSpan(selectedDate);
+  //   } else {
+  //     if (value[0] !== null) {
+  //       setStartDateSpan(dateConverter(new Date(value[0])));
+  //       setEndDateSpan(dateConverter(new Date(value[1])));
+  //     } else {
+  //       setStartDateSpan("");
+  //       setEndDateSpan("");
+  //     }
+  //   }
+  // };
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -254,19 +256,21 @@ function App(props) {
   }, [i18n, locale]);
 
   useEffect(() => {
-    // debounce search while typing
     if (showResults) {
       setIsLoading(true);
       fetchDataHandler(searchString, startDateSpan, endDateSpan, locale);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startDateSpan, endDateSpan, showResults, apiUrl, locale, searchDate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startDateSpan, endDateSpan, showResults, apiUrl, locale]);
 
   useEffect(() => {
     // show results panel
-    if (searchFieldFocus === true) {
-      setShowResults(true);
+    if (searchPanelState === "float") {
+      if (searchFieldFocus) {
+        setShowResults(true);
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showResults, searchFieldFocus]);
 
   useEffect(() => {
@@ -296,7 +300,7 @@ function App(props) {
     // set view type accoring to screen size
     const isWide = width < 768;
     setScreenType(isWide ? SCREENS.MOBILE : SCREENS.DESKTOP);
-    datePickerDisplayHandler();
+    // datePickerDisplayHandler();
   }, [width]);
 
   useEffect(() => {
@@ -331,17 +335,6 @@ function App(props) {
       })
     );
   }, [eventSearchUrl, orgSearchUrl, searchWorkshopFilter]);
-
-  useEffect(() => {
-    let savedDate = date;
-    if (savedDate?.includes(",")) {
-      savedDate = savedDate?.split(",");
-    }
-    if (savedDate !== null && savedDate !== "null") {
-      searchDateHandler(savedDate);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className="footlightSearchWidget" ref={refFootlightSearchWidget}>

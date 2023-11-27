@@ -7,6 +7,7 @@ import next2Button from "../../assets/icons/next2-button.svg";
 import prev2Button from "../../assets/icons/prev2-button.svg";
 import "./calendar.css";
 import { useTranslation } from "react-i18next";
+import { PANELS } from "../../constants/screenAndPanelTypes";
 
 function Calender(props) {
   const {
@@ -17,6 +18,7 @@ function Calender(props) {
     searchDate,
     isSingleDate,
     setIsSingleDate,
+    setPanelOnDisplay
   } = props;
 
   const { t } = useTranslation();
@@ -30,6 +32,7 @@ function Calender(props) {
   const searchDateHandler = (value) => {
     sessionStorage.setItem("widgetSearchDate", value);
     setSearchDate(value);
+    setPanelOnDisplay(PANELS.RESULT);
     if (!isSingleDate) {
       const selectedDate = dateConverter(new Date(value));
       setStartDateSpan(selectedDate);
@@ -49,6 +52,7 @@ function Calender(props) {
     if (isSingleDate && !Array.isArray(searchDate)) {
       setCalendarKey((prevState) => prevState + 1); // So reset button can reset date when in the middle of selection.
     }
+    setPanelOnDisplay(PANELS.RESULT);
     setSearchDate(null);
     sessionStorage.setItem("widgetSearchDate", null);
     setStartDateSpan("");

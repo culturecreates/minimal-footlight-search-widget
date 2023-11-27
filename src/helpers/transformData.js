@@ -1,3 +1,5 @@
+import { Tabs } from "../constants/tabs";
+
 export const transformData = ({ data, locale, tabSelected }) => {
     const transformedData = data.data.map((eventData) => {
       let place = eventData.location || {};
@@ -29,7 +31,7 @@ export const transformData = ({ data, locale, tabSelected }) => {
       return {
         id: eventData.id,
         title: title,
-        ...(tabSelected !== "Organizations"
+        ...(tabSelected !== Tabs.ORGANIZATIONS
           ? {
               startDate:
                 eventData.subEventDetails.upcomingSubEventCount === 0

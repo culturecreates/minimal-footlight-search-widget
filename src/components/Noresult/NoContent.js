@@ -1,13 +1,14 @@
 import React from "react";
 import "./noContent.css";
 import { DateFormatter } from "../Date/DateFormatter";
+import { Tabs } from "../../constants/tabs";
 
 function NoContent(props) {
   const { message, date, locale, tabSelected } = props;
   return (
     <div className="no-content-wrapper">
       <div className="message-container">{message}</div>
-      {tabSelected !== "Organizations" && (
+      {tabSelected !== Tabs.ORGANIZATIONS && (
         <div className="date-container" data-testid="date-container">
           <DateFormatter
             date={date}

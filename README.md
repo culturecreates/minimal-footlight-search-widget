@@ -33,3 +33,5 @@ Add this div to your webpage body
 - **data-search-events-filter** is the name value pair(s) for filtering ALL events. Example: "&region=1234&concept=4567&price-type=free"
   
   
+## Steps to create new version
+- Change S3 path in workflows

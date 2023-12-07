@@ -32,17 +32,56 @@ function App(props) {
   // const locale = props.locale || "fr";
 
   const {
-    api = "api.footlight.io",
-    calendar = "tout-culture",
-    eventUrl,
-    orgUrl,
-    searchEventsUrl: eventSearchUrl,
-    searchOrgsUrl: orgSearchUrl,
-    locale,
-    searchEventsFilter = "exclude-type=64776b93fbeda20064d2332f",
-    searchWorkshopFilter = "type=64776b93fbeda20064d2332f",
-    searchPanelState = "float",
+    api: propsApi,
+    calendar: propsCalendar,
+    eventUrl: propsEventUrl,
+    orgUrl: propsOrgUrl,
+    searchEventsUrl: propsEventSearchUrl,
+    searchOrgsUrl: propsOrgSearchUrl,
+    locale: propsLocale,
+    searchEventsFilter:
+      propsSearchEventsFilter = "exclude-type=64776b93fbeda20064d2332f",
+    searchWorkshopFilter:
+      propsSearchWorkshopFilter = "type=64776b93fbeda20064d2332f",
+    searchPanelState: propsSearchPanelState = "float",
   } = props;
+
+  // Check if propsApi is undefined or null, if so, extract values from query params
+  const api =
+    propsApi ||
+    new URLSearchParams(window.location.search).get("api") ||
+    "api.footlight.io";
+  const calendar =
+    propsCalendar ||
+    new URLSearchParams(window.location.search).get("calendar") ||
+    "tout-culture";
+  const eventUrl =
+    propsEventUrl ||
+    new URLSearchParams(window.location.search).get("eventUrl");
+  const orgUrl =
+    propsOrgUrl || new URLSearchParams(window.location.search).get("orgUrl");
+  const eventSearchUrl =
+    propsEventSearchUrl ||
+    new URLSearchParams(window.location.search).get("searchEventsUrl");
+  const orgSearchUrl =
+    propsOrgSearchUrl ||
+    new URLSearchParams(window.location.search).get("searchOrgsUrl");
+  const locale =
+    propsLocale ||
+    new URLSearchParams(window.location.search).get("locale") ||
+    "fr";
+  const searchEventsFilter =
+    propsSearchEventsFilter ||
+    new URLSearchParams(window.location.search).get("searchEventsFilter") ||
+    "exclude-type=64776b93fbeda20064d2332f";
+  const searchWorkshopFilter =
+    propsSearchWorkshopFilter ||
+    new URLSearchParams(window.location.search).get("searchWorkshopFilter") ||
+    "type=64776b93fbeda20064d2332f";
+  const searchPanelState =
+    propsSearchPanelState ||
+    new URLSearchParams(window.location.search).get("searchPanelState") ||
+    "float";
 
   // object to pass HTML widget props to children components
   const widgetProps = {

@@ -4,32 +4,51 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script defer="defer" src="./dist/index.js"></script>
-    <!-- <link href="./dist/index.css" rel="stylesheet" /> -->
     <link href="test-iframe.css" rel="stylesheet" />
+    <style>
+      @media screen and (max-width: 600px) {
+        iframe {
+          width: 100%;
+        }
+      }
+    </style>
     <title>minimal-footlight-search-widget</title>
   </head>
-  <body class="footlightSearchWidget">
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <h1 style="margin: auto; padding: 20px">
-      Test site for iframe embedded widget
-    </h1>
-    <div style="padding: 20px">
-      <script>
-        function getQueryParam(name) {
-          const urlParams = new URLSearchParams(window.location.search);
-          return urlParams.get(name);
-        }
+  <body>
+    <header>
+      <h1>Welcome Iframe Widget test page</h1>
+    </header>
 
-        const width = getQueryParam("width") || "800px";
-        const height = getQueryParam("height") || "650px";
+    <section>
+      <h2>How to use this page</h2>
+      <p>
+        This is a sample website for testing calendar widget. The widget below
+        is emmbedded using an iframe. You can add height and width as query
+        param to control the widget size (for example: add
+        "?width=1000&height=700" to the url). You can give width as a percentage to test its responsivenes (eg:?width=80%)
+      </p>
+      <div id="iframe-container"></div>
+    </section>
 
-        const iframe = document.createElement("iframe");
-        iframe.width = width;
-        iframe.height = height;
-        iframe.src = `http://staging.minimal-footlight-search-widget.s3.ca-central-1.amazonaws.com/v3/test-dist.html?api=api.footlight.io&eventUrl=https://toutculture.ca/en/event-detail/?event=&calendar=tout-culture&locale=fr&searchEventsUrl=https://toutculture.ca/en/filter-evenements/&searchOrgsUrl=https://toutculture.stagingminimalmtl.com/organismes-et-lieux-culturels/&orgUrl=https://toutculture.stagingminimalmtl.com/organismes-detail/?`;
+    <footer>
+      <p>&copy; 2023 Sample Website. All rights reserved.</p>
+    </footer>
 
-        document.querySelector("div").appendChild(iframe);
-      </script>
-    </div>
+    <script>
+      function getQueryParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+      }
+
+      const width = getQueryParam("width") || "800px";
+      const height = getQueryParam("height") || "650px";
+
+      const iframe = document.createElement("iframe");
+      iframe.width = width;
+      iframe.height = height;
+      iframe.src = `http://staging.minimal-footlight-search-widget.s3.ca-central-1.amazonaws.com/v3/test-dist.html?api=api.footlight.io&eventUrl=https://toutculture.ca/en/event-detail/?event=&calendar=tout-culture&locale=fr&searchEventsUrl=https://toutculture.ca/en/filter-evenements/&searchOrgsUrl=https://toutculture.stagingminimalmtl.com/organismes-et-lieux-culturels/&orgUrl=https://toutculture.stagingminimalmtl.com/organismes-detail/?`;
+
+      document.getElementById("iframe-container").appendChild(iframe);
+    </script>
   </body>
 </html>

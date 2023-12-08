@@ -13,6 +13,7 @@ import { getAvailableTabs } from "./helpers/getAvailableTabs";
 import { transformData } from "./helpers/transformData";
 import { debounce } from "./helpers/debounce";
 import { PANELS, SCREENS } from "./constants/screenAndPanelTypes";
+import { redirectionHandler } from "./helpers/redirectionHandler";
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -44,6 +45,7 @@ function App(props) {
     searchWorkshopFilter:
       propsSearchWorkshopFilter = "type=64776b93fbeda20064d2332f",
     searchPanelState: propsSearchPanelState = "float",
+    redirectionMethod: propsRedirectionMethod = "same-tab",
   } = props;
 
   // Check if propsApi is undefined or null, if so, extract values from query params
@@ -83,6 +85,11 @@ function App(props) {
     new URLSearchParams(window.location.search).get("searchPanelState") ||
     "float";
 
+  const redirectionMethod =
+    propsRedirectionMethod ||
+    new URLSearchParams(window.location.search).get("redirectionMethod") ||
+    "same-tab";
+
   // object to pass HTML widget props to children components
   const widgetProps = {
     ...(eventUrl && { eventUrl }),
@@ -93,6 +100,7 @@ function App(props) {
     ...(searchEventsFilter && { searchEventsFilter }),
     ...(searchWorkshopFilter && { searchWorkshopFilter }),
     searchPanelState,
+    redirectionMethod,
   };
 
   // constants built using other constants
@@ -254,8 +262,7 @@ function App(props) {
     if (tabSelected === "Events") {
       url = url + "&" + searchEventsFilter;
     }
-
-    window.open(url, "_blank");
+    redirectionHandler({ redirectionMethod, url });
   };
 
   const textFocusHandler = () => {

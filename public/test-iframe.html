@@ -16,7 +16,7 @@
   </head>
   <body>
     <header>
-      <h1>Welcome Iframe Widget test page</h1>
+      <h1>Welcome to Iframe Widget test page</h1>
     </header>
 
     <section>
@@ -25,7 +25,8 @@
         This is a sample website for testing calendar widget. The widget below
         is emmbedded using an iframe. You can add height and width as query
         param to control the widget size (for example: add
-        "?width=1000&height=700" to the url). You can give width as a percentage to test its responsivenes (eg:?width=80%)
+        "?width=1000&height=700" to the url). You can give width as a percentage
+        to test its responsivenes (eg:?width=80%)
       </p>
       <div id="iframe-container"></div>
     </section>
@@ -46,7 +47,8 @@
       const iframe = document.createElement("iframe");
       iframe.width = width;
       iframe.height = height;
-      iframe.src = `http://staging.minimal-footlight-search-widget.s3.ca-central-1.amazonaws.com/v3/test-dist.html?api=api.footlight.io&eventUrl=https://toutculture.ca/en/event-detail/?event=&calendar=tout-culture&locale=fr&searchEventsUrl=https://toutculture.ca/en/filter-evenements/&searchOrgsUrl=https://toutculture.stagingminimalmtl.com/organismes-et-lieux-culturels/&orgUrl=https://toutculture.stagingminimalmtl.com/organismes-detail/?`;
+      iframe.src =
+        "http://staging.minimal-footlight-search-widget.s3.ca-central-1.amazonaws.com/v3/test-dist.html?api=api.footlight.io&eventUrl=https://toutculture.ca/en/event-detail/?event=&calendar=tout-culture&locale=fr&searchEventsUrl=https://toutculture.ca/en/filter-evenements/&searchOrgsUrl=https://toutculture.stagingminimalmtl.com/organismes-et-lieux-culturels/&redirectionMethod=new-tab&searchPanelState=inline&searchWorkshopFilter=region%3D63bc0b2d1c6b6c005aad5253%26type=64776b93fbeda20064d2332f&searchEventsFilter=region%3D63bc0b2d1c6b6c005aad5253%26exclude-type%3D64776b93fbeda20064d2332f";
 
       document.getElementById("iframe-container").appendChild(iframe);
     </script>

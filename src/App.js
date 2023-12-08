@@ -40,12 +40,10 @@ function App(props) {
     searchEventsUrl: propsEventSearchUrl,
     searchOrgsUrl: propsOrgSearchUrl,
     locale: propsLocale,
-    searchEventsFilter:
-      propsSearchEventsFilter = "exclude-type=64776b93fbeda20064d2332f",
-    searchWorkshopFilter:
-      propsSearchWorkshopFilter = "type=64776b93fbeda20064d2332f",
-    searchPanelState: propsSearchPanelState = "float",
-    redirectionMethod: propsRedirectionMethod = "same-tab",
+    searchEventsFilter: propsSearchEventsFilter,
+    searchWorkshopFilter: propsSearchWorkshopFilter,
+    searchPanelState: propsSearchPanelState,
+    redirectionMethod: propsRedirectionMethod,
   } = props;
 
   // Check if propsApi is undefined or null, if so, extract values from query params
@@ -54,8 +52,8 @@ function App(props) {
     new URLSearchParams(window.location.search).get("api") ||
     "api.footlight.io";
   const calendar =
-    propsCalendar ||
     new URLSearchParams(window.location.search).get("calendar") ||
+    propsCalendar ||
     "tout-culture";
   const eventUrl =
     propsEventUrl ||
@@ -69,25 +67,25 @@ function App(props) {
     propsOrgSearchUrl ||
     new URLSearchParams(window.location.search).get("searchOrgsUrl");
   const locale =
-    propsLocale ||
     new URLSearchParams(window.location.search).get("locale") ||
+    propsLocale ||
     "fr";
   const searchEventsFilter =
-    propsSearchEventsFilter ||
     new URLSearchParams(window.location.search).get("searchEventsFilter") ||
+    propsSearchEventsFilter ||
     "exclude-type=64776b93fbeda20064d2332f";
   const searchWorkshopFilter =
-    propsSearchWorkshopFilter ||
     new URLSearchParams(window.location.search).get("searchWorkshopFilter") ||
+    propsSearchWorkshopFilter ||
     "type=64776b93fbeda20064d2332f";
   const searchPanelState =
-    propsSearchPanelState ||
     new URLSearchParams(window.location.search).get("searchPanelState") ||
+    propsSearchPanelState ||
     "float";
 
   const redirectionMethod =
-    propsRedirectionMethod ||
     new URLSearchParams(window.location.search).get("redirectionMethod") ||
+    propsRedirectionMethod ||
     "same-tab";
 
   // object to pass HTML widget props to children components

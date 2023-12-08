@@ -444,7 +444,6 @@ function App(props) {
             </div>
           )}
       </div>
-      <p style={{ width: "60px" }}>{redirectionMethod}</p>
       <div className="panel-anchor">
         <div className="panel-float">
           {showResults && (

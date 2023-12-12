@@ -1,0 +1,19 @@
+.footlightSearchWidget .loader > p {
+  width: 4em;
+  height: 4em;
+  border: 0.5em solid rgba(47, 171, 2, 0.1);
+  border-left-color: rgb(172, 128, 128);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.footlightSearchWidget {
+  background: rgb(163, 111, 111);
+  font-family: sans-serif;
+  display: grid;
+  place-content: center;
+}
+
+#minimal-footlight-search-widget {
+  background: black;
+}

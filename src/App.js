@@ -13,6 +13,7 @@ import { getAvailableTabs } from "./helpers/getAvailableTabs";
 import { transformData } from "./helpers/transformData";
 import { debounce } from "./helpers/debounce";
 import { PANELS, SCREENS } from "./constants/screenAndPanelTypes";
+import { redirectionHandler } from "./helpers/redirectionHandler";
 
 function App(props) {
   // ALL props passed in from HTML widget
@@ -32,17 +33,60 @@ function App(props) {
   // const locale = props.locale || "fr";
 
   const {
-    api = "api.footlight.io",
-    calendar = "tout-culture",
-    eventUrl,
-    orgUrl,
-    searchEventsUrl: eventSearchUrl,
-    searchOrgsUrl: orgSearchUrl,
-    locale,
-    searchEventsFilter = "exclude-type=64776b93fbeda20064d2332f",
-    searchWorkshopFilter = "type=64776b93fbeda20064d2332f",
-    searchPanelState = "float",
+    api: propsApi,
+    calendar: propsCalendar,
+    eventUrl: propsEventUrl,
+    orgUrl: propsOrgUrl,
+    searchEventsUrl: propsEventSearchUrl,
+    searchOrgsUrl: propsOrgSearchUrl,
+    locale: propsLocale,
+    searchEventsFilter: propsSearchEventsFilter,
+    searchWorkshopFilter: propsSearchWorkshopFilter,
+    searchPanelState: propsSearchPanelState,
+    redirectionMethod: propsRedirectionMethod,
   } = props;
+
+  // Check if propsApi is undefined or null, if so, extract values from query params
+  const api =
+    propsApi ||
+    new URLSearchParams(window.location.search).get("api") ||
+    "api.footlight.io";
+  const calendar =
+    new URLSearchParams(window.location.search).get("calendar") ||
+    propsCalendar ||
+    "tout-culture";
+  const eventUrl =
+    propsEventUrl ||
+    new URLSearchParams(window.location.search).get("eventUrl");
+  const orgUrl =
+    propsOrgUrl || new URLSearchParams(window.location.search).get("orgUrl");
+  const eventSearchUrl =
+    propsEventSearchUrl ||
+    new URLSearchParams(window.location.search).get("searchEventsUrl");
+  const orgSearchUrl =
+    propsOrgSearchUrl ||
+    new URLSearchParams(window.location.search).get("searchOrgsUrl");
+  const locale =
+    new URLSearchParams(window.location.search).get("locale") ||
+    propsLocale ||
+    "fr";
+  const searchEventsFilter =
+    new URLSearchParams(window.location.search).get("searchEventsFilter") ||
+    propsSearchEventsFilter ||
+    "exclude-type=64776b93fbeda20064d2332f";
+  const searchWorkshopFilter =
+    new URLSearchParams(window.location.search).get("searchWorkshopFilter") ||
+    propsSearchWorkshopFilter ||
+    "type=64776b93fbeda20064d2332f";
+  const searchPanelState =
+    new URLSearchParams(window.location.search).get("searchPanelState") ||
+    propsSearchPanelState ||
+    "float";
+
+  const redirectionMethod =
+    new URLSearchParams(window.location.search).get("redirectionMethod") ||
+    propsRedirectionMethod ||
+    "same-tab";
 
   // object to pass HTML widget props to children components
   const widgetProps = {
@@ -54,6 +98,7 @@ function App(props) {
     ...(searchEventsFilter && { searchEventsFilter }),
     ...(searchWorkshopFilter && { searchWorkshopFilter }),
     searchPanelState,
+    redirectionMethod,
   };
 
   // constants built using other constants
@@ -215,8 +260,7 @@ function App(props) {
     if (tabSelected === "Events") {
       url = url + "&" + searchEventsFilter;
     }
-
-    window.open(url, "_blank");
+    redirectionHandler({ redirectionMethod, url });
   };
 
   const textFocusHandler = () => {

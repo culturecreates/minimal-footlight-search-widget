@@ -43,6 +43,7 @@ const EventsList = (props) => {
                   event={event}
                   eventUrl={widgetProps.orgUrl}
                   locale={widgetProps.locale}
+                  redirectionMethod={widgetProps?.redirectionMethod}
                 />
               ))
           : content)}
@@ -56,6 +57,7 @@ const EventsList = (props) => {
                   event={event}
                   eventUrl={widgetProps.eventUrl}
                   locale={widgetProps.locale}
+                  redirectionMethod={widgetProps?.redirectionMethod}
                 />
               ))
           : content)}
@@ -69,6 +71,7 @@ const EventsList = (props) => {
                   event={event}
                   eventUrl={widgetProps.eventUrl}
                   locale={widgetProps.locale}
+                  redirectionMethod={widgetProps?.redirectionMethod}
                 />
               ))
           : content)}

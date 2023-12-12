@@ -18,5 +18,6 @@ root.render(
     searchPanelState={widget.dataset.searchPanel}
     searchEventsFilter={widget.dataset.searchEventsFilter}
     searchWorkshopFilter={widget.dataset.searchWorkshopFilter}
+    redirectionMethod={widget.dataset.redirectionMethod}
   />
 );

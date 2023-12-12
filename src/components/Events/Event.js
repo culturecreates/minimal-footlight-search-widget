@@ -1,11 +1,15 @@
 import React from "react";
 import placeImg from "../../assets/icons/Pin.svg";
+import { redirectionHandler } from "../../helpers/redirectionHandler";
 import "./Event.css";
 
 const Event = (props) => {
-  const { event, eventUrl, locale } = props;
+  const { event, eventUrl, locale, redirectionMethod } = props;
   const clickEventHandler = (e) => {
-    window.open(eventUrl + e.currentTarget.id, "_blank");
+    redirectionHandler({
+      redirectionMethod,
+      url: eventUrl + e.currentTarget.id,
+    });
   };
 
   const dateTimeOptions = {
